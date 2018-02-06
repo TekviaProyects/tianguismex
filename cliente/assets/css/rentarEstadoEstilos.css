@@ -1,0 +1,167 @@
+main{
+  min-height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+          padding-top: 60px;
+
+}
+#contenido{
+  width: 90%;
+}
+#contenido #estadoSelec{
+  width: 100%!important;
+}
+#contenido #tianguisSelec{
+  width: 100%!important;
+}
+.ui .search .dropdown .selection{
+  width: 100%!important;
+}
+
+#btnSelec{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #FF851B;
+  padding: 10px;
+  border: 1px solid #FF851B;
+  -webkit-border-radius: 6px;
+          border-radius: 6px;
+  color: white;
+  -webkit-transition: .8s;
+  -o-transition: .8s;
+  transition: .8s;
+  cursor: pointer;
+}
+#btnSelec:hover{
+  background-color: white;
+  color: #FF851B;
+}
+
+#btnAnterior{
+  display: none;
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  background-color: #FF851B;
+  padding: 10px;
+  border: 1px solid #FF851B;
+  -webkit-border-radius: 6px;
+          border-radius: 6px;
+  color: white;
+  -webkit-transition: .8s;
+  -o-transition: .8s;
+  transition: .8s;
+  cursor: pointer;
+  z-index: 10;
+}
+#btnAnterior:hover{
+  background-color: white;
+  color: #FF851B;
+}
+
+
+
+#seleccionTianguis{
+  width: 100%;
+  height: auto;
+  display: none;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+#seleccionTianguis .card{
+  width: 200px;
+}
+#seleccionTianguis .card img{
+  min-height: 200px;
+  -webkit-border-radius: 6px 0px 0px 6px;
+          border-radius: 6px 0px 0px 6px;
+}
+#tarjeta{
+  width: 90%;
+  height: auto;
+  background-color: white;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-shadow: 0 1px 3px 0 #D4D4D5, 0 0 0 1px #D4D4D5;
+          box-shadow: 0 1px 3px 0 #D4D4D5, 0 0 0 1px #D4D4D5;
+  -webkit-border-radius: 6px;
+          border-radius: 6px;
+  margin: 15px 5px 0px 5px;
+  max-width: 400px;
+  cursor: pointer;
+}
+#tarjeta:hover{
+  -webkit-box-shadow: 0px 3px 10px -1px rgba(0,0,0,0.50);
+box-shadow: 0px 3px 10px -1px rgba(0,0,0,0.50);
+}
+#tarjeta img{
+  margin: 5px 0px 5px 10px;
+  height: 100px;
+  width: 100px;
+
+
+}
+#tarjeta .contenido{
+  width: -webkit-calc(100% - 100px);
+  width: calc(100% - 100px);
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  border-left: 1px solid #eee;
+  margin-left: 5px;
+  padding: 10px;
+}
+#tarjeta .contenido .titulo{
+  font-size: 17px;
+}
+#tarjeta .contenido .horario{
+  font-size: 13px;
+  color: rgba(0,0,0,.4);
+}
+#tarjeta .contenido .descripcion{
+  font-size: 15px;
+}
+
+#labelVacio{
+  display: none;
+}

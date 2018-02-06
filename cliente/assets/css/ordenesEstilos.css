@@ -1,0 +1,14 @@
+main{
+  min-height: 100%;
+  padding-top: 70px;
+  position: relative;
+}
+#tablaOrdenes{
+  width: 100%;
+}
+.tablaWrapp{
+  margin-top: 0px;
+  margin-bottom: 50px;
+  width: 80%;
+  height: auto;
+}

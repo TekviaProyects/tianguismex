@@ -1,0 +1,306 @@
+#pago,
+#wrapperFecha,
+.botonComprar {
+    display: -webkit-box;
+    display: -ms-flexbox
+}
+
+
+main {
+    min-height:100%;
+    padding-bottom: 20px!important;
+    -webkit-transform-style: preserve-3d
+}
+
+.desactivado{
+  opacity: .3!important;
+  cursor: not-allowed!important;
+}
+.circulosEstado{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.circulo{
+  width: 13px;
+  height: 13px;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+  margin: 8px 8px 0px 8px;
+}
+.azul{
+  background-color: #2196F3;
+}
+.rojo{
+  background-color: #f00;
+}
+.relative{
+  position: relative;
+}
+.indicaciones{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 10px;
+  top:0;
+  left: 0;
+}
+.absolute{
+  position: absolute;
+}
+#pago {
+    width: 90%;
+    height: 100%;
+    margin-top: 30px;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    padding-top: 60px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    -ms-flex-pack: start;
+    -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+    -webkit-box-pack: center;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+            align-items: center
+}
+
+#tiposLocal {
+    min-width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    -webkit-transition: .5s;
+    -o-transition: .5s;
+    transition: .5s;
+    -webkit-backface-visibility: hidden
+}
+
+#tiposLocal .card {
+    margin: 10px 0 0;
+    padding: 0;
+    width: 100%;
+}
+
+#seleccionLocal {
+    margin: 0;
+    min-width: 100%
+}
+
+#wrapperFecha {
+    height: 100%;
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+}
+
+#fechaLocal .ui.input {
+    width: 100%
+}
+
+#botonCerrar {
+    -webkit-transition: .8s ease;
+    -o-transition: .8s ease;
+    transition: .8s ease;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0)
+}
+
+.botonComprar,
+g {
+    -webkit-transform: translateZ(0)
+}
+
+#calendarioLocal h1,
+#seleccionLocal h1 {
+    text-align: center
+}
+
+#calendarioLocal {
+    width: 100%;
+    margin: 0;
+    max-height: 350px
+}
+
+.croquis {
+    width: 95%;
+    height: auto;
+    overflow: auto
+}
+
+.botonComprar,
+.botonVolver {
+    z-index: 8;
+    position: fixed;
+    cursor: pointer;
+    color: #fff;
+    bottom: 20px;
+    width: 120px;
+    height: 40px;
+    -webkit-border-radius: 6px;
+            border-radius: 6px
+}
+
+.croquis svg {
+    min-width: 1500px
+}
+
+text {
+    font-size: 6px
+}
+
+g {
+    -webkit-transition: fill .6s ease!important;
+    -o-transition: fill .6s ease!important;
+    transition: fill .6s ease!important;
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    cursor: pointer
+}
+
+g:hover {
+    background-color: #E0E0E0
+}
+
+.botonComprar {
+    background-color: #F2711C;
+    right: 20px;
+    -webkit-transition: .5s;
+    -o-transition: .5s;
+    transition: .5s;
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center
+}
+
+.botonComprar i {
+    font-size: 20px;
+    margin: 0 0 0 10px;
+    padding: 0;
+    -webkit-transition: 1s ease;
+    -o-transition: 1s ease;
+    transition: 1s ease
+}
+
+.botonVolver {
+    background-color: #2185d0;
+    left: 20px;
+    -webkit-transition: .5s;
+    -o-transition: .5s;
+    transition: .5s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center
+}
+
+.botonVolver i {
+    font-size: 20px;
+    margin: 0 10px 0 0;
+    padding: 0;
+    -webkit-transition: 1s ease;
+    -o-transition: 1s ease;
+    transition: 1s ease
+}
+.textoPequeno{
+  font-size: 10px!important;
+}
+
+@media screen and (max-width:749px) and (orientation:landscape) {
+    main {
+        height: auto;
+        min-height: 100%
+    }
+    #tiposLocal {
+        margin-top: 20px;
+        margin-bottom: 30px
+    }
+}
+
+@media (min-width:750px) {
+    main {
+        height: 100%
+    }
+    #pago {
+        margin-bottom: 30px;
+    }
+    #tiposLocal {
+        width: 100%;
+        min-height: 200px;
+        margin-top: 0;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -webkit-align-items: center;
+                    -ms-flex-align: center;
+                        align-items: center;
+    }
+    #tiposLocal .card {
+        margin: 10px 10px 10px 10px;
+        width: 30%;
+        max-width: 30%!important;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        -webkit-flex-grow: 1;
+                flex-grow: 1
+    }
+    #tiposLocal .media {
+        margin-left: 20px;
+        margin-right: 20px
+    }
+    .botonComprar:hover i {
+        -webkit-transform: rotate(-360deg);
+        -ms-transform: rotate(360deg);
+            transform: rotate(360deg)
+    }
+    .botonVolver:hover i {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+            transform: rotate(360deg)
+    }
+}

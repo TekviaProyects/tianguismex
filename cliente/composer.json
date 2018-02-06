@@ -1,0 +1,7 @@
+{
+    "require": {
+        "openpay/sdk": "^1.2",
+        "twilio/sdk": "^5.10",
+        "phpmailer/phpmailer": "^5.2"
+    }
+}

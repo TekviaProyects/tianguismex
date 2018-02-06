@@ -1,0 +1,144 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+}
+html,body{
+  height: 100%;
+}
+main{
+  padding-top: 60px;
+  background-color: #EEEEEE;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.table{
+width:  100%;
+text-align: center;
+}
+#comprobante{
+  width: 80%;
+  margin-top: 30px;
+}
+.scrollt{
+  overflow-y: scroll;
+  height: 400px;
+  width: 100%;
+}
+.txtC{
+  color: orange;
+}
+.containerM{
+  display: none;
+}
+.centrito{
+  text-align: center;
+}
+.eaea{
+  width: 80%;
+}
+.gris{
+  color: #fff;
+  background-color: #848484;
+  }
+
+.footer{
+    width: 100%;
+    height: 60px;
+    background-color: #2E2E2E;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    position: absolute;
+	  bottom: 0;
+  }
+
+.imgfooter{
+    margin-top: 5px;
+    height: 30px;
+  }
+
+
+
+  .embed-container {
+      position: relative;
+      height: 0;
+      overflow: hidden;
+  }
+  .16by9 {
+      padding-bottom: 56.25%;
+  }
+  .4by3 {
+      padding-bottom: 75%;
+  }
+  .embed-container iframe {
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+
+
+  @media (min-width:750px){
+.txtC{
+  color: orange;
+}
+#comprobante{
+  margin-top: 30px;
+}
+.scrollt{
+  overflow-y: scroll;
+  height: 400px;
+  width: 100%;
+}
+.gris{
+  color: #fff;
+  background-color: #848484;
+  }
+.containerM{
+  display: inherit;
+  width: 100%;
+  height: 50px;
+  background-color: orange;
+  -webkit-border-top-right-radius: 5px;
+          border-top-right-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+          border-top-left-radius: 5px;
+  font-size: 20px;
+  color: #fff;
+}
+.containerM1, .containerM2{
+  float: left;
+  width: 50%;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.centrito{
+  text-align: left;
+}
+.eaea{
+  width: 80%;
+}
+.footer{
+  width: 100%;
+  height: 60px;
+  background-color: #2E2E2E;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  position: absolute;
+	bottom: 0;
+}
+.imgfooter{
+  margin-top: 5px;
+  height: 30px;
+}
+}
