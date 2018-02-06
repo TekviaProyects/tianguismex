@@ -2,7 +2,7 @@
 	session_start();
 	
 	if (empty($_SESSION['user'])) {
-		echo "<script>location.href='index.php'</script>";
+		// echo "<script>location.href='index.php'</script>";
 	}
 
 ?>
@@ -548,22 +548,6 @@
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
 		$("#wrapper").toggleClass("toggled");
-	});
-	
-	requests.new_request({
-		div: 'contenedor',
-		view: 'list_user_requests',
-		from_user: 1
-	});
-	
-	notifications.list_notifications({
-		user_id: <?php echo $_SESSION['user']['id'] ?>,
-		div: 'div_notifications'
-	});
-	
-	notifications.count_notifications({
-		user_id: <?php echo $_SESSION['user']['id'] ?>,
-		div: 'num_notifications'
 	});
 	
 	$(document).ready(function () {
