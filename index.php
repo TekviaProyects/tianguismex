@@ -1,157 +1,585 @@
-<!DOCTYPE html>
+<?php
+	session_start();
+	
+	if (empty($_SESSION['user'])) {
+		echo "<script>location.href='index.php'</script>";
+	}
+
+?>
+
+<!DOCTYPE HTML>
+
 <html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	<!-- fullcalendar -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.0/fullcalendar.min.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Aqui podras rentar locales de distintos tianguis en todo México">
-    <meta name="keywords" content="tianguis,locales,renta,local,barato,mercado,tianguismexico">
-    <meta name="author" content="tianguismexico.mx">
-    <title>Tianguis Mexico, donde encontraras el mejor lugar para tus ventas</title>
+	<!-- font-awesome -->
+		<link rel="stylesheet" href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+	<!-- dataTables  -->
+	    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/b-1.5.1/datatables.min.css"/>
+	<!-- Animate -->
+		<link href="plugins/animate.css" rel="stylesheet" />
+	<!-- bootstrap-datetimepicker -->
+		<link rel="stylesheet" href="plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+	<!-- sweetalert -->
+		<link rel="stylesheet" href="plugins/sweetalert-master/dist/sweetalert.css" />
+	<!-- Loader -->
+		<link rel="stylesheet" href="plugins/css3-preloader-transition-start/css/normalize.css">
+		<link rel="stylesheet" href="plugins/css3-preloader-transition-start/css/main.css">
 
+		<style>
+			.vuela{
+				position: sticky;
+			    right: 0px;
+			    top: 0px;
+			    z-index: 6;
+			    width: 100%;
+			}
+			#wrapper {
+				padding-left: 0;
+				-webkit-transition: all 0.5s ease;
+				-moz-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			#wrapper.toggled {
+				padding-left: 250px;
+			}
+			#sidebar-wrapper {
+				z-index: 1000;
+				position: fixed;
+				left: 250px;
+				width: 0;
+				height: 100%;
+				margin-left: -250px;
+				/*overflow-y: scroll;*/
+				overflow-x: hidden;
+				background: #000;
+				-webkit-transition: all 0.5s ease;
+				-moz-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			#wrapper.toggled #sidebar-wrapper {
+				width: 250px;
+			}
+			#contenedor {
+				width: 100%;
+				position: absolute;
+				padding: 15px;
+			}
+			#wrapper.toggled #contenedor {
+				position: absolute;
+				margin-right: -250px;
+			}
+			/* Sidebar Styles */
+			.sidebar-nav {
+				/*position: absolute;*/
+				top: 0;
+				width: 250px;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.sidebar-nav li {
+				text-indent: 5px;
+				line-height: 40px;
+			}
+			.sidebar-nav li a {
+				line-height: 200%;
+				display: block;
+				text-decoration: none;
+				color: #999999;
+			}
+			.sidebar-nav li a:hover {
+				text-decoration: none;
+				color: #fff;
+				background: rgba(255, 255, 255, 0.2);
+			}
+			.sidebar-nav li a:active, .sidebar-nav li a:focus {
+				text-decoration: none;
+			}
+			.sidebar-nav > .sidebar-brand {
+				height: 65px;
+				font-size: 1px;
+				line-height: 60px;
+			}
+			.sidebar-nav > .sidebar-brand a {
+				color: #999999;
+			}
+			.sidebar-nav > .sidebar-brand a:hover {
+				color: #fff;
+				background: none;
+			}
+			@media (min-width: 768px) {
+				#wrapper {
+					padding-left: 250px;
+				}
+				#wrapper.toggled {
+					padding-left: 0;
+				}
+				#sidebar-wrapper {
+					width: 250px;
+				}
+				#wrapper.toggled #sidebar-wrapper {
+					width: 0;
+				}
+				#contenedor {
+					padding: 20px;
+					position: relative;
+				}
+				#wrapper.toggled #contenedor {
+					position: relative;
+					margin-right: 0;
+				}
+			}
+			.footer {
+				position: relative;
+				right: 0;
+				bottom: 0;
+				text-align: right;
+			}
+			.notoy{
+				display: none !important;
+			}
+		/*Loader*/
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<!-- Sidebar -->
+			<div id="sidebar-wrapper">
+				<div
 
-    <script src="bower_components/animejs/anime.min.js"></script>
-    <script src="js/animacionInicio.js" charset="utf-8"></script>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="bower_components/aos/dist/aos.css" />
-    <link rel="stylesheet" href="css/inicio.css">
+					onclick="location.reload()"
+					align="center"
+					style="background-color: #ffbc49; cursor: pointer">
+					<img src="images/logo.png" style="max-width: 150px" />
+				</div>
+				<ul class="sidebar-nav">
+					<li>
+						<a
+							href="#contenedor"
+							onclick="requests.new_request({
+								div: 'contenedor',
+								from_user: 1
+							})">
+							<i class="fa fa-plus" aria-hidden="true"></i> Nueva solicitud
+						</a>
+					</li>
+					<li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block"
+							onclick="requests.list_requests({
+								div: 'contenedor',
+								view: 'list_user_requests',
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								from_user: 1
+							})">
+							<i class="fa fa-address-card" aria-hidden="true"></i>
+							<span>Estado de solicitudes</span>
+						</a>
+					</li>
+					<li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block"
+							onclick="requests.list_requests({
+								div: 'contenedor',
+								status: 1,
+								view: 'list_active_permits',
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								from_user: 1
+							})">
+							<i class="fa fa-check" aria-hidden="true"></i>
+							<span>Permisos activos</span>
+						</a>
+					</li>
+					<li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block"
+							onclick="help_desk.view_dating({
+								div: 'contenedor',
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								user_id: '<?php echo $_SESSION['user']['id'] ?>',
+								from_user: 1
+							})">
+							<i class="fa fa-calendar-o"></i>
+							<span>Citas en dependencia</span>
+						</a>
+					</li>
+					<li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block"
+							onclick="help_desk.view_user_main({
+								div: 'contenedor',
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								from_user: 1
+							})">
+							<i class="fa fa-info-circle"></i>
+							<span>Atención a quejas</span>
+						</a>
+					</li>
+					<li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block"
+							onclick="requests.list_requests({
+								div: 'contenedor',
+								status: 1,
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								view: 'list_transfer_rights',
+								from_user: 1
+							})">
+							<i class="fa fa-archive" aria-hidden="true"></i> <span>Cesión de derechos</span>
+						</a>
+					</li>
+					<li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block"
+							href="#contenedor"
+							onclick="users.view_gafette({
+								div: 'contenedor',
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								from_user: 1
+							})">
+							<i class="fa fa-address-card" aria-hidden="true"></i>
+							<span>Gafete electronico</span>
+						</a>
+					</li>
+					<li>
+						<a 
+							onclick="requests.list_requests({
+								div: 'contenedor',
+								status: 1,
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								view: 'view_permits',
+								from_user: 1
+							})"
+							href="#contenedor"
+						 	class="btn-orange btn-block" >
+							<i class="fa fa-lock" aria-hidden="true"></i>
+							<span>Permiso por ausencia y Suplencias</span>
+						</a>
+					</li>
+					<li>
+						<a
+							onclick="dependencies.view_documets({
+								div: 'contenedor',
+								from_user: 1
+							})"
+							class="btn-orange btn-block"
+							href="#contenedor">
+							<i class="fa fa-book"></i>
+							<span>Manuales</span>
+						</a>
+					</li>
+					<li>
+						<a
+							onclick="users.view_insurance_policy({
+								div: 'contenedor',
+								mail: '<?php echo $_SESSION['user']['correo'] ?>',
+								from_user: 1
+							})"
+							href="#contenedor"
+						 	class="btn-orange btn-block" >
+							<i class="fa fa-shield" aria-hidden="true"></i>
+							<span>Póliza de seguro</span>
+						</a>
+					</li>
+					<!-- <li>
+						<a
+							href="#contenedor"
+						 	class="btn-orange btn-block" >
+							<i class="fa fa-cutlery" aria-hidden="true"></i>
+							<span>Constancia de manejo de alimentos</span>
+						</a>
+					</li> -->
+				</ul>
+			</div>
+			<!-- /#sidebar-wrapper -->
+			<!-- Contenedor -->
+			<div>
+				<nav class="navbar navbar-expand-lg navbar-light bg-light vuela">
+					<button class="btn btn-default" id="menu-toggle" style="margin-right: 10px">
+						<i class="fa fa-bars"></i>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+						<form class="form-inline my-2 my-lg-0" onsubmit="event.preventDefault()">
+							<input
+								class="form-control mr-sm-2"
+								type="search"
+								placeholder="Buscar.."
+								onchange="requests.search({
+									search: $(this).val(),
+									mail: '<?php echo $_SESSION['user']['correo'] ?>'
+								})"
+								id="search_expedients"
+								name="keyword">
+							<button
+								onclick="requests.search({
+									search: $('#search_expedients').val(),
+									mail: '<?php echo $_SESSION['user']['correo'] ?>'
+								})"
+								class="btn btn-outline-success my-2 my-sm-0"
+								type="button"
+								style="margin-right: 10px">
+								Buscar
+							</button>
+						</form>
+						<ul class="navbar-nav mr-auto mt- mt-lg-0">
 
-  </head>
+						</ul>
+						<div style="margin-right: 3%;">
+							<button 
+								class="btn btn-info"
+								data-toggle="collapse" 
+								href="#div_notifications" 
+								role="button" 
+								aria-expanded="false" 
+								aria-controls="div_notifications"
+								onclick="notifications.actualizar({
+									user_id: '<?php echo $_SESSION['user']['id'] ?>',
+									div: 'num_notifications'
+								})">
+								<i class="fa fa-bell"></i>
+								<span class="badge badge-light" id="num_notifications">
+								</span>
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+						</div>
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<button
+									class="btn btn-default"
+									 data-toggle="collapse"
+									 href="#collapseExample"
+									 role="button"
+									 aria-expanded="false"
+									 aria-controls="collapseExample">
+									 <img
+									 	style="max-width: 30px"
+									 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png"
+										onerror="this.src='images/photos/loggeduser.png';"
+										class="profile-image img-circle">
+									 <?php echo $_SESSION['user']['nombre'] ?></h4>
+								</button>
+								</a>
+								<div class="collapse" id="collapseExample">
+									<a
+										class="dropdown-item"
+										onclick="users.view_profile({
+											div: 'contenedor',
+											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											from_user: 1
+										})"
+										href="#contenedor">
+										<i class="fa fa-user"></i> Editar Perfil
+									</a>
+									<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Configuración</a>
+									<a
+										class="dropdown-item"
+										onclick="help_desk.view_user_main({
+											div: 'contenedor',
+											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											from_user: 1
+										})"
+										href="#contenedor">
+										<i class="fa fa-info"></i> Ayuda
+									</a>
+									<a class="dropdown-item" href="index.php"><i class="fa fa-sign-out"></i> Salir</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<button
+						class="navbar-toggler"
+						type="button"
+						data-toggle="collapse"
+						data-target="#navbarTogglerDemo01"
+						aria-controls="navbarTogglerDemo01"
+						aria-expanded="false"
+						aria-label="Toggle navigation">
+						<i class="fa fa-exchange fa-rotate-90" aria-hidden="true"></i>
+					</button>
+				</nav>
+				<div class="collapse" id="div_notifications" align="right"> </div>
+				<div id="div_search_results"></div>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12" id="contenedor">
+							<div class="row" style="display: none">
+								<div class="col-sm-6 col-md-3">
+									<div
+										class="card text-white bg-success mb-3"
+										onclick="requests.list_requests({
+											div: 'contenedor',
+											status: 1,
+											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											view: 'list_user_requests',
+											from_user: 1
+										})"
+										style="cursor: pointer">
+										<div class="card-header">
+											Solicitudes Aceptadas
+										</div>
+										<div class="card-body">
+											<i class="fa fa-check fa-3x"></i> <h1 id="sum_aceppted">0</h1>
+										</div>
+									</div>
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-6 col-md-3">
+									<div
+										class="card text-white bg-danger mb-3"
+										onclick="requests.list_requests({
+											div: 'contenedor',
+											status: 2,
+											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											view: 'list_user_requests',
+											from_user: 1
+										})"
+										style="cursor: pointer">
+										<div class="card-header">
+											Solicitudes Rechazada
+										</div>
+										<div class="card-body">
+											<i class="fa fa-times fa-3x"></i> <h1 id="sum_aceppted">0</h1>
+										</div>
+									</div>
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-6 col-md-3">
+									<div
+										class="card text-white bg-primary mb-3"
+										onclick="requests.list_requests({
+											div: 'contenedor',
+											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											view: 'list_user_requests',
+											from_user: 1
+										})"
+										style="cursor: pointer">
+										<div class="card-header">
+											Solicitudes Pendientes
+										</div>
+										<div class="card-body">
+											<i class="fa fa-user fa-3x"></i> <h1 id="sum_aceppted">0</h1>
+										</div>
+									</div>
+								</div><!-- col-sm-6 -->
+							</div><!-- row <--></-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END Contenedor -->
+		</div>
+		<div id="loader-wrapper">
+			<div id="loader"></div>
+		</div>
 
-<body>
-    <div class="linea"> </div>
-    <div class="animacion show" id="animacionA">
-        <svg version="1.1" id="animacion" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="259.9px" height="170px" viewBox="0 0 250 130" enable-background="new 0 0 250 130" xml:space="preserve">
-            <g class="superior">
-                <path id="uno" fill="#F8C300" d="M73.4,50.2h128.2c4.6,0,8.3-3.7,8.3-8.2c0-4.5-3.7-8.2-8.3-8.2H73.4c-4.6,0-8.3,3.7-8.3,8.2C65.1,46.6,68.8,50.2,73.4,50.2z" />
-                <path id="dos" fill="#DC0209" d="M99.4,99.4h84c4.6,0,8.3-3.7,8.3-8.2s-3.7-8.2-8.3-8.2h-84c-4.6,0-8.3,3.7-8.3,8.2S94.8,99.4,99.4,99.4z" />
-                <path id="tres" fill="#EE9400" d="M87.4,74.1h105.3c4.6,0,8.3-3.7,8.3-8.2c0-4.5-3.7-8.2-8.3-8.2H87.4c-4.6,0-8.3,3.7-8.3,8.2C79.2,70.5,82.9,74.1,87.4,74.1z" />
-                <path id="cuatro" fill="#FAD100" d="M72,50.1l119.7,23.8c4.5,0.8,8.8-2.2,9.6-6.7c0.8-4.5-2.3-8.7-6.8-9.5L74.8,34c-4.5-0.8-8.8,2.2-9.6,6.7C64.4,45.1,67.5,49.3,72,50.1z" />
-                <path id="cinco" fill="#EE9400" d="M86.1,74l96.4,25.2c4.5,0.8,8.8-2.2,9.6-6.7c0.8-4.5-2.3-8.7-6.8-9.5L88.9,57.9c-4.5-0.8-8.8,2.2-9.6,6.7C78.5,69,81.6,73.2,86.1,74z" />
-                <path id="seis" fill="#1E120D" d="M8.3,16.4H61c4.6,0,8.3-3.7,8.3-8.2C69.2,3.7,65.5,0,61,0H8.3C3.7,0,0,3.7,0,8.2C0,12.7,3.7,16.4,8.3,16.4z" />
-                <path id="siete" fill="#1E120D" d="M55.5,13.6L65.4,25c3,3.4,8.2,3.8,11.7,0.8c3.4-3,3.8-8.2,0.8-11.6L67.9,2.8C64.9-0.6,59.7-1,56.2,2C52.8,5,52.5,10.2,55.5,13.6z" /> </g>
-            <ellipse class="llanta1" fill="#1E120D" cx="119.1" cy="116.9" rx="13.2" ry="13.1" />
-            <ellipse class="llanta2" fill="#1E120D" cx="165.1" cy="116.9" rx="13.2" ry="13.1" /> </svg>
-    </div>
-    <header class="headroom headroom--top">
-        <div class="logo">
-            <a href=""><img src="cliente/resources/mercadito.png" alt=""></a>
-        </div>
-        <div class="botones">
-            <a href="cliente/login">
-                <button type="button" name="button">Entrar</button>
-            </a>
-            <a href="cliente/registro">
-                <button type="button" name="button">Registrarte</button>
-            </a>
-        </div>
-        <div id="vuelta" onclick="scrollTo(document.body, 0 , 800)"> <img src="resources/flecha.png" alt=""> </div>
-    </header>
-    <main>
-        <section id="portada" class="portada rellax" data-rellax-speed="-5">
-            <div class="textoPortada rellax" data-rellax-speed="-1"> <span class="titulo">La forma más fácil y rápida de encontrar un lugar para tu negocio</span> <span class="subtitulo">Déjanos ayudarte a encontrar el lugar perfecto para que comiences con tu negocio.</span>
-                <a href="cliente/registro">
-                    <button type="button" name="button">Registrate</button>
-                </a>
-            </div>
-        </section>
-        <div class="imagen rellax" data-rellax-speed="0" id="barra"> </div>
-        <section id="contenido" class="rellax" data-rellax-speed="1">
-            <div class="descripcion">
-                <div class="textoDescripcion"> <span class="tituloDescripcion">Tianguis México la forma más rápida de rentar locales</span> <span class="subtituloDescripcion">En tianguis México encontraras una web fácil de usar y que se adapta a todos tus dispositivos, que te permitirá rentar locales en el lugar que quieras y en el tianguis que más te guste.</span> </div>
-                <div class="imagenDescripcion" data-aos="fade-up"> <img src="resources/mockupPagina.png" alt=""> </div>
-            </div>
-            <div class="pasos"> <span class="titulo">Renta un espacio para tu negocio en segundos</span> <span class="subtitulo">Es rápido y fácil. Sin tediosos y tardados procesos.</span>
-                <div class="descripcionPasos">
-                    <div class="tarjeta" data-aos="fade-down" data-aos-once='true'>
-                        <div class="numero"> 1 </div>
-                        <div class="textoMayor"> Selecciona un estado. </div>
-                        <div class="textoMenor"> Elige el estado de tu preferencia para buscar tu tianguis favorito. </div>
-                        <div class="imagenTarjeta">
-                            <div class="contenedorImagen"> <img src="resources/imagenEstado.png" alt=""> </div>
-                        </div>
-                    </div>
-                    <div class="tarjeta" data-aos="fade-up" data-aos-once='true'>
-                        <div class="numero"> 2 </div>
-                        <div class="textoMayor"> Selecciona un tianguis. </div>
-                        <div class="textoMenor"> Elige el tianguis en el cual deseas rentar. </div>
-                        <div class="imagenTarjeta">
-                            <div class="contenedorImagen"> <img src="resources/imagenTianguis.png" class="especial" alt=""> </div>
-                        </div>
-                    </div>
-                    <div class="tarjeta" data-aos="fade-down" data-aos-once='true'>
-                        <div class="numero"> 3 </div>
-                        <div class="textoMayor"> Selecciona el tipo de local </div>
-                        <div class="textoMenor"> Selecciona el tipo de local, tamaño y precio que mejor cumpla tus necesidades. </div>
-                        <div class="imagenTarjeta">
-                            <div class="contenedorImagen"> <img src="resources/imagenLocal.png" alt=""> </div>
-                        </div>
-                    </div>
-                    <div class="tarjeta" data-aos="fade-down" data-aos-once='true'>
-                        <div class="numero"> 4 </div>
-                        <div class="textoMayor"> Paga. </div>
-                        <div class="textoMenor"> Obtén tu formato de pago y acude a tu tienda de conveniencia más cercana a realizar el pago. </div>
-                        <div class="imagenTarjeta">
-                            <div class="contenedorImagen"> <img src="resources/imagenPaga.png" class="especial2" alt=""> </div>
-                        </div>
-                    </div>
-                    <div class="tarjeta" data-aos="fade-down" data-aos-once='true'>
-                        <div class="numero"> 5 </div>
-                        <div class="textoMayor"> Comienza a vender. </div>
-                        <div class="textoMenor"> ¡Ya puedes comenzar a utilizar tu local! </div>
-                        <div class="imagenTarjeta">
-                            <div class="contenedorImagen"> <img src="resources/imagenListo.png" alt=""> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="seguridad">
-                <div class="seguridadTexto"> <span class="seguridadTitulo">Obtén tu lugar sin preocuparte por la seguridad de tu dinero</span> <span class="seguridadSubtitulo">Estamos respaldados por el sistema de pagos seguros OpenPay, por lo cual las transacciones que realices estarán siempre protegidas, así tu solo te preocupas por hacer crecer tu negocio.</span> </div>
-                <div class="seguridadImagen" data-aos="flip-up" data-aos-once='true'> <img src="resources/logoOpen.png" alt=""> </div>
-            </div>
-            <div class="lugares">
-                <div class="lugaresTexto"> <span class="tituloLugares">No te preocupes por encontrar un lugar donde pagar</span> <span class="subtituloLugares">Puedes realizar tus pagos en las cadenas de tiendas de conveniencia más conocidas. Para más información sobre tiendas afiliadas da clic <a href="https://www.openpay.mx/tiendas-de-conveniencia.html" target="_blank">aquí</a>.</span> </div>
-                <div class="lugaresImagen"> <img src="resources/logosPagos.png" alt=""> </div>
-            </div>
-            <div id="pie">
-                <div class="info">
-                    <div class="contacto">
-                        <a href="tel:+5218992338935">
-                            <button type="button" name="button">Llama</button>
-                        </a> Para obtener más información, consulte nuestras <br><a href="terminosycondiciones.pdf" target="_blank">Condiciones de uso</a> y la <a href="avisodeprivacidad.pdf" target="_blank">Política de privacidad.</a> </div>
-                    <div class="mapa">
-                        <ul>
-                            <li><a href="cliente/login">Login</a></li>
-                            <li><a href="cliente/registro">Registro</a></li>
-                            <li><a href="cliente/panel">Panel</a></li>
-                            <li><a href="cliente/rentar">Nuevo local</a></li>
-                            <li><a href="cliente/rentaActiva">Vencimientos</a></li>
-                            <li><a href="cliente/ordenes">Ordenes de pago</a></li>
-                        </ul>
-                    </div>
-                    <div class="redes">
-                        <a href="#"><img src="resources/face.png" alt=""></a>
-                        <a href="#"><img src="resources/twitter.png" alt=""></a>
-                        <a href="#"><img src="resources/what.png" alt=""></a> <span>Nuestras redes sociales</span> </div>
-                </div>
-                <div class="terminos"> Copyright © 2018 tianguismexico.com </div>
-            </div>
-        </section>
-    </main>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<!-- /////////////////// ===================				JS						=================== /////////////////// -->
 
-      ga('create', 'UA-102248014-1', 'auto');
-      ga('send', 'pageview');
+		<script src="plugins/jquery-1.11.2.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+	<!-- dataTables  -->
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/b-1.5.1/datatables.min.js"></script>
+	<!-- sweetalert -->
+		<script type="text/javascript" src="plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+	<!-- validate -->
+		<script src="plugins/jquery.validate.min.js"></script>
+		<script src="plugins/register.js"></script>
+	<!-- Date-time Peaker -->
+		<script type="text/javascript" src="plugins/moment/moment.js"></script>
+		<script type="text/javascript" src="plugins/transition.js"></script>
+		<script type="text/javascript" src="plugins/collapse.js"></script>
+		<script type="text/javascript" src="plugins/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+	<!-- Include Date Range Picker -->
+		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+	<!-- html2canvas -->
+		<script type="text/javascript" src="plugins/html2canvas.min.js"></script>
+	<!-- jsPDF -->
+		<script type="text/javascript" src="plugins/jsPDF-1.3.2/dist/jspdf.min.js"></script>
+	<!-- notify -->
+		<script type="text/javascript" src="plugins/notify.js"></script>
+	<!-- PDFJs -->
+		<script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+	<!-- responsivevoice -->
+		<script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+	<!-- fullcalendar -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.0/fullcalendar.min.js"></script>
+		<script src='plugins/fullCalendarLang.js'></script>
+	<!-- Loader -->
+		<script src="plugins/css3-preloader-transition-start/js/vendor/modernizr-2.6.2.min.js"></script>
+		<script src="plugins/css3-preloader-transition-start/js/main.js"></script>
+	<!-- openpay -->
+		<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+		<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+	<!-- daterangepicker -->
+		<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+		
+	<!-- System -->
+		<script src="js_system/requests.js"></script>
+		<script src="js_system/help_desk.js"></script>
+		<script src="js_system/users.js"></script>
+		<script src="js_system/dependencies.js"></script>
+		<script src="js_system/notifications.js"></script>
 
-    </script>
-</body>
-<script src="js/headroom/headroom.js" charset="utf-8"></script>
-<script src="js/rellax/relax.min.js" charset="utf-8"></script>
-<script src="bower_components/aos/dist/aos.js"></script>
-<script src="js/inicio.js" charset="utf-8"></script>
+<!-- /////////////////// ===================			END JS						=================== /////////////////// -->
 
+	</body>
+	<div class="footer">
+		<a href="terminos.html" style="color: grey !important;">Términos y condiciones</a> /
+		<a href="aviso.html" style="color: grey !important;">Aviso de privacidad</a>
+	</div>
 </html>
+
+<script>
+	$("#menu-toggle").click(function(e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("toggled");
+	});
+	
+	requests.new_request({
+		div: 'contenedor',
+		view: 'list_user_requests',
+		from_user: 1
+	});
+	
+	notifications.list_notifications({
+		user_id: <?php echo $_SESSION['user']['id'] ?>,
+		div: 'div_notifications'
+	});
+	
+	notifications.count_notifications({
+		user_id: <?php echo $_SESSION['user']['id'] ?>,
+		div: 'num_notifications'
+	});
+	
+	$(document).ready(function () {
+        $('#loader-wrapper').hide();
+    });
+    $(document).ajaxStart(function() {
+		$('#loader-wrapper').show();
+		
+		setTimeout(function(){
+			$('#loader-wrapper').hide();
+		}, 5000);
+	});
+    $(document).ajaxStop(function() {
+		$('#loader-wrapper').hide();
+	});
+    $(document).ajaxError(function() {
+		$('#loader-wrapper').hide();
+	});
+</script>
