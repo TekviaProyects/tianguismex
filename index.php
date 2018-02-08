@@ -3,6 +3,10 @@
 	
 	if (empty($_SESSION['user'])) {
 		// echo "<script>location.href='index.php'</script>";
+		
+		// $_SESSION['user']['id'] = 1;
+		// $_SESSION['user']['nombre'] = 'Localhost';
+		// $_SESSION['user']['mail'] = 'Localhost@localhost.com';
 	}
 
 ?>
@@ -18,8 +22,8 @@
 		<meta name="author" content="">
 	<!-- fullcalendar -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.0/fullcalendar.min.css" />
+	<!-- bootstrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-
 	<!-- font-awesome -->
 		<link rel="stylesheet" href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
 	<!-- dataTables  -->
@@ -33,8 +37,20 @@
 	<!-- Loader -->
 		<link rel="stylesheet" href="plugins/css3-preloader-transition-start/css/normalize.css">
 		<link rel="stylesheet" href="plugins/css3-preloader-transition-start/css/main.css">
-
+	<!-- select2 -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="plugins/select2-bootstrap4.css">
+		
 		<style>
+			.card:hover{
+				cursor: pointer;
+				box-shadow: 2px 2px #808076;
+			}
+			.select2-selection__rendered{
+				border: 1.2px solid;
+				border-color: #0069D9;
+				border-radius: 3px;
+			}
 			.vuela{
 				position: sticky;
 			    right: 0px;
@@ -61,7 +77,7 @@
 				margin-left: -250px;
 				/*overflow-y: scroll;*/
 				overflow-x: hidden;
-				background: #000;
+				background: #333333;
 				-webkit-transition: all 0.5s ease;
 				-moz-transition: all 0.5s ease;
 				-o-transition: all 0.5s ease;
@@ -161,152 +177,40 @@
 					onclick="location.reload()"
 					align="center"
 					style="background-color: #ffbc49; cursor: pointer">
-					<img src="images/logo.png" style="max-width: 150px" />
+					<img src="images/logo.png" style="max-width: 250px" />
 				</div>
 				<ul class="sidebar-nav">
 					<li>
 						<a
-							href="#contenedor"
-							onclick="requests.new_request({
-								div: 'contenedor',
-								from_user: 1
-							})">
-							<i class="fa fa-plus" aria-hidden="true"></i> Nueva solicitud
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block"
-							onclick="requests.list_requests({
-								div: 'contenedor',
-								view: 'list_user_requests',
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								from_user: 1
-							})">
-							<i class="fa fa-address-card" aria-hidden="true"></i>
-							<span>Estado de solicitudes</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block"
-							onclick="requests.list_requests({
-								div: 'contenedor',
-								status: 1,
-								view: 'list_active_permits',
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								from_user: 1
-							})">
-							<i class="fa fa-check" aria-hidden="true"></i>
-							<span>Permisos activos</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block"
-							onclick="help_desk.view_dating({
-								div: 'contenedor',
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								user_id: '<?php echo $_SESSION['user']['id'] ?>',
-								from_user: 1
-							})">
-							<i class="fa fa-calendar-o"></i>
-							<span>Citas en dependencia</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block"
-							onclick="help_desk.view_user_main({
-								div: 'contenedor',
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								from_user: 1
-							})">
-							<i class="fa fa-info-circle"></i>
-							<span>Atención a quejas</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block"
-							onclick="requests.list_requests({
-								div: 'contenedor',
-								status: 1,
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								view: 'list_transfer_rights',
-								from_user: 1
-							})">
-							<i class="fa fa-archive" aria-hidden="true"></i> <span>Cesión de derechos</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block"
-							href="#contenedor"
-							onclick="users.view_gafette({
-								div: 'contenedor',
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								from_user: 1
-							})">
-							<i class="fa fa-address-card" aria-hidden="true"></i>
-							<span>Gafete electronico</span>
-						</a>
-					</li>
-					<li>
-						<a 
-							onclick="requests.list_requests({
-								div: 'contenedor',
-								status: 1,
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								view: 'view_permits',
-								from_user: 1
+							id="menu_new_rent"
+							onclick="local.view_new({
+								div: 'contenedor'
 							})"
-							href="#contenedor"
-						 	class="btn-orange btn-block" >
-							<i class="fa fa-lock" aria-hidden="true"></i>
-							<span>Permiso por ausencia y Suplencias</span>
-						</a>
-					</li>
-					<li>
-						<a
-							onclick="dependencies.view_documets({
-								div: 'contenedor',
-								from_user: 1
-							})"
-							class="btn-orange btn-block"
 							href="#contenedor">
-							<i class="fa fa-book"></i>
-							<span>Manuales</span>
+							<i class="fa fa-plus" aria-hidden="true"></i> Rentar nuevo
 						</a>
 					</li>
 					<li>
 						<a
-							onclick="users.view_insurance_policy({
-								div: 'contenedor',
-								mail: '<?php echo $_SESSION['user']['correo'] ?>',
-								from_user: 1
-							})"
 							href="#contenedor"
-						 	class="btn-orange btn-block" >
-							<i class="fa fa-shield" aria-hidden="true"></i>
-							<span>Póliza de seguro</span>
+						 	class="btn-orange btn-block">
+							<i class="fa fa-address-card" aria-hidden="true"></i>
+							<span>Vencimientos</span>
 						</a>
 					</li>
-					<!-- <li>
+					<li>
 						<a
 							href="#contenedor"
-						 	class="btn-orange btn-block" >
-							<i class="fa fa-cutlery" aria-hidden="true"></i>
-							<span>Constancia de manejo de alimentos</span>
+						 	class="btn-orange btn-block">
+							<i class="fa fa-check" aria-hidden="true"></i>
+							<span>Ordenes de pago</span>
 						</a>
-					</li> -->
-				</ul>
+					</li>
+				</ul><br />
+				<div>
+					<a href="terminos.html" style="color: grey !important;">Términos y condiciones</a> <br />
+					<a href="aviso.html" style="color: grey !important;">Aviso de privacidad</a>
+				</div>
 			</div>
 			<!-- /#sidebar-wrapper -->
 			<!-- Contenedor -->
@@ -316,90 +220,55 @@
 						<i class="fa fa-bars"></i>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-						<form class="form-inline my-2 my-lg-0" onsubmit="event.preventDefault()">
-							<input
-								class="form-control mr-sm-2"
-								type="search"
-								placeholder="Buscar.."
-								onchange="requests.search({
-									search: $(this).val(),
-									mail: '<?php echo $_SESSION['user']['correo'] ?>'
-								})"
-								id="search_expedients"
-								name="keyword">
-							<button
-								onclick="requests.search({
-									search: $('#search_expedients').val(),
-									mail: '<?php echo $_SESSION['user']['correo'] ?>'
-								})"
-								class="btn btn-outline-success my-2 my-sm-0"
-								type="button"
-								style="margin-right: 10px">
-								Buscar
-							</button>
-						</form>
 						<ul class="navbar-nav mr-auto mt- mt-lg-0">
 
 						</ul>
-						<div style="margin-right: 3%;">
-							<button 
-								class="btn btn-info"
-								data-toggle="collapse" 
-								href="#div_notifications" 
-								role="button" 
-								aria-expanded="false" 
-								aria-controls="div_notifications"
-								onclick="notifications.actualizar({
-									user_id: '<?php echo $_SESSION['user']['id'] ?>',
-									div: 'num_notifications'
-								})">
-								<i class="fa fa-bell"></i>
-								<span class="badge badge-light" id="num_notifications">
-								</span>
-								<span class="sr-only">Toggle Dropdown</span>
-							</button>
-						</div>
 						<ul class="navbar-nav">
-							<li class="nav-item">
-								<button
-									class="btn btn-default"
-									 data-toggle="collapse"
-									 href="#collapseExample"
-									 role="button"
-									 aria-expanded="false"
-									 aria-controls="collapseExample">
-									 <img
-									 	style="max-width: 30px"
-									 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png"
-										onerror="this.src='images/photos/loggeduser.png';"
-										class="profile-image img-circle">
-									 <?php echo $_SESSION['user']['nombre'] ?></h4>
-								</button>
-								</a>
-								<div class="collapse" id="collapseExample">
-									<a
-										class="dropdown-item"
-										onclick="users.view_profile({
-											div: 'contenedor',
-											mail: '<?php echo $_SESSION['user']['correo'] ?>',
-											from_user: 1
-										})"
-										href="#contenedor">
-										<i class="fa fa-user"></i> Editar Perfil
-									</a>
-									<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Configuración</a>
-									<a
-										class="dropdown-item"
-										onclick="help_desk.view_user_main({
-											div: 'contenedor',
-											mail: '<?php echo $_SESSION['user']['correo'] ?>',
-											from_user: 1
-										})"
-										href="#contenedor">
-										<i class="fa fa-info"></i> Ayuda
-									</a>
-									<a class="dropdown-item" href="index.php"><i class="fa fa-sign-out"></i> Salir</a>
-								</div>
+							<li class="nav-item"><?php
+								if (empty($_SESSION['user'])) { ?>
+									<button class="btn btn-info" style="margin-top: -20px">
+										Iniciar sesión
+									</button><?php
+								} else { ?>
+									<button
+										class="btn btn-default"
+										 data-toggle="collapse"
+										 href="#collapseExample"
+										 role="button"
+										 aria-expanded="false"
+										 aria-controls="collapseExample">
+										 <img
+										 	style="max-width: 30px"
+										 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png"
+											onerror="this.src='images/photos/loggeduser.png';"
+											class="profile-image img-circle">
+										 <?php echo $_SESSION['user']['nombre'] ?></h4>
+									</button>
+									<div class="collapse" id="collapseExample">
+										<a
+											class="dropdown-item"
+											onclick="users.view_profile({
+												div: 'contenedor',
+												mail: '<?php echo $_SESSION['user']['correo'] ?>',
+												from_user: 1
+											})"
+											href="#contenedor">
+											<i class="fa fa-user"></i> Editar Perfil
+										</a>
+										<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Configuración</a>
+										<a
+											class="dropdown-item"
+											onclick="help_desk.view_user_main({
+												div: 'contenedor',
+												mail: '<?php echo $_SESSION['user']['correo'] ?>',
+												from_user: 1
+											})"
+											href="#contenedor">
+											<i class="fa fa-info"></i> Ayuda
+										</a>
+										<a class="dropdown-item" href="index.php"><i class="fa fa-sign-out"></i> Salir</a>
+									</div><?php
+								} ?>
 							</li>
 						</ul>
 					</div>
@@ -527,24 +396,23 @@
 		<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
 	<!-- daterangepicker -->
 		<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+	<!-- select2 -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 		
 	<!-- System -->
-		<script src="js_system/requests.js"></script>
-		<script src="js_system/help_desk.js"></script>
-		<script src="js_system/users.js"></script>
-		<script src="js_system/dependencies.js"></script>
-		<script src="js_system/notifications.js"></script>
-
+		<script src="js/local.js"></script>
+		<script src="js/markets.js"></script>
+		
 <!-- /////////////////// ===================			END JS						=================== /////////////////// -->
 
 	</body>
-	<div class="footer">
-		<a href="terminos.html" style="color: grey !important;">Términos y condiciones</a> /
-		<a href="aviso.html" style="color: grey !important;">Aviso de privacidad</a>
-	</div>
 </html>
 
 <script>
+	local.view_new({
+		div: 'contenedor'
+	});
+							
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
 		$("#wrapper").toggleClass("toggled");
