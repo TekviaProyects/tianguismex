@@ -1,14 +1,6 @@
 <?php
 	session_start();
-	
-	if (empty($_SESSION['user'])) {
-		// echo "<script>location.href='index.php'</script>";
-		
-		// $_SESSION['user']['id'] = 1;
-		// $_SESSION['user']['nombre'] = 'Localhost';
-		// $_SESSION['user']['mail'] = 'Localhost@localhost.com';
-	}
-
+	session_destroy();
 ?>
 
 <!DOCTYPE HTML>
@@ -226,7 +218,10 @@
 						<ul class="navbar-nav">
 							<li class="nav-item"><?php
 								if (empty($_SESSION['user'])) { ?>
-									<button class="btn btn-info" style="margin-top: -20px">
+									<button 
+										id="btn_iniciar_sesion"
+										onclick="window.location.replace('cliente/login/')"
+										class="btn btn-info" style="margin-top: -20px">
 										Iniciar sesión
 									</button><?php
 								} else { ?>
@@ -360,11 +355,14 @@
 
 		<script src="plugins/jquery-1.11.2.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<!-- bootstrap -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 	<!-- dataTables  -->
 		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/b-1.5.1/datatables.min.js"></script>
 	<!-- sweetalert -->
-		<script type="text/javascript" src="plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+		<!-- <script type="text/javascript" src="plugins/sweetalert-master/dist/sweetalert.min.js"></script> -->
+		<script type="text/javascript" src="https://unpkg.com/sweetalert2@7.11.0/dist/sweetalert2.all.js"></script>
+		
 	<!-- validate -->
 		<script src="plugins/jquery.validate.min.js"></script>
 		<script src="plugins/register.js"></script>
@@ -373,6 +371,7 @@
 		<script type="text/javascript" src="plugins/transition.js"></script>
 		<script type="text/javascript" src="plugins/collapse.js"></script>
 		<script type="text/javascript" src="plugins/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/es.js"></script>
 	<!-- Include Date Range Picker -->
 		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 	<!-- html2canvas -->

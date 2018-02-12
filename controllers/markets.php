@@ -59,6 +59,26 @@ class markets extends Common {
 	
 ///////////////// ******** ----						END list_cats						------ ************ //////////////////
 
+///////////////// ******** ----						list_local							------ ************ //////////////////
+//////// Load the local view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		// cat -> Categori ID
+	
+	function list_local($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		$local = $this -> marketsModel -> list_local($objet);
+		$local = $local['rows'];
+		
+		require ('views/markets/list_local.php');
+	}
+	
+///////////////// ******** ----						END list_local						------ ************ //////////////////
+
 }
 
 ?>

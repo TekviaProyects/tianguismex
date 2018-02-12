@@ -1,5 +1,5 @@
 /*jslint plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */ 
-/*global define, $, jQuery, swal */
+/*global define, $, jQuery, swal, local */
 /*jslint browser: true*/
 var markets = {
 
@@ -19,6 +19,8 @@ var markets = {
 			dataType : 'html'
 		}).done(function(resp) {
 			console.log('==========> done view_new', resp);
+			
+			local.selects = {};
 			
 			$("#"+$objet.div).html(resp);
 		}).fail(function(resp) {
@@ -98,8 +100,59 @@ var markets = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END list_cats						------ ************ //////////////////
+
+///////////////// ******** ----						list_local							------ ************ //////////////////
+//////// Load the local view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		// cat -> Categori ID
+		
+	list_local : function($objet){
+		"use strict";
+		console.log('==========> $objet list_local', $objet);
+		
+		if($objet.validate_date){
+			if($objet.date === ""){
+				swal({
+					title : 'Fecha no valida',
+					text : 'Necesitas seleccionar una fecha valida',
+					timer : 5000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				$('#month').focus();
+				
+				return;
+			}
+		}
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=list_local',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done list_local', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! list_local', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END list_local						------ ************ //////////////////
 
 };

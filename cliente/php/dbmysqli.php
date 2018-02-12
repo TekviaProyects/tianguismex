@@ -27,6 +27,13 @@ class dbmysqli{
   private $db = "c0630048_mds";
 
   public function __construct(){
+  	if ($_SERVER['SERVER_NAME'] == 'localhost') {
+		$this->host = 'localhost';
+		$this->usuario = 'root';
+		$this->clave = '';
+		$this->db = 'c0630048_mds_p';
+	}
+	
     $this->conn = new mysqli($this->host,$this->usuario,$this->clave,$this->db) or die("MySQL Connection Error");
   }
 

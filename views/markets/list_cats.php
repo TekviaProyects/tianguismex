@@ -15,13 +15,32 @@
 	}
 ?>
 
+<div class="row" style="padding-bottom: 20px">
+	<div class="col-sm-12">
+		Selecciona la fecha en la que deseas rentar.
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12 col-md-3">
+		<input class="form-control" id="month" type="text" />
+	</div>
+</div>
+<div class="row" style="padding-top: 20px">
+	<div class="col-sm-12">
+		Despues selecciona el tipo de local.
+	</div>
+</div>
 <div class="row"><?php
 	foreach ($cats as $key => $value) { ?>
 		<div class="col-xs-12 col-md-4" style="padding-top: 20px">
 			<div 
-				onclick="markets.list_cats({
-					tianguis_id: <?php echo $value['id_tianguis'] ?>,
-					div: 'contenedor'
+				onclick="markets.list_local({
+					tianguis_id: <?php echo $value['tianguis_id'] ?>,
+					cat: <?php echo $value['id'] ?>,
+					div: 'contenedor',
+					validate_date: 1,
+					date: $('#month').val(),
+					cost: <?php echo $value['cost'] ?>
 				})"
 				class="card text-white text-center bg-secondary">
 				<div class="card-header">
@@ -37,3 +56,13 @@
 		</div><?php
 	} ?>
 </div>
+<script>
+	$("#month").datetimepicker({
+		minDate: new Date(),
+       	viewMode: "months",
+        format: 'MM-YYYY',
+        locale: 'es'
+    });
+    
+    $('#month').focus();
+</script>
