@@ -32,6 +32,11 @@ class dbmysqli{
 		$this->usuario = 'root';
 		$this->clave = '';
 		$this->db = 'c0630048_mds_p';
+	}else{
+		$this->host = 'localhost';
+		$this->usuario = 'c0630048';
+		$this->clave = 'mi69nuFAnu';
+		$this->db = 'c0630048_new';
 	}
 	
     $this->conn = new mysqli($this->host,$this->usuario,$this->clave,$this->db) or die("MySQL Connection Error");
