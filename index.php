@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	session_destroy();
 ?>
 
 <!DOCTYPE HTML>
@@ -177,7 +176,7 @@
 							id="menu_new_rent"
 							onclick="local.view_new({
 								div: 'contenedor'
-							})"
+							});"
 							href="#contenedor">
 							<i class="fa fa-plus" aria-hidden="true"></i> Rentar nuevo
 						</a>
@@ -244,7 +243,7 @@
 											class="dropdown-item"
 											onclick="users.view_profile({
 												div: 'contenedor',
-												mail: '<?php echo $_SESSION['user']['correo'] ?>',
+												mail: '<?php echo $_SESSION['user']['mail'] ?>',
 												from_user: 1
 											})"
 											href="#contenedor">
@@ -255,13 +254,13 @@
 											class="dropdown-item"
 											onclick="help_desk.view_user_main({
 												div: 'contenedor',
-												mail: '<?php echo $_SESSION['user']['correo'] ?>',
+												mail: '<?php echo $_SESSION['user']['mail'] ?>',
 												from_user: 1
 											})"
 											href="#contenedor">
 											<i class="fa fa-info"></i> Ayuda
 										</a>
-										<a class="dropdown-item" href="index.php"><i class="fa fa-sign-out"></i> Salir</a>
+										<a class="dropdown-item" href="cliente/login/"><i class="fa fa-sign-out"></i> Salir</a>
 									</div><?php
 								} ?>
 							</li>
@@ -290,7 +289,7 @@
 										onclick="requests.list_requests({
 											div: 'contenedor',
 											status: 1,
-											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											mail: '<?php echo $_SESSION['user']['mail'] ?>',
 											view: 'list_user_requests',
 											from_user: 1
 										})"
@@ -309,7 +308,7 @@
 										onclick="requests.list_requests({
 											div: 'contenedor',
 											status: 2,
-											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											mail: '<?php echo $_SESSION['user']['mail'] ?>',
 											view: 'list_user_requests',
 											from_user: 1
 										})"
@@ -327,7 +326,7 @@
 										class="card text-white bg-primary mb-3"
 										onclick="requests.list_requests({
 											div: 'contenedor',
-											mail: '<?php echo $_SESSION['user']['correo'] ?>',
+											mail: '<?php echo $_SESSION['user']['mail'] ?>',
 											view: 'list_user_requests',
 											from_user: 1
 										})"
@@ -400,6 +399,7 @@
 		
 	<!-- System -->
 		<script src="js/local.js"></script>
+		<script src="js/users.js"></script>
 		<script src="js/markets.js"></script>
 		
 <!-- /////////////////// ===================			END JS						=================== /////////////////// -->
@@ -411,7 +411,7 @@
 	local.view_new({
 		div: 'contenedor'
 	});
-							
+			
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
 		$("#wrapper").toggleClass("toggled");

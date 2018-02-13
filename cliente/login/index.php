@@ -1,7 +1,8 @@
 <?php
 session_start();
+$_SESSION['user'] = '';
 if(!empty($_SESSION['ide'])){
-  header('Location: ../panel');
+  // header('Location: ../panel');
 }
 ?>
 <!DOCTYPE html>

@@ -13,9 +13,6 @@
 		
 		return;
 	}
-	
-	
-	echo "<pre>", print_r($local[0]), "</pre>";
 ?>
 <style>
 	.available:hover {
@@ -71,7 +68,7 @@
 								<?php echo $value['description'] ?>
 							</button>
 						</td><?php
-					} else {?>
+					} else { ?>
 						<td 
 							style="min-width: 20px" 
 							colspan="<?php echo $value['col'] ?>"
@@ -88,7 +85,7 @@
 	<div class="col-sm-12 col-md-2"><?php
 		if (empty($_SESSION['user'])) { ?>
 			<button
-				onclick="$('#btn_iniciar_sesion').click()"
+				onclick="window.location.replace('cliente/login/')"
 			 	class="btn btn-info btn-block">
 				Iniciar sesión
 			</button><?php
