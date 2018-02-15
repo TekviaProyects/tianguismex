@@ -20,18 +20,32 @@
 	}
 </style>
 <div class="row">
+	<div class="col-sm-12 col-md-4">
+		<button class="btn btn-info">Disponible</button>
+		<button class="btn btn-secondary" disabled="disabled">Ocupado</button>
+	</div>
+</div>
+<div class="row">
 	<div class="col-sm-12" style="overflow-x: scroll; width: 100%; padding: 15px;">
 		<table><?php
 			$row = 0;
 			$init = 1;
 			
 			foreach ($local as $key => $value) {
+				$disabled = '';
+				$class = '';
+					
 				if ($value['cat_id'] != $objet['cat']) {
 					$disabled = ' disabled';
 					$class = 'default';
 				} else {
-					$disabled = '';
-					$class = 'info available';
+					if($value['status'] == 2){
+						$disabled = ' disabled';
+						$class = 'secondary';
+					}else{
+						$disabled = '';
+						$class = 'info available';
+					}
 				}
 				
 				if ($init == 1) {
@@ -49,11 +63,14 @@
 				
 				if (!empty($value['col'])) {
 					if (!empty($value['show'])) {
-						$value['cost'] = $objet['cost']; 
+						$value['cost'] = $objet['cost'];
+						$value['des_cat'] = $objet['des_cat'];
+						$value['date'] = $objet['date'].'-01';
 						$local = json_encode($value);
 						$local = str_replace('"', "'", $local); ?>
 						
 						<td 
+							id="tr_<?php echo $value['id'] ?>"
 							class="<?php echo $class ?>"
 							style="border: 1px solid; border-color: white" 
 							align="center"

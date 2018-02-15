@@ -197,6 +197,17 @@
 							<span>Ordenes de pago</span>
 						</a>
 					</li>
+					<li>
+						<a
+							onclick="local.list_rents({
+								
+							})"
+							href="#contenedor"
+						 	class="btn-orange btn-block">
+							<i class="fa fa-calendar" aria-hidden="true"></i>
+							<span>Histórico de pagos</span>
+						</a>
+					</li>
 				</ul><br />
 				<div>
 					<a href="terminos.html" style="color: grey !important;">Términos y condiciones</a> <br />

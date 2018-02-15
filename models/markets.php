@@ -74,7 +74,8 @@ class marketsModel extends Connection {
 		
 		
 	// Order
-		$condition .= (!empty($objet['order'])) ? ' ORDER BY = '.$objet['order'] : ' ORDER BY tianguis_id ASC, y ASC, x ASC' ;
+		$condition .= (!empty($objet['order'])) ? 
+			' ORDER BY = '.$objet['order'] : ' ORDER BY l.tianguis_id ASC, l.y ASC, l.x ASC' ;
 		
 		$sql = "SELECT
 					l.*

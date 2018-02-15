@@ -83,14 +83,23 @@ var local = {
 		}
 		
 		var text = '',
-			total = 0;
+			total = 0,
+			data = {};
 		
 		$.each(local.selects, function(index, value) {
 			text += '<br> Local '+value.description+' por $'+value.cost;
 			total += parseFloat(value.cost);
+			data.date = value.date;
+			data.tianguis_id = value.tianguis_id;
+			data.cat_id = value.cat_id;
 		});
 		
 		text += '<br><br> Total $'+total;
+		
+		data.total = total;
+		data.local = local.selects;
+		
+		console.log('==========> data', data);
 		
 		swal({
 			title: 'Resumen',
@@ -102,14 +111,30 @@ var local = {
 		}).then((result) => {
 			if (result.value) {
 				$.ajax({
-					data : local.selects,
+					data : data,
 					url : 'ajax.php?c=local&f=rent_local',
 					type : 'post',
 					dataType : 'json'
 				}).done(function(resp) {
 					console.log('==========> done rent_local', resp);
 					
+					local.selects = {};
 					
+					swal({
+						title : 'Locales apartados',
+						text : 'Tus locales han sido apartados exitosamente, tienes 3 dias para pagarlos',
+						timer : 5000,
+						showConfirmButton : true,
+						type : 'success'
+					});
+					
+					
+					$.each(data.local, function(index, value) {
+						$("#btn_"+value.id).removeClass("btn-success available").addClass("btn-secondary"); 
+						$("#btn_"+value.id).attr("disabled", "disabled");
+						
+						$("#tr_"+value.id).removeClass("info available").addClass("secondary"); 
+					});
 				}).fail(function(resp) {
 					console.log('==========> fail !!! rent_local', resp);
 					

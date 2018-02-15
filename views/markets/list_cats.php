@@ -40,7 +40,8 @@
 					div: 'contenedor',
 					validate_date: 1,
 					date: $('#month').val(),
-					cost: <?php echo $value['cost'] ?>
+					cost: <?php echo $value['cost'] ?>,
+					des_cat: '<?php echo $value['title'].' - '.$value['description'] ?>'
 				})"
 				class="card text-white text-center bg-secondary">
 				<div class="card-header">
@@ -60,7 +61,7 @@
 	$("#month").datetimepicker({
 		minDate: new Date(),
        	viewMode: "months",
-        format: 'MM-YYYY',
+        format: 'YYYY-MM',
         locale: 'es'
     });
     

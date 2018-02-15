@@ -587,6 +587,12 @@ $(window).ready(function(){
             confirmButtonText: 'Rentar!',
             preConfirm: function(){
               return new Promise(function(resolve, reject){
+              	
+              	
+              	console.log("================> map", map);
+              	
+              	
+              	
                 $.ajax({
                   url : '../../php/guardarRentaNuevo.php',
                   type : 'GET',
@@ -622,7 +628,7 @@ $(window).ready(function(){
                 }
               }).modal('show');
             });
-          })
+          });
         }
 
       }

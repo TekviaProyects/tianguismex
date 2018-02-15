@@ -20,8 +20,6 @@ var markets = {
 		}).done(function(resp) {
 			console.log('==========> done view_new', resp);
 			
-			local.selects = {};
-			
 			$("#"+$objet.div).html(resp);
 		}).fail(function(resp) {
 			console.log('==========> fail !!! view_new', resp);
@@ -138,6 +136,8 @@ var markets = {
 			dataType : 'html'
 		}).done(function(resp) {
 			console.log('==========> done list_local', resp);
+			
+			local.selects = {};
 			
 			$("#"+$objet.div).html(resp);
 		}).fail(function(resp) {
