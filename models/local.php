@@ -7,23 +7,20 @@ class localModel extends Connection {
 ///////////////// ******** ----						list_local							------ ************ //////////////////
 //////// Check the local in the DB and return into array
 	// The parameters that can receive are:
-		// name -> Customer name
-		// id -> Customer ID
 	
 	function list_local($objet) {
-	// Filter by the ID if exists
-		$condition .= (!empty($objet['id'])) ? ' AND c.id = '.$objet['id'] : '' ;
-	// Filter by the name if exists
-		$condition .= (!empty($objet['name'])) ? ' AND c.full_name LIKE \'%'.$objet['name'].'%\'' : '' ;
+	// Filter by the tianguis ID
+		$condition .= (!empty($objet['tianguis_id'])) ? ' AND l.tianguis_id = '.$objet['tianguis_id'] : '' ;
+		
+		
+	// Order
+		$condition .= (!empty($objet['order'])) ? 
+			' ORDER BY = '.$objet['order'] : ' ORDER BY l.tianguis_id ASC, l.y ASC, l.x ASC' ;
 		
 		$sql = "SELECT
-					c.*, s.lu, s.ma, s.mi, s.ju, s.vi, s.sa, s.do, s.schedule_ini, s.schedule_end
+					l.*
 				FROM
-					local c 
-				LEFT JOIN
-						schedules s
-					ON
-						s.customer_id = c.id
+					local l
 				WHERE
 					1 = 1".
 				$condition;
@@ -34,7 +31,7 @@ class localModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END list_local						------ ************ //////////////////
-
+	
 ///////////////// ******** ----						save_order							------ ************ //////////////////
 //////// Save the historical data on the DB
 	// The parameters that can receive are:
@@ -120,7 +117,29 @@ class localModel extends Connection {
 	
 ///////////////// ******** ----						END update							------ ************ //////////////////
 
-
+///////////////// ******** ----						list_orders							------ ************ //////////////////
+//////// Check the orders in the DB and return into array
+	// The parameters that can receive are:
+	
+	function list_orders($objet) {
+	// Filter by the tianguis ID
+		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '' ;
+		
+		$sql = "SELECT
+					o.*
+				FROM
+					orders o
+				WHERE
+					1 = 1".
+				$condition;
+		// return $sql;
+		$result = $this -> query_array($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END list_orders						------ ************ //////////////////
+	
 }
 
 ?>

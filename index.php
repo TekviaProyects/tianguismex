@@ -199,8 +199,9 @@
 					</li>
 					<li>
 						<a
-							onclick="local.list_rents({
-								
+							onclick="local.list_orders({
+								client_id: <?php echo $_SESSION['user']['id'] ?>,
+								div: 'contenedor'
 							})"
 							href="#contenedor"
 						 	class="btn-orange btn-block">

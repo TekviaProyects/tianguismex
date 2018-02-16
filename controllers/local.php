@@ -11,10 +11,9 @@ class local extends Common {
 		$this -> localModel = new localModel();
 	}
 
-///////////////// ******** ----						list_local						------ ************ //////////////////
-////////Check the local and loaded the view
+///////////////// ******** ----						view_new						------ ************ //////////////////
+//////// Load new view
 	// The parameters that can receive are:
-		// name -> Customer name
 	
 	function view_new($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
@@ -24,7 +23,7 @@ class local extends Common {
 		require ('views/local/view_new.php');
 	}
 	
-///////////////// ******** ----						END list_local					------ ************ //////////////////
+///////////////// ******** ----						END view_new					------ ************ //////////////////
 
 ///////////////// ******** ----						rent_local						------ ************ //////////////////
 //////// Rent local
@@ -101,7 +100,25 @@ class local extends Common {
 		}
 	}
 	
-///////////////// ******** ----						END rent_local					------ ************ //////////////////
+///////////////// ******** ----						END rent_local						------ ************ //////////////////
+
+///////////////// ******** ----						list_orders							------ ************ //////////////////
+//////// Check the orders and load a view
+	// The parameters that can receive are:
+		// client_id -> Client ID 
+	
+	function list_orders($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		$orders = $this -> localModel -> list_orders($objet);
+		$orders = $orders['rows'];
+		
+		require ('views/local/list_orders.php');
+	}
+	
+///////////////// ******** ----						END list_orders						------ ************ //////////////////
 
 }
 

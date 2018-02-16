@@ -128,7 +128,6 @@ var local = {
 						type : 'success'
 					});
 					
-					
 					$.each(data.local, function(index, value) {
 						$("#btn_"+value.id).removeClass("btn-success available").addClass("btn-secondary"); 
 						$("#btn_"+value.id).attr("disabled", "disabled");
@@ -148,8 +147,42 @@ var local = {
 				});
 			}
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END rent_local							------ ************ //////////////////
+
+///////////////// ******** ----						list_orders							------ ************ //////////////////
+//////// Check the orders and load a view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// client_id -> Client ID 
+		
+	list_orders : function($objet){
+		"use strict";
+		console.log('==========> $objet list_orders', $objet);
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=list_orders',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done list_orders', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! list_orders', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END list_orders						------ ************ //////////////////
 
 };
