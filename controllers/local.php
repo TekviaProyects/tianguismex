@@ -7,6 +7,8 @@ require ("models/local.php");
 
 class local extends Common {
 	public $localModel;
+	private $production = 0;
+	
 	function __construct() {
 		$this -> localModel = new localModel();
 	}
@@ -37,47 +39,100 @@ class local extends Common {
 		session_start();
 		date_default_timezone_set('America/Mexico_City');
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$objet['o_id'] = $_SESSION['user']['o_id'];
 		$id_orden_error = 0;
 		$id_orden = 0;
 		$time = -3600;
 		$fecha1 = date('Y-m-d');
 		$caducidad = strtotime('+3 day', strtotime($fecha1));
 		$caducidad = date('Y-m-d', $caducidad);
+		$due_date = $caducidad;
 		$caducidad = $caducidad." 23:59:59";
 		$fechaInicial = $objet['date'];
 		$des = "";
 		$resp['status'] = 1;
 		
 		try {
-		// Init
-			$cliente = array(
-				'name' => $_SESSION['user']['nombre'], 
-				'phone_number' => $_SESSION['user']['tel'], 
-				'email' => $_SESSION['user']['mail']
-			);
+		// Import openpay library
+			require('plugins/openpay/Openpay.php');
+			include('controllers/openpay.php' );
 			
+		// Call the function to generate a charge
+			$open_pay = new openpayObject();
+			
+			$customer = $open_pay -> get_customer($objet);
+			
+			if($customer['status'] == 2 && $customer['error_code'] !== 0){
+				$resp['status'] = 2;
+				$resp['message'] = "Ocurrio un error al rentar tus locales [Openpay no disponible], intenta mas tarde";
+				$resp['message_openpay'] = $customer['message'];
+				
+				echo json_encode($resp);
+				
+				return;
+			}
+			
+			if($customer['error_code'] === 0){
+				$objet['name'] = $_SESSION['user']['nombre'];
+				$objet['email'] = $_SESSION['user']['mail'];
+				$objet['external_id'] = $_SESSION['user']['id'];
+				
+				$customer = $open_pay -> add_customer($objet);
+				$o_id = $customer->id;
+				
+				if(!empty($o_id)){
+					$data['id'] = $_SESSION['user']['id'];
+					$data['columns'] = " o_id = '".$o_id."'";
+					$resp['result'] = $this -> localModel -> update_client($data);
+					
+					$_SESSION['user']['o_id'] = $o_id;
+				}
+			}else{
+				$customer = $customer['result'];
+				$o_id = $customer->id;
+			}
+			
+			$des = 'Costo por renta de local: ';
 			foreach ($objet['local'] as $key => $value) {
 				$des .= $value['description']." - ".$value['des_cat'].", ";
 			}
 			$des = substr($des, 0, -2);
 			
-		// Build array
+		// Charge
+			$data = array(
+			    'method' => 'store',
+			    'amount' => $objet['total'],
+			    'description' => $des,
+			    'due_date' => $due_date
+			);
+			$cargo = $customer->charges->create($data);
+			
+		// Create a link to test or production
+			$link = ($this->production == 0) ? 'sandbox-dashboard.openpay.mx' : 'dashboard.openpay.mx';
+			$link = "https://".$link."/paynet-pdf/mngsvcdrvfxhfkedj98m/".$cargo->payment_method->reference;
+			
+		// Google short link
+			require_once('plugins/google-api-php-client-2.2.0/vendor/autoload.php');
+			require_once('controllers/Googl.class.php');
+			$original = $link;
+			$googl = new Googl('AIzaSyCsZOvqzL9c7_O7Fj7t3FDt77nejjwbZXw');
+			$resp['url'] = $data['url'] = $googl->shorten($link);
+			unset($googl);
+			
+		// Save order
 			$data['client_id'] = $_SESSION['user']['id'];
-			$data['order_id'] = 123;
 			$data['cost'] = $objet['total'];
 			$data['creation_date'] = date('Y-m-d H:i:s');
 			$data['select_date'] = $fechaInicial;
 			$data['due_date'] = $caducidad;
-			$data['openpay_id'] = 'xxxxxxxx';
-			$data['url'] = 'http//fb.com';
+			$data['openpay_id'] = $cargo -> id;
 			$data['description'] = $des;
-			$data['reference'] = '1-1--11';
-			$data['authorization'] = '2--2----2';
-		// Save order
+			$data['reference'] = $cargo->payment_method->reference;
+			$data['authorization'] = '';
 			$data['order_id'] = $this -> localModel -> save_order($data);
 			
 			$data_update['columns'] = ' status = 2';
-				
+			
 			foreach ($objet['local'] as $key => $value) {
 				$data['local_id'] = $value['id'];
 				$data['quantity'] = $value['cost'];
@@ -94,9 +149,10 @@ class local extends Common {
 			// $id_orden_error = $id_orden;
 			// $eliminar = $conexionDb -> eliminar('cliente_locales', "id_orden = $id_orden_error");
 			$resp['status'] = 2;
-			$resp['message'] = "Hubo un error con el servicio de transacciones o no se encuentra disponible, intente mas tarde";
+			$resp['e'] = $e;
+			$resp['message'] = "Ocurrio un error al rentar tus locales";
 			
-			echo json_encode($resp);
+			echo "<pre>", print_r($resp),  "</pre>";
 		}
 	}
 	

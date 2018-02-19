@@ -118,15 +118,27 @@ var local = {
 				}).done(function(resp) {
 					console.log('==========> done rent_local', resp);
 					
+					
+					if(resp.status !== 1){
+						swal({
+							title : 'Error',
+							text : resp.message,
+							timer : 7000,
+							showConfirmButton : true,
+							type : 'warning'
+						});
+						
+						return;
+					}
+					
+					
+					
 					local.selects = {};
 					
-					swal({
-						title : 'Locales apartados',
-						text : 'Tus locales han sido apartados exitosamente, tienes 3 dias para pagarlos',
-						timer : 5000,
-						showConfirmButton : true,
-						type : 'success'
-					});
+					var link = document.createElement('a');
+					link.href = resp.url;
+					link.download = 'ficha.pdf';
+					link.dispatchEvent(new MouseEvent('click'));
 					
 					$.each(data.local, function(index, value) {
 						$("#btn_"+value.id).removeClass("btn-success available").addClass("btn-secondary"); 
@@ -134,6 +146,16 @@ var local = {
 						
 						$("#tr_"+value.id).removeClass("info available").addClass("secondary"); 
 					});
+					
+					setTimeout(function(){
+						swal({
+							title : 'Ficha de pago creada',
+							text : 'Tu ficha de pago ha sido creada con exito',
+							timer : 7000,
+							showConfirmButton : true,
+							type : 'success'
+						});
+					}, 500);
 				}).fail(function(resp) {
 					console.log('==========> fail !!! rent_local', resp);
 					

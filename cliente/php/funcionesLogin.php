@@ -13,6 +13,7 @@ try {
 				$estado = $fila['estado_cliente'];
 				$ide = $fila['id_cliente'];
 				$nombre = $fila['nombre_cliente'];
+				$o_id = $fila['o_id'];
 			}
 			if ($estado == 0) {
 				echo "estado";
@@ -24,6 +25,7 @@ try {
 				$_SESSION['user']['mail'] = $correo;
 				$_SESSION['user']['tel'] = $telefono;
 				$_SESSION['user']['nombre'] = $nombre;
+				$_SESSION['user']['o_id'] = $o_id;
 				
 				echo 'true';
 			}

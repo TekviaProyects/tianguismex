@@ -95,7 +95,6 @@ class localModel extends Connection {
 	
 ///////////////// ******** ----						END save_historical					------ ************ //////////////////
 
-
 ///////////////// ******** ----							update							------ ************ //////////////////
 //////// Update the local information on the DB
 	// The parameters that can receive are:
@@ -124,6 +123,8 @@ class localModel extends Connection {
 	function list_orders($objet) {
 	// Filter by the tianguis ID
 		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '' ;
+	// Filter by status
+		$condition .= (!empty($objet['status'])) ? ' AND o.status = '.$objet['status'] : '' ;
 		
 		$sql = "SELECT
 					o.*
@@ -139,7 +140,28 @@ class localModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END list_orders						------ ************ //////////////////
+
+///////////////// ******** ----						update_client						------ ************ //////////////////
+//////// Update the local information on the DB
+	// The parameters that can receive are:
+		// columns -> String with the columns afected
+		// id -> Local ID
 	
+	function update_client($objet) {
+		$sql = "UPDATE 
+					clientes
+				SET ".
+					$objet['columns']." 
+				WHERE
+					id_cliente = ".$objet['id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END update_client					------ ************ //////////////////
+
 }
 
 ?>
