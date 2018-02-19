@@ -48,13 +48,16 @@ class localModel extends Connection {
 		// reference -> Openpay reference
 	
 	function save_order($objet) {
+		$status = (!empty($objet['status'])) ? $objet['status'] : 0;
+		
 		$sql = "INSERT INTO
 					orders(client_id, cost,  creation_date, select_date, end_date, due_date, openpay_id, url, description, 
-							reference)
+							reference, status)
 				VALUES
 					(".$objet['client_id'].", '".$objet['cost']."', '".$objet['creation_date']."', 
 					'".$objet['select_date']."', '".$objet['end_date']."', '".$objet['due_date']."', 
-					'".$objet['openpay_id']."', '".$objet['url']."', '".$objet['description']."', '".$objet['reference']."')";
+					'".$objet['openpay_id']."', '".$objet['url']."', '".$objet['description']."', '".$objet['reference']."',
+					".$status.")";
 		// return $sql;
 		$result = $this -> insert_id($sql);
 		
@@ -79,14 +82,16 @@ class localModel extends Connection {
 		// description -> Description
 	
 	function save_historical($objet) {
+		$status = (!empty($objet['status'])) ? $objet['status'] : 0;
+		
 		$sql = "INSERT INTO
 					historical(client_id, order_id, local_id, quantity, creation_date, select_date, end_date, due_date, 
-								authorization, reference, description)
+								authorization, reference, description, status)
 				VALUES
 					(".$objet['client_id'].", '".$objet['order_id']."', ".$objet['local_id'].", ".$objet['quantity'].", 
 					'".$objet['creation_date']."', '".$objet['select_date']."', '".$objet['end_date']."', 
 					'".$objet['due_date']."', '".$objet['authorization']."', '".$objet['reference']."', 
-					'".$objet['description']."')";
+					'".$objet['description']."', ".$status.")";
 		// return $sql;
 		$result = $this -> query($sql);
 		

@@ -40,15 +40,15 @@ class local extends Common {
 		date_default_timezone_set('America/Mexico_City');
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$objet['o_id'] = $_SESSION['user']['o_id'];
-		$id_orden_error = 0;
-		$id_orden = 0;
-		$time = -3600;
 		$fecha1 = date('Y-m-d');
 		$caducidad = strtotime('+3 day', strtotime($fecha1));
 		$caducidad = date('Y-m-d', $caducidad);
 		$due_date = $caducidad;
 		$caducidad = $caducidad." 23:59:59";
 		$fechaInicial = $objet['date'];
+		$end_date = new DateTime($objet['date']);
+		$end_date->modify('last day of this month');
+		$end_date = $end_date->format('Y-m-d');
 		$des = "";
 		$resp['status'] = 1;
 		
@@ -78,6 +78,17 @@ class local extends Common {
 				$objet['external_id'] = $_SESSION['user']['id'];
 				
 				$customer = $open_pay -> add_customer($objet);
+				
+				if ($customer['status'] == 2) {
+					$resp['status'] = 2;
+					$resp['message'] = "Ocurrio un error al rentar tus locales [Openpay no disponible], intenta mas tarde";
+					$resp['message_openpay'] = $customer['message'];
+					
+					echo json_encode($resp);
+					
+					return;
+				}
+				
 				$o_id = $customer->id;
 				
 				if(!empty($o_id)){
@@ -128,6 +139,7 @@ class local extends Common {
 			$data['openpay_id'] = $cargo -> id;
 			$data['description'] = $des;
 			$data['reference'] = $cargo->payment_method->reference;
+			$data['end_date'] = $end_date;
 			$data['authorization'] = '';
 			$data['order_id'] = $this -> localModel -> save_order($data);
 			
@@ -157,6 +169,89 @@ class local extends Common {
 	}
 	
 ///////////////// ******** ----						END rent_local						------ ************ //////////////////
+
+///////////////// ******** ----						new_card_pay						------ ************ //////////////////
+//////// Generate a new pay
+	// The parameters that can receive are:
+		
+	function new_card_pay($objet) {
+	// If the object is empty (called from the ajax) it assigns $ $_REQUEST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$fecha1 = date('Y-m-d');
+		$fechaInicial = $objet['date'];
+		$end_date = new DateTime($objet['date']);
+		$end_date->modify('last day of this month');
+		$end_date = $end_date->format('Y-m-d');
+		$des = "";
+		$resp['status'] = 1;
+		
+	// Import openpay library
+		require('plugins/openpay/Openpay.php');
+		include('controllers/openpay.php' );
+		
+	// Call the function to generate a charge
+		$open_pay = new openpayObject();
+		
+		$customer = array(
+		     'name' => $_SESSION['user']['nombre'],
+		     'email' => $_SESSION['user']['mail']
+		);
+		
+		$des = 'Costo por renta de local: ';
+		foreach ($objet['local'] as $key => $value) {
+			$des .= $value['description']." - ".$value['des_cat'].", ";
+		}
+		$des = substr($des, 0, -2);
+			
+		$chargeData = array(
+		    'method' => 'card',
+		    'source_id' => $objet["token_id"],
+		    'amount' => $objet['total'],
+		    'description' => $des,
+		    'device_session_id' => $objet["deviceIdHiddenFieldName"],
+		    'customer' => $customer
+		);
+		
+		$cargo = $open_pay -> create_card_charge($chargeData);
+		$status = $cargo['result'] -> status;
+		
+		if($status == "completed"){
+		// Save order
+			$data['status'] = 1;
+			$data['description'] = $des;
+			$data['end_date'] = $end_date;
+			$data['cost'] = $objet['total'];
+			$data['select_date'] = $fechaInicial;
+			$data['client_id'] = $_SESSION['user']['id'];
+			$data['openpay_id'] = $cargo['result'] -> id;
+			$data['creation_date'] = $cargo['result'] -> creation_date;
+			$data['authorization'] = $cargo['result'] -> authorization;
+			$data['order_id'] = $this -> localModel -> save_order($data);
+			
+			$data_update['columns'] = ' status = 1';
+			
+			foreach ($objet['local'] as $key => $value) {
+				$data['local_id'] = $value['id'];
+				$data['quantity'] = $value['cost'];
+				$data['description'] = $value['des_cat'];
+				
+				$resp['result'][$value['id']]['save'] = $this -> localModel -> save_historical($data);
+				
+				$data_update['id'] = $value['id'];
+				$resp['result'][$value['id']]['update'] = $this -> localModel -> update($data_update);
+			}
+		}else{
+			$resp['status'] = 2;
+			$resp['test'] = $cargo;
+			$resp['message'] = "No se pudo realizar el cargo con la tarjeta, intenta con una diferente";
+		}
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END new_card_pay					------ ************ //////////////////
 
 ///////////////// ******** ----						list_orders							------ ************ //////////////////
 //////// Check the orders and load a view

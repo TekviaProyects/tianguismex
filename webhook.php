@@ -175,15 +175,15 @@ switch ($tipo) {
 								local l
 							INNER JOIN 
 									(SELECT 
-											h.local_id
-										FROM
-											historical h
-										LEFT JOIN
-												orders o
-											ON
-												o.id = h.order_id
-										WHERE
-											o.openpay_id = '".$id_orden_open."') t2
+										h.local_id
+									FROM
+										historical h
+									LEFT JOIN
+											orders o
+										ON
+											o.id = h.order_id
+									WHERE
+										o.openpay_id = '".$id_orden_open."') t2
 							   ON 
 									l.id  = t2.local_id 
 							SET
