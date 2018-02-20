@@ -283,8 +283,127 @@ var local = {
 				type : 'error'
 			});
 		});
-	}
+	},
 
 ///////////////// ******** ----					END new_card_pay						------ ************ //////////////////
+
+///////////////// ******** ----					download_pay							------ ************ //////////////////
+//////// Check the orders and load a view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// client_id -> Client ID 
+		
+	download_pay : function($objet){
+		"use strict";
+		console.log('==========> $objet download_pay', $objet);
+		
+		var type = ($objet.json === 1) ? 'json' : 'html';
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=list_orders',
+			type : 'post',
+			dataType : type
+		}).done(function(resp) {
+			console.log('==========> done download_pay', resp);
+			
+			var link = document.createElement('a');
+			link.href = resp[0].url;
+			link.download = 'ficha.pdf';
+			link.dispatchEvent(new MouseEvent('click'));
+			
+			swal({
+				title : 'Ficha de pago creada',
+				text : 'Tu ficha de pago ha sido creada con exito',
+				timer : 7000,
+				showConfirmButton : true,
+				type : 'success'
+			});
+		}).fail(function(resp) {
+			console.log('==========> fail !!! download_pay', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al descargar la ficha',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+	
+///////////////// ******** ----						END list_orders						------ ************ //////////////////
+
+///////////////// ******** ----						view_details						------ ************ //////////////////
+//////// Load a details view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// id -> Order ID
+		
+	view_details : function($objet){
+		"use strict";
+		console.log('==========> $objet view_details', $objet);
+		
+		$("#"+$objet.div).html('');
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=view_details',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_details', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_details', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+	
+///////////////// ******** ----						END view_details					------ ************ //////////////////
+
+///////////////// ******** ----						view_voucher						------ ************ //////////////////
+//////// Load a voucher view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// id -> Order ID
+		
+	view_voucher : function($objet){
+		"use strict";
+		console.log('==========> $objet view_voucher', $objet);
+		
+		$("#"+$objet.div).html('');
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=view_voucher',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_voucher', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_voucher', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END view_voucher					------ ************ //////////////////
 
 };

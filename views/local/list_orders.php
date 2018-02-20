@@ -52,21 +52,9 @@
 											data-toggle="modal"
 											data-target="#modal_details"
 											class="btn btn-primary btn-block"
-											onclick="orders.load_info_buttons({
-												id: '<?php echo $value['id'] ?>',
-												formato: '<?php echo $value['comprobante'] ?>',
-												identificacion: '<?php echo $value['identificacion'] ?>',
-												c_salubridad: '<?php echo $value['sanidad'] ?>',
-												croquis: '<?php echo $value['fotografia1'] ?>',
-												f1: '<?php echo $value['fotografia1'] ?>',
-												f2: '<?php echo $value['fotografia2'] ?>',
-												f3: '<?php echo $value['fotografia3'] ?>',
-												f4: '<?php echo $value['fotografia4'] ?>',
-												c_delegado: '<?php echo $value['cartadelegado'] ?>',
-												c_aceptacion: '<?php echo $value['cartaaceptacion'] ?>',
-												lat: '<?php echo $value['lat'] ?>',
-												lng: '<?php echo $value['lng'] ?>',
-												coment: '<?php echo $value['comentario'] ?>'
+											onclick="local.view_details({
+												id: <?php echo $value['id'] ?>,
+												div: 'div_modal_details'
 											})">
 											<i class="fa fa-list fa-lg"></i>
 										</button>
@@ -78,12 +66,9 @@
 													data-toggle="modal"
 													data-target="#modal_authorize"
 													class="btn btn-success btn-block"
-													onclick="orders.authorize({
+													onclick="local.view_voucher({
 														id: <?php echo $value['id'] ?>,
-														user_id: <?php echo $value['user_id'] ?>,
-														estadomx: '<?php echo $value['estadomx'] ?>',
-														municipiomx: '<?php echo $value['municipiomx'] ?>',
-														status: 1
+														div: 'div_modal_authorize'
 													})">
 													Ver comprobante
 												</button><?php
@@ -100,7 +85,8 @@
 													id="btn_<?php echo $value['id'] ?>"
 													class="btn btn-info btn-block"
 													onclick="local.download_pay({
-														order_id: <?php echo $value['id'] ?>
+														id: <?php echo $value['id'] ?>,
+														json: 1
 													})">
 													Descargar ficha
 												</button><?php
@@ -129,8 +115,9 @@
 									data-toggle="modal"
 									data-target="#modal_details"
 									class="btn btn-primary btn-block"
-									onclick="orders.load_info_buttons({
-										
+									onclick="local.view_details({
+										id: <?php echo $value['id'] ?>,
+										div: 'div_modal_details'
 									})">
 									<i class="fa fa-list fa-lg"></i>
 								</button><?php
@@ -141,12 +128,9 @@
 											data-toggle="modal"
 											data-target="#modal_authorize"
 											class="btn btn-success btn-block"
-											onclick="orders.authorize({
+											onclick="local.view_voucher({
 												id: <?php echo $value['id'] ?>,
-												user_id: <?php echo $value['user_id'] ?>,
-												estadomx: '<?php echo $value['estadomx'] ?>',
-												municipiomx: '<?php echo $value['municipiomx'] ?>',
-												status: 1
+												div: 'div_modal_authorize'
 											})">
 											Ver comprobante
 										</button><?php
@@ -163,7 +147,8 @@
 											id="btn_<?php echo $value['id'] ?>"
 											class="btn btn-info btn-block"
 											onclick="local.download_pay({
-												order_id: <?php echo $value['id'] ?>
+												id: <?php echo $value['id'] ?>,
+												json: 1
 											})">
 											Descargar ficha
 										</button><?php
@@ -180,15 +165,8 @@
 <div class="modal fade" id="modal_details" tabindex="-1" role="dialog" aria-labelledby="modal_detailsLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h2 class="modal-title">Detalles</h2>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
 			<div class="modal-body" id="div_modal_details">
-				Especifica la razon por al cual se autoriza o se denega la solicitud:<br />
-				<textarea class="form-control" rows="3" id="coment"></textarea>
+				
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -201,36 +179,12 @@
 <div class="modal fade" id="modal_authorize" tabindex="-1" role="dialog" aria-labelledby="modal_authorizeLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="modal_authorizeLabel">Escribe un comentario</h4>
-			</div>
 			<div class="modal-body" id="div_modal_authorize">
-				Especifica la razon por al cual se autoriza o se denega la solicitud:<br />
-				<textarea class="form-control" rows="3" id="coment"></textarea>
+				
 			</div>
 			<div class="modal-footer">
-				<button
-					id="btn_authorize"
-					status=""
-					request_id=""
-					user_id=""
-					estadomx=""
-					municipiomx=""
-					type="button"
-					class="btn btn-info"
-					onclick="orders.update_authorize({
-						status: $(this).attr('status'),
-						request_id: $(this).attr('request_id'),
-						user_id: $(this).attr('user_id'),
-						estadomx: $(this).attr('estadomx'),
-						coment: $('#coment').val(),
-						state: '<?php echo $_SESSION['dependencie']['estadodep'] ?>',
-						municipality: '<?php echo $_SESSION['dependencie']['municipiodep'] ?>'
-					})">
-					<i class="fa fa-check"></i> Guardar
+				<button type="button" class="btn btn-info" onclick="printDiv('div_print')">
+					Imprimir
 				</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">
 					Cerrar

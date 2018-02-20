@@ -266,10 +266,50 @@ class local extends Common {
 		$orders = $this -> localModel -> list_orders($objet);
 		$orders = $orders['rows'];
 		
-		require ('views/local/list_orders.php');
+		if ($objet['json'] == 1) {
+			echo json_encode($orders);
+		} else {
+			require ('views/local/list_orders.php');	
+		}
 	}
 	
 ///////////////// ******** ----						END list_orders						------ ************ //////////////////
+
+///////////////// ******** ----						view_details						------ ************ //////////////////
+//////// Load a details view
+	// The parameters that can receive are:
+		// id -> Order ID
+	
+	function view_details($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		$data = $this -> localModel -> list_orders($objet);
+		$data = $data['rows'][0];
+		
+		require ('views/local/view_details.php');
+	}
+	
+///////////////// ******** ----						END view_details					------ ************ //////////////////
+
+///////////////// ******** ----						view_voucher						------ ************ //////////////////
+//////// Load a voucher view
+	// The parameters that can receive are:
+		// id -> Order ID
+	
+	function view_voucher($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		$data = $this -> localModel -> list_orders($objet);
+		$data = $data['rows'][0];
+		
+		require ('views/local/view_voucher.php');
+	}
+	
+///////////////// ******** ----						END view_voucher					------ ************ //////////////////
 
 }
 

@@ -126,10 +126,12 @@ class localModel extends Connection {
 	// The parameters that can receive are:
 	
 	function list_orders($objet) {
-	// Filter by the tianguis ID
+	// Filter by the client ID
 		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '' ;
 	// Filter by status
 		$condition .= (!empty($objet['status'])) ? ' AND o.status = '.$objet['status'] : '' ;
+	// Filter by ID
+		$condition .= (!empty($objet['id'])) ? ' AND o.id = '.$objet['id'] : '' ;
 		
 		$sql = "SELECT
 					o.*
