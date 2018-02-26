@@ -5,12 +5,12 @@ ini_set('display_errors', '1');
 //Esta preparado apra que se añadan mas opciones de ser necesarias
 $timezone = "America/Mexico_City";
 date_default_timezone_set($timezone);
-// include ('../php/conection/conection.php');
+// include ('php/conection/conection.php');
 mysqli_report(MYSQLI_REPORT_STRICT);
 $conexion = mysqli_connect("localhost","c0630048_new","mi69nuFAnu","c0630048_new");
 
-require ("../plugins/phpmailerlibs/class.phpmailer.php");
-require ("../plugins/phpmailerlibs/class.smtp.php");
+require ("plugins/phpmailerlibs/class.phpmailer.php");
+require ("plugins/phpmailerlibs/class.smtp.php");
 
 $obj = file_get_contents('php://input');
 var_dump($obj);
@@ -28,15 +28,15 @@ switch ($tipo) {
 		  	$html = '';
 			
 		  	try {
-				$update = "	UPDATE
+				$update_order = "	UPDATE
 			  					orders
 			  				SET
 			  					status = 1
 			  				WHERE
 			  					openpay_id = '".$id_orden_open."'";
-				$resultado = mysqli_query($conexion, $update);
+				$resultado = mysqli_query($conexion, $update_order);
 				
-				$update = "	UPDATE
+				$update_his = "	UPDATE
 								historical
 							SET
 								status = 1
@@ -47,9 +47,33 @@ switch ($tipo) {
 											orders
 										WHERE
 											openpay_id = '".$id_orden_open."')";
-				$resultado = mysqli_query($conexion, $update);
+				$resultado = mysqli_query($conexion, $update_his);
 			} catch (mysqli_sql_exception $e) {
 				$resultado = $e;
+				$correo = "fertekvia@gmail.com";
+				$mail = new PHPMailer();
+				$mail -> IsSMTP();
+				$mail -> SMTPAuth = true;
+				$mail -> SMTPSecure = "ssl";
+				$mail -> Host = "smtp.gmail.com";
+				$mail -> Port = 465;
+				$mail -> Username = "tekviaprogramacion@gmail.com";
+				$mail -> Password = "tekvia123";
+				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
+				$mail -> Subject = "Error en script";
+				$mail -> AltBody = "Esta es la fecha";
+				$algo = json_encode($json);
+				$mail -> MsgHTML($e);
+				$mail -> AddReplyTo("$correo");
+				$mail -> AddAddress("$correo");
+				$mail -> IsHTML(true);
+				
+				if (!$mail -> send()) {
+					echo 'Message could not be sent.';
+					echo 'Mailer Error: ' . $mail -> ErrorInfo;
+				} else {
+					echo 'Message has been sent';
+				}
 			}
 			
 		  	try {
@@ -66,7 +90,7 @@ switch ($tipo) {
 				$user_mail = mysqli_query($conexion, $q_user_mail);
 				
 				while ($fila = mysqli_fetch_assoc($user_mail)) {
-					$correo = $fila['mail'];
+					$correo = $fila['correo_cliente'];
 				}
 				
 				if (empty($correo)) {
@@ -76,6 +100,30 @@ switch ($tipo) {
 				}
 			} catch (mysqli_sql_exception $e) {
 				$correo = $e;
+				$correo = "fertekvia@gmail.com";
+				$mail = new PHPMailer();
+				$mail -> IsSMTP();
+				$mail -> SMTPAuth = true;
+				$mail -> SMTPSecure = "ssl";
+				$mail -> Host = "smtp.gmail.com";
+				$mail -> Port = 465;
+				$mail -> Username = "tekviaprogramacion@gmail.com";
+				$mail -> Password = "tekvia123";
+				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
+				$mail -> Subject = "Error en correo";
+				$mail -> AltBody = "Esta es la fecha";
+				$algo = json_encode($json);
+				$mail -> MsgHTML($e);
+				$mail -> AddReplyTo("$correo");
+				$mail -> AddAddress("$correo");
+				$mail -> IsHTML(true);
+				
+				if (!$mail -> send()) {
+					echo 'Message could not be sent.';
+					echo 'Mailer Error: ' . $mail -> ErrorInfo;
+				} else {
+					echo 'Message has been sent';
+				}
 			}
 			
 			if (empty($html)) {
@@ -93,7 +141,7 @@ switch ($tipo) {
 			$mail -> Port = 465;
 			$mail -> Username = "tekviaprogramacion@gmail.com";
 			$mail -> Password = "tekvia123";
-			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Municiapp');
+			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 			
 		// Mail message
 			$mail -> Subject = "Confirmacion de pago";
@@ -121,7 +169,7 @@ switch ($tipo) {
 			$mail -> Port = 465;
 			$mail -> Username = "tekviaprogramacion@gmail.com";
 			$mail -> Password = "tekvia123";
-			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Municiapp');
+			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 			$mail -> Subject = "Funcion de cronJob";
 			$mail -> AltBody = "Esta es la fecha";
 			$algo = json_encode($json);
@@ -234,7 +282,7 @@ switch ($tipo) {
 			$mail -> Port = 465;
 			$mail -> Username = "tekviaprogramacion@gmail.com";
 			$mail -> Password = "tekvia123";
-			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Municiapp');
+			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 			
 		// Mail message
 			$mail -> Subject = "Confirmacion de pago";
@@ -262,7 +310,7 @@ switch ($tipo) {
 			$mail -> Port = 465;
 			$mail -> Username = "tekviaprogramacion@gmail.com";
 			$mail -> Password = "tekvia123";
-			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Municiapp');
+			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 			$mail -> Subject = "Funcion de cronJob";
 			$mail -> AltBody = "Esta es la fecha";
 			$algo = json_encode($json);
@@ -282,39 +330,40 @@ switch ($tipo) {
 	//No eliminar ya que sera necesario si desea migrar el proyecto a otro host para recibir la aprobacion de webhook
 	//Por parte de openpay
 	case 'verification' :
-		//Correo al que decia recibir el codigo de verificacion puede cambiar de ser necesario
+	//Correo al que decia recibir el codigo de verificacion puede cambiar de ser necesario
 		$correo = "fertekvia@gmail.com";
-		//Procedimiento de envio de correo por medio de phpmailer
+	//Procedimiento de envio de correo por medio de phpmailer
 		$mail = new PHPMailer();
 
-		//modificar en caso de utilizar un correo distinto a gmail
+	//modificar en caso de utilizar un correo distinto a gmail
 		$mail -> IsSMTP();
 		$mail -> SMTPAuth = true;
 		$mail -> SMTPSecure = "ssl";
 		$mail -> Host = "smtp.gmail.com";
 		$mail -> Port = 465;
 
-		//Datos de acceso al smtp
+	//Datos de acceso al smtp
 		$mail -> Username = "tekviaprogramacion@gmail.com";
 		$mail -> Password = "tekvia123";
 
-		//Correo e informacion del remitente
-		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Municiapp');
-		//Datos y contenido del correo
-		$mail -> Subject = "Funcion de cronJob";
+	//Correo e informacion del remitente
+		$mail -> setFrom('tekviaprogramacion@gmail.com', 'TianguisMex');
+	//Datos y contenido del correo
+		$mail -> Subject = "Codigo de verificacion";
 		$mail -> AltBody = "Esta es la fecha";
 		$mail -> MsgHTML("$json->verification_code");
 		$mail -> AddReplyTo("$correo");
 		$mail -> AddAddress("$correo");
 		$mail -> IsHTML(true);
 
-		//Envio de correo
+	//Envio de correo
 		if (!$mail -> send()) {
 			echo 'Message could not be sent.';
 			echo 'Mailer Error: ' . $mail -> ErrorInfo;
 		} else {
 			echo 'Message has been sent';
 		}
+		
 		break;
 	case 'charge.created' :
 		//Correo al que decia recibir el codigo de verificacion puede cambiar de ser necesario
@@ -334,7 +383,7 @@ switch ($tipo) {
 		$mail -> Password = "tekvia123";
 
 		//Correo e informacion del remitente
-		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tekvia');
+		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 		//Datos y contenido del correo
 		$mail -> Subject = "Cargo creado";
 		$mail -> AltBody = "Esta es la fecha";
@@ -371,11 +420,12 @@ switch ($tipo) {
 		$mail -> Password = "tekvia123";
 
 		//Correo e informacion del remitente
-		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tekvia');
+		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 		//Datos y contenido del correo
-		$mail -> Subject = "Quien sabe uqe oedi";
+		$mail -> Subject = "No se encontro";
 		$mail -> AltBody = "Esta es la fecha";
-		$mail -> MsgHTML('hola uqe haces');
+		$algo = json_encode($json);
+		$mail -> MsgHTML($algo.'------------'.$tipo);
 		$mail -> AddReplyTo("$correo");
 		$mail -> AddAddress("$correo");
 		$mail -> IsHTML(true);

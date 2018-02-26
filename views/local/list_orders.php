@@ -23,9 +23,33 @@
 			<div class="form-body" style="padding: 30px">
 				<div class="row" style="padding-bottom: 10px">
 					<div class="col-sm-12">
-						<button class="btn btn-info">Pendiente</button>
-						<button class="btn btn-success">Aprovada</button>
-						<button class="btn btn-danger" disabled>Cancelada</button>
+						<button 
+							onclick="local.list_orders({
+								client_id: <?php echo $_REQUEST['client_id'] ?>,
+								div: 'contenedor',
+								status: ' 0'
+							})"
+							class="btn btn-info">
+							Pendiente
+						</button>
+						<button 
+							onclick="local.list_orders({
+								client_id: <?php echo $_REQUEST['client_id'] ?>,
+								div: 'contenedor',
+								status: 1
+							})" 
+							class="btn btn-success">
+							Aprovada
+						</button>
+						<button 
+							onclick="local.list_orders({
+								client_id: <?php echo $_REQUEST['client_id'] ?>,
+								div: 'contenedor',
+								status: 2
+							})" 
+							class="btn btn-danger">
+							Cancelada
+						</button>
 					</div>
 				</div>
 				<div class="d-sm-none d-none d-md-block">
@@ -42,7 +66,7 @@
 						</thead>
 						<tbody><?php
 							foreach ($orders as $key => $value) { ?>
-								<tr>
+								<tr class="">
 									<td><?php echo $value['id'] ?></td>
 									<td>$<?php echo $value['cost'] ?></td>
 									<td><?php echo $value['creation_date'] ?></td>
