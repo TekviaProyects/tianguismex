@@ -133,6 +133,7 @@ class local extends Common {
 		// Save order
 			$data['client_id'] = $_SESSION['user']['id'];
 			$data['cost'] = $objet['total'];
+			$data['tianguis_id'] = $objet['tianguis_id'];
 			$data['creation_date'] = date('Y-m-d H:i:s');
 			$data['select_date'] = $fechaInicial;
 			$data['due_date'] = $caducidad;

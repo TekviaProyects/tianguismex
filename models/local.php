@@ -52,12 +52,12 @@ class localModel extends Connection {
 		
 		$sql = "INSERT INTO
 					orders(client_id, cost,  creation_date, select_date, end_date, due_date, openpay_id, url, description, 
-							reference, status)
+							reference, status, tianguis_id)
 				VALUES
 					(".$objet['client_id'].", '".$objet['cost']."', '".$objet['creation_date']."', 
 					'".$objet['select_date']."', '".$objet['end_date']."', '".$objet['due_date']."', 
 					'".$objet['openpay_id']."', '".$objet['url']."', '".$objet['description']."', '".$objet['reference']."',
-					".$status.")";
+					".$status.", '".$objet['tianguis_id']."')";
 		// return $sql;
 		$result = $this -> insert_id($sql);
 		
@@ -132,6 +132,8 @@ class localModel extends Connection {
 		$condition .= (!empty($objet['status'])) ? ' AND o.status = '.$objet['status'] : '' ;
 	// Filter by ID
 		$condition .= (!empty($objet['id'])) ? ' AND o.id = '.$objet['id'] : '' ;
+	// Filter by TIanguis ID
+		$condition .= (!empty($objet['tianguis_id'])) ? ' AND o.tianguis_id = '.$objet['tianguis_id'] : '' ;
 		
 		$sql = "SELECT
 					o.*

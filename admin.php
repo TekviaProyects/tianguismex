@@ -238,7 +238,7 @@
 					<li>
 						<a
 							onclick="local.list_orders({
-								client_id: <?php echo $_SESSION['user']['id'] ?>,
+								tianguis_id: <?php echo $_SESSION['user']['id'] ?>,
 								div: 'contenedor'
 							})"
 							href="#contenedor"
