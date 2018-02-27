@@ -270,7 +270,9 @@ class local extends Common {
 		if ($objet['json'] == 1) {
 			echo json_encode($orders);
 		} else {
-			require ('views/local/list_orders.php');	
+			$view = (!empty($objet['view'])) ? $objet['view'] : 'list_orders';
+			
+			require ('views/local/'.$view.'.php');	
 		}
 	}
 	

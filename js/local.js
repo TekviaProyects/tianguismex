@@ -150,6 +150,11 @@ var local = {
 						type : 'success'
 					});
 				}, 500);
+				
+				local.list_orders({
+					client_id: 481,
+					div: 'contenedor'
+				});
 			}).fail(function(resp) {
 				console.log('==========> fail !!! rent_local', resp);
 				

@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	$_SESSION['tianguis']['id'] = 1;
 ?>
 
 <!DOCTYPE HTML>
@@ -238,8 +239,9 @@
 					<li>
 						<a
 							onclick="local.list_orders({
-								tianguis_id: <?php echo $_SESSION['user']['id'] ?>,
-								div: 'contenedor'
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								div: 'contenedor',
+								view: 'list_orders_admin'
 							})"
 							href="#contenedor"
 						 	class="btn-orange btn-block">
