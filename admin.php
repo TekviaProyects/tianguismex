@@ -185,9 +185,12 @@
 					<li>
 						<a
 							id="menu_new_rent"
-							onclick="local.view_new({
-								div: 'contenedor'
-							});"
+							onclick="local.list_orders({
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								div: 'contenedor',
+								view: 'list_orders_admin',
+								card: 1
+							})"
 							href="#contenedor">
 							<i class="fa fa-credit-card" aria-hidden="true"></i> Pagos con tarjeta
 						</a>
@@ -195,9 +198,12 @@
 					<li>
 						<a
 							id="menu_new_rent"
-							onclick="local.view_new({
-								div: 'contenedor'
-							});"
+							onclick="local.list_orders({
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								div: 'contenedor',
+								view: 'list_orders_admin',
+								store: 1
+							})"
 							href="#contenedor">
 							<i class="fa fa-barcode" aria-hidden="true"></i> Pagos en tienda
 						</a>
@@ -205,9 +211,6 @@
 					<li>
 						<a
 							id="menu_new_rent"
-							onclick="local.view_new({
-								div: 'contenedor'
-							});"
 							href="#contenedor">
 							<i class="fa fa-list-alt" aria-hidden="true"></i> Comisiones
 						</a>
@@ -215,14 +218,10 @@
 					<li>
 						<a
 							href="#contenedor"
-						 	class="btn-orange btn-block">
-							<i class="fa fa-address-card" aria-hidden="true"></i>
-							<span>Logs</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
+							onclick="users.list_clients({
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								div: 'contenedor'
+							})"
 						 	class="btn-orange btn-block">
 							<i class="fa fa-check" aria-hidden="true"></i>
 							<span>Clientes</span>

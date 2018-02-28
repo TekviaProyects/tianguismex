@@ -62,7 +62,7 @@ class local extends Common {
 			
 			
 		
-		// $delete['o_id'] = 'ahrpdyaw8sp5qa5gnexo';
+		// $delete['o_id'] = 'adpwbr91qukcqzwarbre';
 		// $c = $open_pay -> get_customer($delete);
 		// echo "<pre>", print_r($c), "</pre>";
 		// $c['result'] -> delete();
@@ -154,6 +154,11 @@ class local extends Common {
 			$data['end_date'] = $end_date;
 			$data['authorization'] = '';
 			$data['order_id'] = $this -> localModel -> save_order($data);
+		
+		// Save client X tianguis if not exists
+			$data_client['client_id'] = $_SESSION['user']['id'];
+			$data_client['tianguis_id'] = $objet['tianguis_id'];
+			$data_client['client_id'] = $this -> localModel -> save_client_x_tianguis($data_client);
 			
 			$data_update['columns'] = ' status = 2';
 			
@@ -238,9 +243,16 @@ class local extends Common {
 			$data['select_date'] = $fechaInicial;
 			$data['client_id'] = $_SESSION['user']['id'];
 			$data['openpay_id'] = $cargo['result'] -> id;
+			$data['tianguis_id'] = $objet['tianguis_id'];
+			$data['reference'] = $cargo['result'] -> authorization;
 			$data['creation_date'] = $cargo['result'] -> creation_date;
 			$data['authorization'] = $cargo['result'] -> authorization;
 			$data['order_id'] = $this -> localModel -> save_order($data);
+			
+		// Save client X tianguis if not exists
+			$data_client['client_id'] = $_SESSION['user']['id'];
+			$data_client['tianguis_id'] = $objet['tianguis_id'];
+			$data_client['client_id'] = $this -> localModel -> save_client_x_tianguis($data_client);
 			
 			$data_update['columns'] = ' status = 1';
 			

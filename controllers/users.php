@@ -30,7 +30,7 @@ class users extends Common {
 	function save($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$resp['status'] = 1;
 		
 	// Save user
@@ -44,10 +44,10 @@ class users extends Common {
 		}
 		
 		session_start();
-		$_SESSION['user'] = $_POST;
+		$_SESSION['user'] = $_REQUEST;
 		$_SESSION['user']['id'] = $resp['result'];
-		$_SESSION['user']['nombre'] = $_POST['name'];
-		$_SESSION['user']['correo'] = $_POST['mail'];
+		$_SESSION['user']['nombre'] = $_REQUEST['name'];
+		$_SESSION['user']['correo'] = $_REQUEST['mail'];
 		
 		echo json_encode($resp);
 	}
@@ -82,7 +82,7 @@ class users extends Common {
 	function update($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$resp['status'] = 1;
 		
 	// Save customer
@@ -101,7 +101,7 @@ class users extends Common {
 	function add($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		
 		if($objet['edit'] == 1){
 			$customer = $this -> usersModel -> list_users($objet);
@@ -122,7 +122,7 @@ class users extends Common {
 	function list_users($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		
 		$users = $this -> usersModel -> list_users($objet);
 		$users = $users['rows'];
@@ -140,7 +140,7 @@ class users extends Common {
 	function signin($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$resp['status'] = 1;
 		
 	// Check info
@@ -171,7 +171,7 @@ class users extends Common {
 	function send_recovery($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$resp['status'] = 1;
 		
 	// Check info
@@ -201,9 +201,9 @@ class users extends Common {
 		// mail -> Correo del cliente
 
 	function eviar_correo($objet) {
-	// Si el objeto viene vacio(llamado desde el index) se le asigna el $_POST que manda el Index
+	// Si el objeto viene vacio(llamado desde el index) se le asigna el $_REQUEST que manda el Index
 	// Si no conserva su valor normal
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		
 	// Valida si viene del local host
 		$url = ($objet['localhost'] == 1) ? 'http://localhost/casapp/' : 'http://c0260330.ferozo.com/' ;
@@ -367,16 +367,16 @@ class users extends Common {
 	function edit($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
-		$objet = (empty($objet)) ? $_POST : $objet;
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$resp['status'] = 1;
 		
 	// Save user
 		$resp['result'] = $this -> usersModel -> edit($objet);
 		
 		session_start();
-		$_SESSION['user'] = $_POST;
-		$_SESSION['user']['nombre'] = $_POST['nombre_cliente'];
-		$_SESSION['user']['mail'] = $_POST['correo_cliente'];
+		$_SESSION['user'] = $_REQUEST;
+		$_SESSION['user']['nombre'] = $_REQUEST['nombre_cliente'];
+		$_SESSION['user']['mail'] = $_REQUEST['correo_cliente'];
 		
 		echo json_encode($resp);
 	}
@@ -400,6 +400,45 @@ class users extends Common {
 	}
 	
 ///////////////// ******** ----						END view_insurance_policy			------ ************ //////////////////
+
+///////////////// ******** ----							 list_clients					------ ************ //////////////////
+//////// Check the clients and return into a view
+	// The parameters that can receive are:
+		// tianguis_id -> Tianguis ID
+	
+	function list_clients($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		$clients = $this -> usersModel -> list_clients($objet);
+		$clients = $clients['rows'];
+		
+		require ('views/users/list_users.php');
+	}
+	
+///////////////// ******** ----						END list_clients					------ ************ //////////////////
+
+///////////////// ******** ----						update_x_tianguis					------ ************ //////////////////
+//////// Update the client infomation
+	// The parameters that can receive are:
+		// client_id -> Client ID
+		// status -> Status to change
+		// tianguis_id -> Tianguis ID
+		
+	function update_x_tianguis($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+	// Save customer
+		$resp['result'] = $this -> usersModel -> update_x_tianguis($objet);
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END update_x_tianguis				------ ************ //////////////////
 
 }
 

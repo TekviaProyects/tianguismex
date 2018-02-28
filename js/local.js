@@ -69,7 +69,7 @@ var local = {
 	rent_local : function($objet){
 		"use strict";
 		console.log('==========> $objet rent_local', $objet);
-				
+		
 		if(jQuery.isEmptyObject(local.selects)){
 			swal({
 				title : 'Local no valido',
@@ -103,72 +103,6 @@ var local = {
 		
 		$("#modal_pay").modal("show");
 		$("#div_resumen").html(text);
-		
-		$("#btn_pay_store").click(function() {
-			$("#modal_pay").modal("hide");
-		
-			$.ajax({
-				data : data,
-				url : 'ajax.php?c=local&f=rent_local',
-				type : 'post',
-				dataType : 'json'
-			}).done(function(resp) {
-				console.log('==========> done rent_local', resp);
-				
-				if(resp.status !== 1){
-					swal({
-						title : 'Error',
-						text : resp.message,
-						timer : 7000,
-						showConfirmButton : true,
-						type : 'warning'
-					});
-					
-					return;
-				}
-				
-				local.selects = {};
-				
-				var link = document.createElement('a');
-				link.href = resp.url;
-				link.download = 'ficha.pdf';
-				link.dispatchEvent(new MouseEvent('click'));
-				
-				$.each(data.local, function(index, value) {
-					$("#btn_"+value.id).removeClass("btn-success available").addClass("btn-secondary"); 
-					$("#btn_"+value.id).attr("disabled", "disabled");
-					
-					$("#tr_"+value.id).removeClass("info available").addClass("secondary"); 
-				});
-				
-				setTimeout(function(){
-					swal({
-						title : 'Ficha de pago creada',
-						text : 'Tu ficha de pago ha sido creada con exito',
-						timer : 7000,
-						showConfirmButton : true,
-						type : 'success'
-					});
-				}, 500);
-				
-				local.list_orders({
-					client_id: 481,
-					div: 'contenedor'
-				});
-			}).fail(function(resp) {
-				console.log('==========> fail !!! rent_local', resp);
-				
-				swal({
-					title : 'Error',
-					text : 'A ocurrido un error al rentar los locales',
-					timer : 5000,
-					showConfirmButton : true,
-					type : 'error'
-				});
-				
-				$("#menu_new_rent").click();
-			});
-		});
 	},
 	
 ///////////////// ******** ----						END rent_local						------ ************ //////////////////
@@ -206,6 +140,102 @@ var local = {
 	},
 	
 ///////////////// ******** ----						END list_orders						------ ************ //////////////////
+
+///////////////// ******** ----						pay_store							------ ************ //////////////////
+//////// Generate a new pay
+	// The parameters that can receive are:
+	
+	pay_store : function($objet){
+		"use strict";
+		console.log('==========> $objet pay_store', $objet);
+		
+		var data = {},
+			total = 0;
+			
+		$.each(local.selects, function(index, value) {
+			total += parseFloat(value.cost);
+			data.date = value.date;
+			data.tianguis_id = value.tianguis_id;
+			data.cat_id = value.cat_id;
+		});
+		
+		data.total = total;
+		data.local = local.selects;
+		
+		console.log('==========> data', data);
+		
+		$("#modal_pay").modal("hide");
+		
+		$.ajax({
+			data : data,
+			url : 'ajax.php?c=local&f=rent_local',
+			type : 'post',
+			dataType : 'json'
+		}).done(function(resp) {
+			console.log('==========> done rent_local', resp);
+			
+			if(resp.status !== 1){
+				swal({
+					title : 'Error',
+					text : resp.message,
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				local.view_new({
+					div: 'contenedor'
+				});
+				
+				return;
+			}
+			
+			local.selects = {};
+			
+			var link = document.createElement('a');
+			link.href = resp.url;
+			link.download = 'ficha.pdf';
+			link.dispatchEvent(new MouseEvent('click'));
+			
+			$.each(data.local, function(index, value) {
+				$("#btn_"+value.id).removeClass("btn-success available").addClass("btn-secondary"); 
+				$("#btn_"+value.id).attr("disabled", "disabled");
+				
+				$("#tr_"+value.id).removeClass("info available").addClass("secondary"); 
+			});
+			
+			setTimeout(function(){
+				swal({
+					title : 'Ficha de pago creada',
+					text : 'Tu ficha de pago ha sido creada con exito',
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'success'
+				});
+			}, 500);
+			
+			local.list_orders({
+				client_id: 481,
+				div: 'contenedor'
+			});
+		}).fail(function(resp) {
+			console.log('==========> fail !!! rent_local', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al rentar los locales',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+			
+			local.view_new({
+				div: 'contenedor'
+			});
+		});
+	},
+
+///////////////// ******** ----					END pay_store							------ ************ //////////////////
 
 ///////////////// ******** ----					new_card_pay							------ ************ //////////////////
 //////// Generate a new pay

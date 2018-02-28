@@ -140,7 +140,7 @@
 						</button>
 					</div>
 					<div class="col-sm-12 col-md-6" align="center">
-						<button id="btn_pay_store" class="btn btn-info" style="font-size: 40px">
+						<button id="btn_pay_store" onclick="local.pay_store()" class="btn btn-info" style="font-size: 40px">
 							<i class="fa fa-barcode"></i> Tienda
 						</button>
 					</div>

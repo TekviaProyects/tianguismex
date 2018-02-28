@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <div class="row">
 	<div class="col-sm-12">
 		<h3>Ubicacion</h3>
@@ -40,7 +41,8 @@
         <button 
         	onclick="markets.list_markets({
         		div: 'contenedor',
-        		state: $('#state').val()
+        		state: $('#state').val(),
+        		client_id: <?php echo $_SESSION['user']['id'] ?>
         	});"
         	class="btn btn-primary">
         	Siguiente

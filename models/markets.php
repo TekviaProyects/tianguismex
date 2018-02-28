@@ -8,16 +8,23 @@ class marketsModel extends Connection {
 //////// Check the markets in the DB and return into array
 	// The parameters that can receive are:
 		// name -> Customer name
-		// id -> Customer ID
+		// client_id -> Client ID
 	
 	function list_markets($objet) {
 	// Filter by the state
 		$condition .= (!empty($objet['state'])) ? ' AND t.estado_tianguis = '.$objet['state'] : '' ;
 		
+	// Group
+		$condition .= (!empty($objet['group'])) ? ' GROUP BY = \''.$objet['group'].'\'' : ' GROUP BY t.id_tianguis';
+		
 		$sql = "SELECT
-					t.*
+					t.*, cxt.status AS permit
 				FROM
 					tianguis t
+				LEFT JOIN
+						client_x_tianguis cxt
+					ON
+						cxt.tianguis_id = t.id_tianguis AND cxt.client_id = '".$objet['client_id']."'
 				WHERE
 					1 = 1".
 				$condition;

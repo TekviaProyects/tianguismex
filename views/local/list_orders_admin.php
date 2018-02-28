@@ -28,7 +28,10 @@
 								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
 								div: 'contenedor',
 								status: ' 0',
-								view: 'list_orders_admin'
+								view: 'list_orders_admin',
+								card:'<?php echo $_REQUEST['card'] ?>',
+								store:'<?php echo $_REQUEST['store'] ?>',
+								client_id:'<?php echo $_REQUEST['client_id'] ?>'
 							})"
 							class="btn btn-info">
 							Pendiente
@@ -38,7 +41,10 @@
 								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
 								div: 'contenedor',
 								status: 1,
-								view: 'list_orders_admin'
+								view: 'list_orders_admin',
+								card:'<?php echo $_REQUEST['card'] ?>',
+								store:'<?php echo $_REQUEST['store'] ?>',
+								client_id:'<?php echo $_REQUEST['client_id'] ?>'
 							})" 
 							class="btn btn-success">
 							Aprovada
@@ -48,7 +54,10 @@
 								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
 								div: 'contenedor',
 								status: 2,
-								view: 'list_orders_admin'
+								view: 'list_orders_admin',
+								card:'<?php echo $_REQUEST['card'] ?>',
+								store:'<?php echo $_REQUEST['store'] ?>',
+								client_id:'<?php echo $_REQUEST['client_id'] ?>'
 							})" 
 							class="btn btn-danger">
 							Cancelada
@@ -222,11 +231,6 @@
 </div>
 <script>
 	$('#orders_table').DataTable({
-	    fixedHeader: {
-	        header: true,
-	        footer: true
-	    },
-	    scrollX: true,
 		language : {
 			destroy: true,
 			search : "<i class=\"fa fa-search\"></i>",

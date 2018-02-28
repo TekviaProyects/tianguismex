@@ -126,19 +126,30 @@ class localModel extends Connection {
 	// The parameters that can receive are:
 	
 	function list_orders($objet) {
+	// Filter by TIanguis ID
+		$condition .= (!empty($objet['tianguis_id'])) ? ' AND o.tianguis_id = '.$objet['tianguis_id'] : '' ;
 	// Filter by the client ID
 		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '' ;
 	// Filter by status
 		$condition .= (!empty($objet['status'])) ? ' AND o.status = '.$objet['status'] : '' ;
+	// Filter by payment card
+		$condition .= (!empty($objet['card'])) ? ' AND h.authorization != ""' : '' ;
 	// Filter by ID
 		$condition .= (!empty($objet['id'])) ? ' AND o.id = '.$objet['id'] : '' ;
-	// Filter by TIanguis ID
-		$condition .= (!empty($objet['tianguis_id'])) ? ' AND o.tianguis_id = '.$objet['tianguis_id'] : '' ;
+	// Filter by payment store
+		$condition .= (!empty($objet['store'])) ? ' AND h.reference != ""' : '' ;
+		
+	// Filter by payment store
+		$condition .= (!empty($objet['group'])) ? ' GROUP BY \''.$objet['group'].'\'' : ' GROUP BY o.id';
 		
 		$sql = "SELECT
 					o.*
 				FROM
 					orders o
+				LEFT JOIN
+						historical h
+					ON
+						h.order_id = o.id
 				WHERE
 					1 = 1".
 				$condition;
@@ -170,6 +181,40 @@ class localModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END update_client					------ ************ //////////////////
+
+///////////////// ******** ----						save_client_x_tianguis				------ ************ //////////////////
+//////// Save a client X tianguis if not exists
+	// The parameters that can receive are:
+		// client_id -> Client ID
+		// tianguis_id -> Tianguis ID
+	
+	function save_client_x_tianguis($objet) {
+		$sql = "SELECT
+					id
+				FROM
+					client_x_tianguis
+				WHERE
+					client_id = ".$objet['client_id']." 
+				AND
+					tianguis_id = ".$objet['tianguis_id'];
+		// return $sql;
+		$exists = $this -> query_array($sql);
+		
+		if($exists['total'] > 0){
+			$result = true;
+		}else{
+			$sql = "INSERT IGNORE INTO
+						client_x_tianguis(client_id, tianguis_id)
+					VALUES
+						(".$objet['client_id'].", ".$objet['tianguis_id'].")";
+			// return $sql;
+			$result = $this -> query($sql);
+		}
+		
+		return $result;
+	}
+	
+///////////////// ******** ----					END save_client_x_tianguis				------ ************ //////////////////
 
 }
 
