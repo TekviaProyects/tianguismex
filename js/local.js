@@ -165,6 +165,8 @@ var local = {
 					showConfirmButton : true,
 					type : 'error'
 				});
+				
+				$("#menu_new_rent").click();
 			});
 		});
 	},

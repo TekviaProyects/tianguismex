@@ -60,6 +60,16 @@ class local extends Common {
 		// Call the function to generate a charge
 			$open_pay = new openpayObject();
 			
+			
+		
+		// $delete['o_id'] = 'ahrpdyaw8sp5qa5gnexo';
+		// $c = $open_pay -> get_customer($delete);
+		// echo "<pre>", print_r($c), "</pre>";
+		// $c['result'] -> delete();
+		// return;
+			
+			
+			
 			$customer = $open_pay -> get_customer($objet);
 			
 			if($customer['status'] == 2 && $customer['error_code'] !== 0){
@@ -81,7 +91,7 @@ class local extends Common {
 				
 				if ($customer['status'] == 2) {
 					$resp['status'] = 2;
-					$resp['message'] = "Ocurrio un error al rentar tus locales [Openpay no disponible], intenta mas tarde";
+					$resp['message'] = "Error al crear el cliente en Openpay, intenta mas tarde";
 					$resp['message_openpay'] = $customer['message'];
 					
 					echo json_encode($resp);
@@ -89,6 +99,7 @@ class local extends Common {
 					return;
 				}
 				
+				$customer = $customer['result'];
 				$o_id = $customer->id;
 				
 				if(!empty($o_id)){

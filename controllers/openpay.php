@@ -44,7 +44,7 @@ class openpayObject {
 	public function add_customer($objet) {
 		try {
 			$resp['status'] = 1;
-			$resp = $this -> openpay -> customers -> add($objet);
+			$resp['result'] = $this -> openpay -> customers -> add($objet);
 		} catch (OpenpayApiTransactionError $e) {
 			$resp['status'] = 2;
 			$resp['message'] = $e->getMessage();

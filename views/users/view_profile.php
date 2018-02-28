@@ -3,7 +3,7 @@
 	$url = 'users_files/'.$_SESSION['user']['id'].'/perfil.png';
 	$url = (file_exists($url)) ? $url : 'users_files/'.$_SESSION['user']['id'].'/perfil.jpeg';
 	$url = (file_exists($url)) ? $url : 'users_files/'.$_SESSION['user']['id'].'/perfil.jpg';
-	$url = (file_exists($url)) ? $url : 'users_files/'.$_SESSION['user']['id'].'/perfil.gif';
+	$url = (file_exists($url)) ? $url : 'images/photos/loggeduser.png';
 ?>
 <link rel="stylesheet" href="plugins/cropper-master/dist/cropper.min.css">
 <link rel="stylesheet" href="plugins/cropper-master/examples/crop-avatar/css/main.css">
@@ -16,7 +16,7 @@
 			<div class="avatar-view" title="Cambiar imagen">
 				<img 
 					onerror="this.src='images/photos/loggeduser.png';"
-					src="<?php echo $url ?>" 
+					src="<?php echo $url.'?lastmod='.date('YmdHis') ?>" 
 					alt="images/uploadfile.png">
 			</div>
 			<!-- Cropping modal -->

@@ -245,7 +245,7 @@
 										 aria-controls="collapseExample">
 										 <img
 										 	style="max-width: 30px"
-										 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png"
+										 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png?lastmod=<?php echo date('YmdHis') ?>"
 											onerror="this.src='images/photos/loggeduser.png';"
 											class="profile-image img-circle">
 										 <?php echo $_SESSION['user']['nombre'] ?></h4>
