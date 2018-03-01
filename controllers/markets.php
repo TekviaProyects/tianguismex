@@ -118,7 +118,7 @@ class markets extends Common {
 	
 	// Check orders
 		$objet['tiangui_id'] = $_SESSION['tianguis']['id'];
-		$objet['order'] = ' O.pay_date ASC';
+		$objet['order'] = ' o.pay_date ASC';
 		$objet['status'] = 1;
 		$orders = $this -> marketsModel -> list_orders($objet);
 		$orders = $orders['rows'];
