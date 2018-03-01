@@ -246,6 +246,7 @@ class local extends Common {
 			$data['tianguis_id'] = $objet['tianguis_id'];
 			$data['reference'] = $cargo['result'] -> authorization;
 			$data['creation_date'] = $cargo['result'] -> creation_date;
+			$data['pay_date'] = $cargo['result'] -> creation_date;
 			$data['authorization'] = $cargo['result'] -> authorization;
 			$data['order_id'] = $this -> localModel -> save_order($data);
 			

@@ -79,6 +79,43 @@ class markets extends Common {
 	
 ///////////////// ******** ----						END list_local						------ ************ //////////////////
 
+///////////////// ******** ----						view_account_status					------ ************ //////////////////
+//////// Load the account status view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		
+	function view_account_status($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		require ('views/markets/view_account_status.php');
+	}
+	
+///////////////// ******** ----						END view_account_status				------ ************ //////////////////
+
+///////////////// ******** ----						account_status						------ ************ //////////////////
+//////// Load the account status
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		// range -> Dates range
+		
+	function account_status($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		$objet['group'] = "DATE_FORMAT(v.pay_date, ' %Y %m %d')";
+		$orders = $this -> marketsModel -> list_orders($objet);
+		$orders = $orders['rows'];
+		
+		require ('views/markets/account_status.php');
+	}
+	
+///////////////// ******** ----						END account_status					------ ************ //////////////////
+
 }
 
 ?>

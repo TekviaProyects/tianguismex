@@ -31,7 +31,8 @@ switch ($tipo) {
 				$update_order = "	UPDATE
 			  					orders
 			  				SET
-			  					status = 1
+			  					status = 1,
+			  					pay_date = ".date('Y-m-d H:i:s')."
 			  				WHERE
 			  					openpay_id = '".$id_orden_open."'";
 				$resultado = mysqli_query($conexion, $update_order);

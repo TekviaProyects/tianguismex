@@ -98,7 +98,47 @@ class marketsModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END list_local						------ ************ //////////////////
+
+///////////////// ******** ----						list_orders							------ ************ //////////////////
+//////// Check the orders in the DB and return into array
+	// The parameters that can receive are:
 	
+	function list_orders($objet) {
+	// Filter by TIanguis ID
+		$condition .= (!empty($objet['tianguis_id'])) ? ' AND o.tianguis_id = '.$objet['tianguis_id'] : '' ;
+	// Filter by the client ID
+		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '' ;
+	// Filter by status
+		$condition .= (!empty($objet['status'])) ? ' AND o.status = '.$objet['status'] : '' ;
+	// Filter by payment card
+		$condition .= (!empty($objet['card'])) ? ' AND h.authorization != ""' : '' ;
+	// Filter by ID
+		$condition .= (!empty($objet['id'])) ? ' AND o.id = '.$objet['id'] : '' ;
+	// Filter by payment store
+		$condition .= (!empty($objet['store'])) ? ' AND h.reference != ""' : '' ;
+		
+	// Filter by payment store
+		$condition .= (!empty($objet['group'])) ? ' GROUP BY \''.$objet['group'].'\'' : ' GROUP BY o.id';
+		
+		$sql = "SELECT
+					o.*
+				FROM
+					orders o
+				LEFT JOIN
+						historical h
+					ON
+						h.order_id = o.id
+				WHERE
+					1 = 1".
+				$condition;
+		// return $sql;
+		$result = $this -> query_array($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END list_orders						------ ************ //////////////////
+
 	function create_map($objet){
 		$x = 1;
 		$y = 1;

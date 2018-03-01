@@ -52,12 +52,12 @@ class localModel extends Connection {
 		
 		$sql = "INSERT INTO
 					orders(client_id, cost,  creation_date, select_date, end_date, due_date, openpay_id, url, description, 
-							reference, status, tianguis_id)
+							reference, status, tianguis_id, pay_date)
 				VALUES
 					(".$objet['client_id'].", '".$objet['cost']."', '".$objet['creation_date']."', 
 					'".$objet['select_date']."', '".$objet['end_date']."', '".$objet['due_date']."', 
 					'".$objet['openpay_id']."', '".$objet['url']."', '".$objet['description']."', '".$objet['reference']."',
-					".$status.", '".$objet['tianguis_id']."')";
+					".$status.", '".$objet['tianguis_id']."', '".$objet['pay_date']."')";
 		// return $sql;
 		$result = $this -> insert_id($sql);
 		

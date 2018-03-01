@@ -151,8 +151,77 @@ var markets = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END list_local						------ ************ //////////////////
+
+///////////////// ******** ----						view_account_status					------ ************ //////////////////
+//////// Load the account status view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		
+	view_account_status : function($objet){
+		"use strict";
+		console.log('==========> $objet view_account_status', $objet);
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=view_account_status',
+			type : 'get',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_account_status', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_account_status', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+	
+///////////////// ******** ----						END view_account_status				------ ************ //////////////////
+
+///////////////// ******** ----						account_status						------ ************ //////////////////
+//////// Load the account status
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		// range -> Dates range
+		
+	account_status : function($objet){
+		"use strict";
+		console.log('==========> $objet account_status', $objet);
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=account_status',
+			type : 'get',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done account_status', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! account_status', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END account_status					------ ************ //////////////////
 
 };

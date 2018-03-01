@@ -229,9 +229,13 @@
 					</li>
 					<li>
 						<a
+							onclick="markets.view_account_status({
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								div: 'contenedor'
+							})"
 							href="#contenedor"
 						 	class="btn-orange btn-block">
-							<i class="fa fa-check" aria-hidden="true"></i>
+							<i class="fa fa-file" aria-hidden="true"></i>
 							<span>Estado de cuenta</span>
 						</a>
 					</li>
