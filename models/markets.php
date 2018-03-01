@@ -116,12 +116,19 @@ class marketsModel extends Connection {
 		$condition .= (!empty($objet['id'])) ? ' AND o.id = '.$objet['id'] : '' ;
 	// Filter by payment store
 		$condition .= (!empty($objet['store'])) ? ' AND h.reference != ""' : '' ;
+	// Filter by delimitated dates
+		$condition .= (!empty($objet['f_ini']) && !empty($objet['f_end'])) ? 
+			' AND o.pay_date BETWEEN "'.$objet['f_ini'].'" AND "'.$objet['f_end'].'"' : '' ;
 		
 	// Filter by payment store
-		$condition .= (!empty($objet['group'])) ? ' GROUP BY \''.$objet['group'].'\'' : ' GROUP BY o.id';
+		$condition .= (!empty($objet['group'])) ? ' GROUP BY '.$objet['group'] : ' GROUP BY o.id';
+	// Orders
+		$condition .= (!empty($objet['order'])) ? ' ORDER BY '.$objet['order'] : ' ORDER BY o.id ASC';
 		
+// **** NOTA: Remplazar 0.15 por comisión reall
 		$sql = "SELECT
-					o.*
+					o.*, DATE_FORMAT(o.pay_date, ' %Y-%m-%d') AS organize_date, (o.cost * 0.1) AS expenses, 
+					(o.cost - (o.cost * 0.1)) AS sub_total 
 				FROM
 					orders o
 				LEFT JOIN

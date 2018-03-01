@@ -26,28 +26,29 @@ switch ($tipo) {
 		//obtenemos el id de opnepay de la orden de pago
 			$id_orden_open = $json -> transaction -> id;
 		  	$html = '';
+			$date = date('Y-m-d H:i:s');
 			
 		  	try {
-				$update_order = "	UPDATE
-			  					orders
-			  				SET
-			  					status = 1,
-			  					pay_date = ".date('Y-m-d H:i:s')."
-			  				WHERE
-			  					openpay_id = '".$id_orden_open."'";
+				$update_order = "UPDATE
+				  					orders
+				  				SET
+				  					status = 1,
+				  					pay_date = '".$date."'
+				  				WHERE
+				  					openpay_id = '".$id_orden_open."'";
 				$resultado = mysqli_query($conexion, $update_order);
 				
 				$update_his = "	UPDATE
-								historical
-							SET
-								status = 1
-							WHERE
-								order_id = (SELECT
-											id
-										FROM
-											orders
-										WHERE
-											openpay_id = '".$id_orden_open."')";
+									historical
+								SET
+									status = 1
+								WHERE
+									order_id = (SELECT
+												id
+											FROM
+												orders
+											WHERE
+												openpay_id = '".$id_orden_open."')";
 				$resultado = mysqli_query($conexion, $update_his);
 			} catch (mysqli_sql_exception $e) {
 				$resultado = $e;
@@ -63,8 +64,8 @@ switch ($tipo) {
 				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 				$mail -> Subject = "Error en script";
 				$mail -> AltBody = "Esta es la fecha";
-				$algo = json_encode($json);
-				$mail -> MsgHTML($e);
+				$algo = json_encode($e);
+				$mail -> MsgHTML($algo);
 				$mail -> AddReplyTo("$correo");
 				$mail -> AddAddress("$correo");
 				$mail -> IsHTML(true);
@@ -75,6 +76,8 @@ switch ($tipo) {
 				} else {
 					echo 'Message has been sent';
 				}
+				
+				return;
 			}
 			
 		  	try {

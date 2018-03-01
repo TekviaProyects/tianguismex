@@ -105,11 +105,66 @@ class markets extends Common {
 	function account_status($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
+		session_start();
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$data = Array();
+		$current = '';
+		$k = 0;
 		
-		$objet['group'] = "DATE_FORMAT(v.pay_date, ' %Y %m %d')";
+	// Explode date
+		$date = explode(" - ", $objet['range']);
+		$objet['f_ini'] = $date[0].' 00:00:01';
+		$objet['f_end'] = $date[1].' 23:59:59';
+	
+	// Check orders
+		$objet['tiangui_id'] = $_SESSION['tianguis']['id'];
+		$objet['order'] = ' O.pay_date ASC';
+		$objet['status'] = 1;
 		$orders = $this -> marketsModel -> list_orders($objet);
 		$orders = $orders['rows'];
+		
+		foreach ($orders as $key => $value) {
+			if($current != $value['organize_date']){
+				$current = $value['organize_date'];
+				$k++;
+					
+				$data['new_orders'][$k]['last_balance'] = $data['new_orders'][$k -1]['balance'];
+			}
+			
+		// New orders array
+			$data['new_orders'][$k]['pay_date'] = $current;
+			$data['new_orders'][$k]['revenues'] += $value['cost'];
+			$data['new_orders'][$k]['expenses'] += $value['expenses'] + ($value['expenses'] * 0.16);
+			
+		// Calculate balance
+			$balance = (empty($data['new_orders'][$k]['balance'])) ? $data['new_orders'][$k]['last_balance'] : 0;
+			$data['new_orders'][$k]['balance'] 
+				= $balance 
+				+ $value['cost']
+				- ($value['expenses'] + ($value['expenses'] * 0.16));
+			
+		// Data info
+			$data['revenues'] += $value['cost'];
+			$data['expenses'] += $value['expenses'] + ($value['expenses'] * 0.16);
+			$data['iva'] += ($value['expenses'] * 0.16);
+			$data['total'] += $value['sub_total'];
+			$data['num'] ++;
+			
+		// Card pay
+			if (!empty($value['url'])) {
+				$data['card']['revenues'] += $value['cost'];
+				$data['card']['expenses'] += $value['expenses'];
+				$data['card']['num'] ++;
+		// Store pay
+			} else { 
+				$data['store']['revenues'] += $value['cost'];
+				$data['store']['expenses'] += $value['expenses'];
+				$data['store']['num'] ++;
+			}
+		}
+		
+	// Total - IVA
+		$data['total'] -= $data['iva'];
 		
 		require ('views/markets/account_status.php');
 	}

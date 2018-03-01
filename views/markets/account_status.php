@@ -1,3 +1,6 @@
+<?php
+	setlocale(LC_ALL, "es_ES", 'Spanish_Spain', 'Spanish');
+?>
 <div class="row">
 	<div class="col-sm-12 col-md-8">
 		<div class="card bg-light" style="width: 100%">
@@ -17,33 +20,27 @@
 					<tbody>
 						<tr>
 							<td>Cobros a tarjeta</td>
-							<td align="center">28</td>
-							<td>$100,000.00</td>
-							<td></td>
+							<td align="center"><?php echo $data['card']['num'] ?></td>
+							<td>$<?php echo number_format($data['card']['revenues'], 2, '.', ',') ?></td>
+							<td>- $<?php echo number_format($data['card']['expenses'], 2, '.', ',') ?></td>
 						</tr>
 						<tr>
 							<td>Tienda</td>
-							<td align="center">40</td>
-							<td>$100,000.00</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Pagos de comisiones</td>
-							<td align="center">6</td>
-							<td></td>
-							<td>$2,500</td>
+							<td align="center"><?php echo $data['store']['num'] ?></td>
+							<td>$<?php echo number_format($data['store']['revenues'], 2, '.', ',') ?></td>
+							<td>- $<?php echo number_format($data['store']['expenses'], 2, '.', ',') ?></td>
 						</tr>
 						<tr>
 							<td>Pagos de IVA de comisiones</td>
-							<td align="center">6</td>
+							<td align="center"><?php echo $data['num'] ?></td>
 							<td></td>
-							<td>$2,500.00</td>
+							<td>- $<?php echo number_format($data['iva'], 2, '.', ',') ?></td>
 						</tr>
 						<tr style="font-weight: bold">
 							<td>Totales</td>
-							<td align="center">80</td>
-							<td>$200,000.00</td>
-							<td>$5,000</td>
+							<td align="center"><?php echo $data['num'] ?></td>
+							<td>$<?php echo number_format($data['revenues'], 2, '.', ',') ?></td>
+							<td>- $<?php echo number_format($data['expenses'], 2, '.', ',') ?></td>
 						</tr>
 					</tbody>
 				</table>
@@ -58,22 +55,16 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-sm-12 col-md-6">
-						Saldo anterior
-					</div>
-					<div class="col-sm-12 col-md-6" align="right">
-						$100,000.00
-					</div>
-					<div class="col-sm-12 col-md-6">
 						Ingresos
 					</div>
 					<div class="col-sm-12 col-md-6" align="right">
-						$100,000.00
+						$<?php echo number_format($data['revenues'], 2, '.', ',') ?>
 					</div>
 					<div class="col-sm-12 col-md-6">
 						Egresos
 					</div>
 					<div class="col-sm-12 col-md-6" align="right">
-						- $ 5,000.00
+						- $<?php echo number_format($data['expenses'], 2, '.', ',') ?>
 					</div>
 				</div>
 			</div>
@@ -83,7 +74,7 @@
 						<b>Saldo Final</b>
 					</div>
 					<div class="col-sm-12 col-md-6" align="right">
-						<b>$95,000.00</b>
+						<b>$<?php echo number_format($data['total'], 2, '.', ',') ?></b>
 					</div>
 				</div>
 			</div>
@@ -97,16 +88,26 @@
 				<b>Estado de cuenta</b>
 			</div>
 			<div class="card-body">
-				<table>
+				<table class="table table-striped">
 					<thead>
-						<tr><th>Fecha</th></tr>
-						<tr><th>Saldo anterior</th></tr>
-						<tr><th>Total de ingresos</th></tr>
-						<tr><th>Total de egresos</th></tr>
-						<tr><th>Saldo final</th></tr>
+						<tr>
+							<th>Fecha</th>
+							<th>Saldo anterior</th>
+							<th>Total de ingresos</th>
+							<th>Total de egresos</th>
+							<th>Saldo final</th>
+						</tr>
 					</thead>
-					<tbody id="div_table_status">
-						
+					<tbody><?php
+						foreach ($data['new_orders'] as $key => $value) { ?>
+							<tr>
+								<td><?php echo strftime("%d %b %y",strtotime($value['pay_date'])) ?></td>
+								<td>$<?php echo number_format($value['last_balance'], 2, '.', ',') ?></td>
+								<td>$<?php echo number_format($value['revenues'], 2, '.', ',') ?></td>
+								<td>- $<?php echo number_format($value['expenses'], 2, '.', ',') ?></td>
+								<td>$<?php echo number_format($value['balance'], 2, '.', ',') ?></td>
+							</tr><?php
+						} ?>
 					</tbody>
 				</table>
 			</div>
