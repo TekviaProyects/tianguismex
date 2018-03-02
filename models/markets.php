@@ -127,8 +127,8 @@ class marketsModel extends Connection {
 		
 // **** NOTA: Remplazar 0.15 por comisión reall
 		$sql = "SELECT
-					o.*, DATE_FORMAT(o.pay_date, ' %Y-%m-%d') AS organize_date, (o.cost * 0.1) AS expenses, 
-					(o.cost - (o.cost * 0.1)) AS sub_total 
+					o.*, DATE_FORMAT(o.pay_date, ' %Y-%m-%d') AS organize_date, (o.cost * 0.15) AS expenses, 
+					(o.cost - (o.cost * 0.15)) AS sub_total 
 				FROM
 					orders o
 				LEFT JOIN

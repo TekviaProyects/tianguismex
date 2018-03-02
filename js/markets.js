@@ -220,8 +220,42 @@ var markets = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END account_status					------ ************ //////////////////
+
+///////////////// ******** ----						view_commissions					------ ************ //////////////////
+//////// Load the commisssions view
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		
+	view_commissions : function($objet){
+		"use strict";
+		console.log('==========> $objet view_commissions', $objet);
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=view_commissions',
+			type : 'get',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_commissions', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_commissions', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END view_commissions				------ ************ //////////////////
 
 };

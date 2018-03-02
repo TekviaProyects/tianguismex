@@ -173,6 +173,8 @@ class local extends Common {
 				$resp['result'][$value['id']]['update'] = $this -> localModel -> update($data_update);
 			}
 			
+			
+			$resp['client_id'] = $_SESSION['user']['id'];
 			echo json_encode($resp);
 		} catch(Exception $e) {
 			// $id_orden_error = $id_orden;

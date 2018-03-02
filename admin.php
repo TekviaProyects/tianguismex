@@ -210,6 +210,10 @@
 					</li>
 					<li>
 						<a
+							onclick="markets.view_commissions({
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								div: 'contenedor'
+							})"
 							id="menu_new_rent"
 							href="#contenedor">
 							<i class="fa fa-list-alt" aria-hidden="true"></i> Comisiones

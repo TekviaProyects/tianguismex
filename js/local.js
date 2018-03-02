@@ -215,7 +215,7 @@ var local = {
 			}, 500);
 			
 			local.list_orders({
-				client_id: 481,
+				client_id: resp.client_id,
 				div: 'contenedor'
 			});
 		}).fail(function(resp) {

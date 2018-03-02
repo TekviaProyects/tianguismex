@@ -171,6 +171,21 @@ class markets extends Common {
 	
 ///////////////// ******** ----						END account_status					------ ************ //////////////////
 
+///////////////// ******** ----						view_commissions					------ ************ //////////////////
+//////// Load the commisssions view
+	// The parameters that can receive are:
+		// tianguis_id -> Tianguis ID
+		
+	function view_commissions($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		require ('views/markets/view_commissions.php');
+	}
+	
+///////////////// ******** ----						END view_commissions				------ ************ //////////////////
+
 }
 
 ?>

@@ -1,16 +1,58 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-//Este archivo recibe las notificaciones de openpay y realiza el procedimiento especifico
-//Esta preparado apra que se añadan mas opciones de ser necesarias
-$timezone = "America/Mexico_City";
-date_default_timezone_set($timezone);
-// include ('php/conection/conection.php');
-mysqli_report(MYSQLI_REPORT_STRICT);
-$conexion = mysqli_connect("localhost","c0630048_new","mi69nuFAnu","c0630048_new");
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+	//Este archivo recibe las notificaciones de openpay y realiza el procedimiento especifico
+	//Esta preparado apra que se añadan mas opciones de ser necesarias
+	$timezone = "America/Mexico_City";
+	date_default_timezone_set($timezone);
+	// include ('php/conection/conection.php');
+	mysqli_report(MYSQLI_REPORT_STRICT);
+	try{
+		$conexion = mysqli_connect("localhost","c0630048_new","mi69nuFAnu","c0630048_new");
+	} catch (mysqli_sql_exception $e) {
+		$resultado = $e;
+	}
 
 require ("plugins/phpmailerlibs/class.phpmailer.php");
 require ("plugins/phpmailerlibs/class.smtp.php");
+
+
+//Correo al que decia recibir el codigo de verificacion puede cambiar de ser necesario
+		$correo = "fertekvia@gmail.com";
+		$mail = new PHPMailer();
+		$mail -> IsSMTP();
+		$mail -> SMTPAuth = true;
+		$mail -> SMTPSecure = "ssl";
+		$mail -> Host = "smtp.gmail.com";
+		$mail -> Port = 465;
+		$mail -> Username = "tekviaprogramacion@gmail.com";
+		$mail -> Password = "tekvia123";
+
+		//Correo e informacion del remitente
+		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
+		//Datos y contenido del correo
+		$mail -> Subject = "Prueba de webhook";
+		$mail -> AltBody = "Esta es la fecha";
+		$algo = file_get_contents('php://input');
+		// $algo = json_decode($algo);
+		// $algo = "<pre>". var_dump($algo)."</pre>";var_dump($algo)
+		$mail -> MsgHTML($algo);
+		$mail -> AddReplyTo("$correo");
+		$mail -> AddAddress("$correo");
+		$mail -> IsHTML(true);
+
+		//Envio de correo
+		if (!$mail -> send()) {
+			echo 'Message could not be sent.';
+			echo 'Mailer Error: ' . $mail -> ErrorInfo;
+		} else {
+			echo 'Message has been sent';
+		}
+		return;
+?>
+
+
+
 
 $obj = file_get_contents('php://input');
 var_dump($obj);
@@ -242,6 +284,7 @@ switch ($tipo) {
 								l.status = 1";
 				$resultado = mysqli_query($conexion, $update);
 			} catch (mysqli_sql_exception $e) {
+				throw $e;
 				$resultado = $e;
 			}
 			
@@ -268,6 +311,7 @@ switch ($tipo) {
 					$html = 'Correo no encontrado:<br>'.$encode;
 				}
 			} catch (mysqli_sql_exception $e) {
+				throw $e;
 				$correo = $e;
 			}
 			
@@ -302,6 +346,7 @@ switch ($tipo) {
 			try {
 				$mail -> send();
 			} catch(phpmailerException $e) {
+				throw $e;
 				var_dump($e);
 			}
 		} elseif ($json -> transaction -> status == 'failed') {
