@@ -183,18 +183,17 @@
 					</li>
 					<li>
 						<a
-							href="#contenedor"
+							onclick="local.list_orders({
+								client_id: <?php echo $_SESSION['user']['id'] ?>,
+								check_date: '<?php echo date('Y-m-d H::i:s') ?>',
+								view: 'list_renovations',
+								div: 'contenedor',
+								status: 1
+							})"
+							href="#"
 						 	class="btn-orange btn-block">
 							<i class="fa fa-address-card" aria-hidden="true"></i>
-							<span>Vencimientos</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="#contenedor"
-						 	class="btn-orange btn-block">
-							<i class="fa fa-check" aria-hidden="true"></i>
-							<span>Ordenes de pago</span>
+							<span>Renovación</span>
 						</a>
 					</li>
 					<li>

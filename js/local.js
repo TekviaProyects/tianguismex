@@ -14,6 +14,9 @@ var local = {
 		"use strict";
 		console.log('==========> $objet view_new', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=local&f=view_new',
@@ -47,6 +50,9 @@ var local = {
 		"use strict";
 		console.log('==========> $objet select_local', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		if(local.selects[$objet.id]){
 			delete local.selects[$objet.id];
 			
@@ -69,6 +75,9 @@ var local = {
 	rent_local : function($objet){
 		"use strict";
 		console.log('==========> $objet rent_local', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
 		
 		if(jQuery.isEmptyObject(local.selects)){
 			swal({
@@ -117,6 +126,9 @@ var local = {
 		"use strict";
 		console.log('==========> $objet list_orders', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=local&f=list_orders',
@@ -148,6 +160,9 @@ var local = {
 	pay_store : function($objet){
 		"use strict";
 		console.log('==========> $objet pay_store', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
 		
 		var data = {},
 			total = 0;
@@ -245,6 +260,12 @@ var local = {
 		"use strict";
 		console.log('==========> $objet new_card_pay', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		var data = {},
 			total = 0;
 		
@@ -334,6 +355,9 @@ var local = {
 		"use strict";
 		console.log('==========> $objet download_pay', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		var type = ($objet.json === 1) ? 'json' : 'html';
 		
 		$.ajax({
@@ -381,6 +405,9 @@ var local = {
 		"use strict";
 		console.log('==========> $objet view_details', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$("#"+$objet.div).html('');
 		
 		$.ajax({
@@ -416,6 +443,9 @@ var local = {
 	view_voucher : function($objet){
 		"use strict";
 		console.log('==========> $objet view_voucher', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
 		
 		$("#"+$objet.div).html('');
 		

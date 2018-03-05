@@ -132,12 +132,14 @@ class localModel extends Connection {
 		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '' ;
 	// Filter by status
 		$condition .= (!empty($objet['status'])) ? ' AND o.status = '.$objet['status'] : '' ;
-	// Filter by payment card
-		$condition .= (!empty($objet['card'])) ? ' AND h.authorization != ""' : '' ;
 	// Filter by ID
 		$condition .= (!empty($objet['id'])) ? ' AND o.id = '.$objet['id'] : '' ;
 	// Filter by payment store
-		$condition .= (!empty($objet['store'])) ? ' AND h.reference != ""' : '' ;
+		$condition .= (!empty($objet['store'])) ? ' AND o.url != ""' : '' ;
+	// Filter by payment card
+		$condition .= (!empty($objet['card'])) ? ' AND o.url = ""' : '' ;
+	// Filter by end date
+		$condition .= (!empty($objet['check_date'])) ? ' AND o.end_date >= "'.$objet['check_date'].'"' : '' ;
 		
 	// Filter by payment store
 		$condition .= (!empty($objet['group'])) ? ' GROUP BY \''.$objet['group'].'\'' : ' GROUP BY o.id';

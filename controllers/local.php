@@ -151,10 +151,10 @@ class local extends Common {
 			$data['openpay_id'] = $cargo -> id;
 			$data['description'] = $des;
 			$data['reference'] = $cargo->payment_method->reference;
-			$data['end_date'] = $end_date;
+			$data['end_date'] = $end_date.' 23:59:59';
 			$data['authorization'] = '';
 			$data['order_id'] = $this -> localModel -> save_order($data);
-		
+			
 		// Save client X tianguis if not exists
 			$data_client['client_id'] = $_SESSION['user']['id'];
 			$data_client['tianguis_id'] = $objet['tianguis_id'];
@@ -238,18 +238,18 @@ class local extends Common {
 		
 		if($status == "completed"){
 		// Save order
-			$data['status'] = 1;
-			$data['description'] = $des;
-			$data['end_date'] = $end_date;
-			$data['cost'] = $objet['total'];
-			$data['select_date'] = $fechaInicial;
+			$data['authorization'] = $cargo['result'] -> authorization;
+			$data['creation_date'] = $cargo['result'] -> creation_date;
+			$data['reference'] = $cargo['result'] -> authorization;
+			$data['pay_date'] = $cargo['result'] -> creation_date;
+			$data['tianguis_id'] = $objet['tianguis_id'];
 			$data['client_id'] = $_SESSION['user']['id'];
 			$data['openpay_id'] = $cargo['result'] -> id;
-			$data['tianguis_id'] = $objet['tianguis_id'];
-			$data['reference'] = $cargo['result'] -> authorization;
-			$data['creation_date'] = $cargo['result'] -> creation_date;
-			$data['pay_date'] = $cargo['result'] -> creation_date;
-			$data['authorization'] = $cargo['result'] -> authorization;
+			$data['end_date'] = $end_date.' 23:59:59';
+			$data['select_date'] = $fechaInicial;
+			$data['cost'] = $objet['total'];
+			$data['description'] = $des;
+			$data['status'] = 1;
 			$data['order_id'] = $this -> localModel -> save_order($data);
 			
 		// Save client X tianguis if not exists

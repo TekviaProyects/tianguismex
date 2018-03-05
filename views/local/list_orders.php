@@ -21,42 +21,28 @@
 				<h3 class="form-title"><i class="fa fa-calendar"></i> Movimientos</h3>
 			</div>
 			<div class="form-body" style="padding: 30px">
-				<div class="row" style="padding-bottom: 10px">
-					<div class="col-sm-12">
-						<button 
-							onclick="local.list_orders({
+				<div class="row" style="padding-bottom: 10px; padding-left: 15px">
+					<div class="col-sm-12 col-md-4">
+						<select 
+							id="status_select"
+							onchange="local.list_orders({
+								status: $(this).val(),
 								client_id: <?php echo $_REQUEST['client_id'] ?>,
 								div: 'contenedor',
-								status: ' 0'
 							})"
-							class="btn btn-info">
-							Pendiente
-						</button>
-						<button 
-							onclick="local.list_orders({
-								client_id: <?php echo $_REQUEST['client_id'] ?>,
-								div: 'contenedor',
-								status: 1
-							})" 
-							class="btn btn-success">
-							Aprovada
-						</button>
-						<button 
-							onclick="local.list_orders({
-								client_id: <?php echo $_REQUEST['client_id'] ?>,
-								div: 'contenedor',
-								status: 2
-							})" 
-							class="btn btn-danger">
-							Cancelada
-						</button>
+							class="custom-select">
+							<option value="">Todas</option>
+							<option value=" 0">Pendientes</option>
+							<option value="1">Pagadas</option>
+							<option value="2">Canceladas</option>
+						</select>
 					</div>
-				</div>
+				</div><br />
 				<div class="d-sm-none d-none d-md-block">
 					<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="orders_table">
 						<thead>
 							<tr>
-								<th>#</th>
+								<th>Folio</th>
 								<th>Total</th>
 								<th>Fecha de ingreso</th>
 								<th>Fecha de caducidad</th>
@@ -70,7 +56,7 @@
 									<td><?php echo $value['id'] ?></td>
 									<td>$<?php echo $value['cost'] ?></td>
 									<td><?php echo $value['creation_date'] ?></td>
-									<td><?php echo $value['due_date'] ?></td>
+									<td><?php echo $value['end_date'] ?></td>
 									<td align="center">
 										<button
 											data-toggle="modal"
@@ -126,13 +112,12 @@
 					foreach ($orders as $key => $value) { ?>
 						<div class="card text-center" style="margin-bottom: 15px">
 							<div class="card-header">
-								SOLICITUD # <?php echo $value['id'] ?>
+								Folio: <?php echo $value['id'] ?>
 							</div>
 							<div class="card-body">
-								<p class="card-text"><?php echo $value['nombre'] ?></p>
-								<p class="card-text"><?php echo $value['correo'] ?></p>
-								<p class="card-text"><?php echo $value['date'] ?></p>
-								<p class="card-text"><?php echo $value['cost_request'] ?></p>
+								<p class="card-text"><?php echo $value['cost'] ?></p>
+								<p class="card-text"><?php echo $value['creation_date'] ?></p>
+								<p class="card-text"><?php echo $value['end_date'] ?></p>
 							</div>
 							<div class="card-footer text-muted">
 								<button
@@ -223,6 +208,7 @@
 	        header: true,
 	        footer: true
 	    },
+	    order: [[ 0, "desc"]],
 	    scrollX: true,
 		language : {
 			destroy: true,
@@ -240,4 +226,6 @@
 			}
 		}
 	});
+	
+	$("#status_select").val('<?php echo $_REQUEST['status'] ?>');
 </script>

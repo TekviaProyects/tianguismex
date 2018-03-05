@@ -186,6 +186,21 @@ class markets extends Common {
 	
 ///////////////// ******** ----						END view_commissions				------ ************ //////////////////
 
+///////////////// ******** ----							 view_sketch					------ ************ //////////////////
+//////// Load the view to sketch
+	// The parameters that can receive are:
+		// tianguis_id -> Tianguis ID
+		
+	function view_sketch($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		require ('views/markets/view_sketch.php');
+	}
+	
+///////////////// ******** ----						END view_sketch						------ ************ //////////////////
+
 }
 
 ?>

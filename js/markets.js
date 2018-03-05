@@ -12,6 +12,9 @@ var markets = {
 		"use strict";
 		console.log('==========> $objet view_new', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=markets&f=view_new',
@@ -45,6 +48,9 @@ var markets = {
 		"use strict";
 		console.log('==========> $objet list_markets', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=markets&f=list_markets',
@@ -77,6 +83,9 @@ var markets = {
 	list_cats : function($objet){
 		"use strict";
 		console.log('==========> $objet list_cats', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
 		
 		$.ajax({
 			data : $objet,
@@ -112,6 +121,9 @@ var markets = {
 	list_local : function($objet){
 		"use strict";
 		console.log('==========> $objet list_local', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
 		
 		if($objet.validate_date){
 			if($objet.date === ""){
@@ -165,6 +177,9 @@ var markets = {
 		"use strict";
 		console.log('==========> $objet view_account_status', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=markets&f=view_account_status',
@@ -200,6 +215,9 @@ var markets = {
 		"use strict";
 		console.log('==========> $objet account_status', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=markets&f=account_status',
@@ -234,6 +252,9 @@ var markets = {
 		"use strict";
 		console.log('==========> $objet view_commissions', $objet);
 		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
 		$.ajax({
 			data : $objet,
 			url : 'ajax.php?c=markets&f=view_commissions',
@@ -254,8 +275,45 @@ var markets = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END view_commissions				------ ************ //////////////////
+
+///////////////// ******** ----							 view_sketch					------ ************ //////////////////
+//////// Load the view to sketch
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// tianguis_id -> Tianguis ID
+		
+	view_sketch : function($objet){
+		"use strict";
+		console.log('==========> $objet view_sketch', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=view_sketch',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_sketch', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_sketch', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END view_sketch						------ ************ //////////////////
 
 };

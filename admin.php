@@ -81,7 +81,6 @@
 			#contenedor {
 				width: 100%;
 				position: absolute;
-				padding: 15px;
 			}
 			#wrapper.toggled #contenedor {
 				position: absolute;
@@ -140,7 +139,7 @@
 					width: 0;
 				}
 				#contenedor {
-					padding: 20px;
+					/*padding: 20px;*/
 					position: relative;
 				}
 				#wrapper.toggled #contenedor {
@@ -178,7 +177,7 @@
 							onclick="local.view_new({
 								div: 'contenedor'
 							});"
-							href="#contenedor">
+							href="#">
 							<i class="fa fa-chart-bar" aria-hidden="true"></i> Reportes
 						</a>
 					</li>
@@ -191,7 +190,7 @@
 								view: 'list_orders_admin',
 								card: 1
 							})"
-							href="#contenedor">
+							href="#">
 							<i class="fa fa-credit-card" aria-hidden="true"></i> Pagos con tarjeta
 						</a>
 					</li>
@@ -204,7 +203,7 @@
 								view: 'list_orders_admin',
 								store: 1
 							})"
-							href="#contenedor">
+							href="#">
 							<i class="fa fa-barcode" aria-hidden="true"></i> Pagos en tienda
 						</a>
 					</li>
@@ -215,13 +214,13 @@
 								div: 'contenedor'
 							})"
 							id="menu_new_rent"
-							href="#contenedor">
+							href="#">
 							<i class="fa fa-list-alt" aria-hidden="true"></i> Comisiones
 						</a>
 					</li>
 					<li>
 						<a
-							href="#contenedor"
+							href="#"
 							onclick="users.list_clients({
 								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
 								div: 'contenedor'
@@ -237,7 +236,7 @@
 								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
 								div: 'contenedor'
 							})"
-							href="#contenedor"
+							href="#"
 						 	class="btn-orange btn-block">
 							<i class="fa fa-file" aria-hidden="true"></i>
 							<span>Estado de cuenta</span>
@@ -250,7 +249,7 @@
 								div: 'contenedor',
 								view: 'list_orders_admin'
 							})"
-							href="#contenedor"
+							href="#"
 						 	class="btn-orange btn-block">
 							<i class="fa fa-calendar" aria-hidden="true"></i>
 							<span>Histórico de pagos</span>
@@ -259,10 +258,11 @@
 					<li>
 						<a
 							id="menu_new_rent"
-							onclick="local.view_new({
+							onclick="markets.view_sketch({
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
 								div: 'contenedor'
 							});"
-							href="#contenedor">
+							href="#">
 							<i class="fa fa-map" aria-hidden="true"></i> Croquis
 						</a>
 					</li>
@@ -315,7 +315,7 @@
 												mail: '<?php echo $_SESSION['user']['mail'] ?>',
 												from_user: 1
 											})"
-											href="#contenedor">
+											href="#">
 											<i class="fa fa-user"></i> Editar Perfil
 										</a>
 										<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Configuración</a>
@@ -326,7 +326,7 @@
 												mail: '<?php echo $_SESSION['user']['mail'] ?>',
 												from_user: 1
 											})"
-											href="#contenedor">
+											href="#">
 											<i class="fa fa-info"></i> Ayuda
 										</a>
 										<a class="dropdown-item" href="cliente/login/"><i class="fa fa-sign-out"></i> Salir</a>
