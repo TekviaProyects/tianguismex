@@ -185,7 +185,7 @@
 						<a
 							onclick="local.list_orders({
 								client_id: <?php echo $_SESSION['user']['id'] ?>,
-								check_date: '<?php echo date('Y-m-d H::i:s') ?>',
+								check_date: '<?php echo date('Y-m-d H:i:s') ?>',
 								view: 'list_renovations',
 								div: 'contenedor',
 								status: 1

@@ -469,8 +469,146 @@ var local = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END view_voucher					------ ************ //////////////////
+
+///////////////// ******** ----						renew_store							------ ************ //////////////////
+//////// Renew the order to new month
+	// The parameters that can receive are:
+		// order_id -> Order ID
+		// end_date -> The expire date of the order
+		// client_id -> Client ID
+		// tianguis_id -> Tianguis ID
+		
+	renew_store : function($objet){
+		"use strict";
+		console.log('==========> $objet renew_store', $objet);
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=renew_store',
+			type : 'post',
+			dataType : 'json'
+		}).done(function(resp) {
+			console.log('==========> done renew_store', resp);
+			
+			var link = document.createElement('a');
+			link.href = resp.url;
+			link.download = 'ficha.pdf';
+			link.dispatchEvent(new MouseEvent('click'));
+			
+			$("#modal_pay").modal("hide");
+			
+			swal({
+				title : 'Ficha de pago creada',
+				text : 'Tu ficha de pago ha sido creada con exito',
+				timer : 7000,
+				showConfirmButton : true,
+				type : 'success'
+			});
+		}).fail(function(resp) {
+			console.log('==========> fail !!! renew_store', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al renovar',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+	
+///////////////// ******** ----						END renew_store						------ ************ //////////////////
+
+///////////////// ******** ----						renew_card							------ ************ //////////////////
+//////// Generate a new pay
+	// The parameters that can receive are:
+	
+	renew_card : function($objet){
+		"use strict";
+		console.log('==========> $objet renew_card', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		var data = $objet || {},
+			total = 0;
+		
+		data.token_id = $objet.token_id;
+		data.deviceIdHiddenFieldName = $objet.deviceIdHiddenFieldName;
+		
+		$.each(local.selects, function(index, value) {
+			total += parseFloat(value.cost);
+			data.date = value.date;
+			data.tianguis_id = value.tianguis_id;
+			data.cat_id = value.cat_id;
+		});
+		
+		data.total = total;
+		data.local = local.selects;
+		
+		console.log('==========> data', data);
+		
+		$.ajax({
+			data : data,
+			url : 'ajax.php?c=local&f=renew_card',
+			type : 'post',
+			dataType : 'json'
+		}).done(function(resp) {
+			console.log('==========> Done renew_card', resp);
+			
+			$("#pay-button").prop("disabled", false);
+			$("#pay-button").html("Pagar");
+			
+			$("#modal_pay").modal('hide');
+			
+			if(resp.status !== 1){
+				swal({
+					title : 'Error',
+					text : resp.message,
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				return;
+			}
+			
+				swal({
+					title : 'Locales rentados',
+					text : 'La renovación de tus locales ha sido exitosa',
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'success'
+				});
+			
+			setTimeout(function(){
+				local.list_orders({
+					client_id: $objet.client_id,
+					check_date: resp.check_date,
+					view: 'list_renovations',
+					div: 'contenedor',
+					status: 1
+				});
+			}, 500);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! renew_card', resp);
+			
+			$("#pay-button").prop("disabled", false);
+			$("#pay-button").html("Pagar");
+		
+			swal({
+				title : 'Error',
+				text : 'Error al generar el pago',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+
+///////////////// ******** ----						END renew_card						------ ************ //////////////////
 
 };

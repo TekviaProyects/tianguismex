@@ -1,17 +1,49 @@
+<?php
+// Validate the orders
+	if (empty($orders)) { ?>
+		<div align="center">
+			<h3>
+				<span class="label label-default">
+					* Sin resultados *
+				</span>
+			</h3>
+		</div><?php
+
+		return;
+	}
+
+	session_start();
+?>
 <div class="row"><?php  
-	foreach ($orders as $key => $value) { ?>
-		<div class="col-sm-12 col-md-3">
-			<div class="card text-center" style="margin-bottom: 15px; height: 400px">
+	foreach ($orders as $key => $value) {
+		switch ($value['status_renew'] == 1) {
+			case 1:
+				$class = 'bg-success text-white'; 
+				$hide = 'display: none';
+				break;
+			case 2:
+				$class = 'bg-warning text-white'; 
+				$hide = '';
+				break;
+			
+			default:
+				$class = ''; 
+				$hide = '';
+				break;
+		} ?>
+		
+		<div class="col-sm-12 col-md-4">
+			<div class="card text-center <?php echo $class ?>" style="margin-bottom: 15px;">
 				<div class="card-header">
 					Folio: <?php echo $value['id'] ?>
 				</div>
-				<div class="card-body">
-					<p class="card-text"><?php echo $value['cost'] ?></p>
-					<p class="card-text"><?php echo $value['creation_date'] ?></p>
-					<p class="card-text"><?php echo $value['end_date'] ?></p>
-					<p class="card-text"><?php echo $value['description'] ?></p>
+				<div class="card-body <?php echo $class ?>" style="height: 190px; overflow-y: auto">
+					$<?php echo $value['cost'] ?><br />
+					<?php echo $value['creation_date'] ?><br />
+					<?php echo $value['end_date'] ?><br />
+					<?php echo $value['description'] ?><br />
 				</div>
-				<div class="card-footer text-muted">
+				<div class="card-footer text-muted" style="<?php echo $hide ?>">
 					<button
 						data-toggle="modal"
 						data-target="#modal_pay"
@@ -21,10 +53,13 @@
 						onclick="
 							$('#btn_pay_store').attr('order_id', <?php echo $value['id'] ?>);
 							$('#btn_pay_store').attr('end_date', '<?php echo $value['end_date'] ?>');
+							$('#btn_pay_store').attr('client_id', <?php echo $value['client_id'] ?>);
+							$('#btn_pay_store').attr('tianguis_id', <?php echo $value['tianguis_id'] ?>);
 						">
 						Renovar
 					</button>
-					<button class="btn btn-primary btn-block">
+					<button 
+						class="btn btn-primary btn-block">
 						Modificar
 					</button>
 				</div>
@@ -57,10 +92,15 @@
 					<div class="col-sm-12 col-md-6" align="center">
 						<button 
 							order_id=""
+							end_date=""
+							client_id=""
+							tianguis_id=""
 							id="btn_pay_store" 
 							onclick="local.renew_store({
 								order_id: $(this).attr('order_id'),
-								end_date: $(this).attr('end_date')
+								end_date: $(this).attr('end_date'),
+								client_id: $(this).attr('client_id'),
+								tianguis_id: $(this).attr('tianguis_id')
 							})" 
 							class="btn btn-info" 
 							style="font-size: 40px">
@@ -147,8 +187,12 @@
 		});
 		
 		data.token_id = token_id;
+		data.order_id = $("#btn_pay_store").attr('order_id');
+		data.end_date = $("#btn_pay_store").attr('end_date');
+		data.client_id = $("#btn_pay_store").attr('client_id');
+		data.tianguis_id = $("#btn_pay_store").attr('tianguis_id');
 		
-		local.new_card_pay(data);
+		local.renew_card(data);
 	};
 
 	var error_callbak = function(response) {

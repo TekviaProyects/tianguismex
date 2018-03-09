@@ -79,6 +79,14 @@
 					  					openpay_id = '".$id_orden_open."'";
 					$resultado = mysqli_query($conexion, $update_order);
 					
+					$update_renew = "UPDATE
+					  					renovations
+					  				SET
+					  					status = 1
+					  				WHERE
+					  					openpay_id = '".$id_orden_open."'";
+					$res_renew = mysqli_query($conexion, $update_renew);
+					
 					$update_his = "	UPDATE
 										historical
 									SET
@@ -90,7 +98,7 @@
 													orders
 												WHERE
 													openpay_id = '".$id_orden_open."')";
-					$resultado = mysqli_query($conexion, $update_his);
+					$res_his = mysqli_query($conexion, $update_his);
 				} catch (mysqli_sql_exception $e) {
 					$resultado = $e;
 					$correo = "fertekvia@gmail.com";
@@ -118,7 +126,7 @@
 						echo 'Message has been sent';
 					}
 					
-					return;
+					return "Error en script".$e;
 				}
 				
 			  	try {
