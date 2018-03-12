@@ -312,8 +312,45 @@ var markets = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END view_sketch						------ ************ //////////////////
+
+///////////////// ******** ----						modify_order						------ ************ //////////////////
+//////// Load the view to modify order
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// order_id -> Order ID
+		
+	modify_order : function($objet){
+		"use strict";
+		console.log('==========> $objet modify_order', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=modify_order',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done modify_order', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! modify_order', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END modify_order					------ ************ //////////////////
 
 };

@@ -124,7 +124,16 @@ class localModel extends Connection {
 ///////////////// ******** ----						list_orders							------ ************ //////////////////
 //////// Check the orders in the DB and return into array
 	// The parameters that can receive are:
-	
+		// select_date -> Selected date
+		// due_date -> Due date
+		// check_date -> Check that the final date is greater than the date of selected
+		// tianguis_id -> Tianguis ID
+		// client_id -> Client ID
+		// status -> Order status
+		// id -> Order ID
+		// store -> Create on the store
+		// card -> Create with credit card
+		
 	function list_orders($objet) {
 	// Filter by select date
 		$condition .= (!empty($objet['select_date'])) ? ' AND o.select_date = "'.$objet['select_date'].'"' : '' ;
@@ -151,7 +160,7 @@ class localModel extends Connection {
 		$condition .= (!empty($objet['order'])) ? ' ORDER BY \''.$objet['order'].'\'' : ' ORDER BY o.id DESC';
 		
 		$sql = "SELECT
-					o.*, r.status AS status_renew
+					o.*, r.status AS status_renew, l.cat_id 
 				FROM
 					orders o
 				LEFT JOIN
@@ -162,6 +171,10 @@ class localModel extends Connection {
 						renovations r
 					ON
 						r.order_id = o.id
+				LEFT JOIN
+						local l
+					ON
+						l.id = h.local_id
 				WHERE
 					1 = 1".
 				$condition;
@@ -321,6 +334,27 @@ class localModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END save_renew						------ ************ //////////////////
+	
+///////////////// ******** ----						update_renew						------ ************ //////////////////
+//////// Update the renovations information on the DB
+	// The parameters that can receive are:
+		// columns -> String with the columns afected
+		// id -> Local ID
+	
+	function update_renew($objet) {
+		$sql = "UPDATE 
+					renovations
+				SET ".
+					$objet['columns']." 
+				WHERE
+					id = ".$objet['id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END update_renew					------ ************ //////////////////
 	
 }
 

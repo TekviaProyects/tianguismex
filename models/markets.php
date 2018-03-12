@@ -78,16 +78,28 @@ class marketsModel extends Connection {
 	function list_local($objet) {
 	// Filter by the tianguis ID
 		$condition .= (!empty($objet['tianguis_id'])) ? ' AND l.tianguis_id = '.$objet['tianguis_id'] : '' ;
+	// Filter by the order ID
+		$condition .= (!empty($objet['order_id'])) ? ' AND h.order_id = '.$objet['order_id'] : '' ;
 		
 		
+	// Group
+		$condition .= (!empty($objet['group'])) ? ' GROUP BY = '.$objet['group'] : ' GROUP BY l.id' ;
 	// Order
 		$condition .= (!empty($objet['order'])) ? 
 			' ORDER BY = '.$objet['order'] : ' ORDER BY l.tianguis_id ASC, l.y ASC, l.x ASC' ;
 		
 		$sql = "SELECT
-					l.*
+					l.*, cxt.cost, CONCAT(cxt.title, ' - ', cxt.description) AS des_cat 
 				FROM
 					local l
+				LEFT JOIN
+						historical h
+					ON
+						h.local_id = l.id
+				LEFT JOIN
+						cat_x_tianguis cxt
+					ON
+						cxt.id = l.cat_id
 				WHERE
 					1 = 1".
 				$condition;
@@ -128,7 +140,7 @@ class marketsModel extends Connection {
 // **** NOTA: Remplazar 0.15 por comisión reall
 		$sql = "SELECT
 					o.*, DATE_FORMAT(o.pay_date, ' %Y-%m-%d') AS organize_date, (o.cost * 0.15) AS expenses, 
-					(o.cost - (o.cost * 0.15)) AS sub_total 
+					(o.cost - (o.cost * 0.15)) AS sub_total
 				FROM
 					orders o
 				LEFT JOIN
@@ -145,6 +157,30 @@ class marketsModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END list_orders						------ ************ //////////////////
+	
+///////////////// ******** ----						data_market							------ ************ //////////////////
+//////// Check the data market in the DB and return into array
+	// The parameters that can receive are:
+	
+	function data_market($objet) {
+	// Filter by the tianguis ID
+		$condition .= (!empty($objet['tianguis_id'])) ? ' AND l.tianguis_id = '.$objet['tianguis_id'] : '' ;
+		
+		$sql = "SELECT
+					l.*
+				FROM
+					local l
+				WHERE
+					1 = 1".
+				$condition;
+		// return $sql;
+		$result = $this -> query_array($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END data_market						------ ************ //////////////////
+	
 
 	function create_map($objet){
 		$x = 1;

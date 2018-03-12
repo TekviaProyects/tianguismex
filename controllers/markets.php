@@ -201,6 +201,36 @@ class markets extends Common {
 	
 ///////////////// ******** ----						END view_sketch						------ ************ //////////////////
 
+///////////////// ******** ----						modify_order						------ ************ //////////////////
+//////// Load the view to modify order
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		// order_id -> Order ID
+	
+	function modify_order($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+	
+	// List locals selected
+		$local_selected = $this -> marketsModel -> list_local($objet);
+		$local_selected = $local_selected['rows'];
+		
+		
+		echo "<pre>", print_r($local_selected), "</pre>";
+		
+		
+		
+	// List locals
+		$data['tianguis_id'] = $objet['tianguis_id'];
+		$local = $this -> marketsModel -> list_local($data);
+		$local = $local['rows'];
+		
+		require ('views/markets/modify_order.php');
+	}
+	
+///////////////// ******** ----						END modify_order					------ ************ //////////////////
+
 }
 
 ?>

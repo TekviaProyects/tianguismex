@@ -1,5 +1,8 @@
 <?php
+	date_default_timezone_set('America/Mexico_City');
 	setlocale(LC_ALL, "es_ES", 'Spanish_Spain', 'Spanish');
+	
+	$date = date('Y-m-d H:i:s');
 	
 	switch ($data['status']) {
 		case 1:
@@ -71,6 +74,25 @@
 					})">
 					Ver comprobante
 				</button><?php
+				
+				if (($data['end_date'] >= $date) && (empty($value['status_renew']))) { ?>
+					<button
+						data-toggle="modal"
+						data-target="#modal_pay"
+						class="btn btn-success btn-block"
+						id="btn_pay_<?php echo $value['id'] ?>"
+						data-loading-text="Cargando..."
+						onclick="
+							$('#btn_pay_store').attr('order_id', <?php echo $value['id'] ?>);
+							$('#btn_pay_store').attr('end_date', '<?php echo $value['end_date'] ?>');
+							$('#btn_pay_store').attr('client_id', <?php echo $value['client_id'] ?>);
+							$('#btn_pay_store').attr('tianguis_id', <?php echo $value['tianguis_id'] ?>);
+						">
+						Renovar
+					</button><?php
+				}
+				
+				
 				break;
 			case 2: ?>
 				<button class="btn btn-danger btn-block" disabled>

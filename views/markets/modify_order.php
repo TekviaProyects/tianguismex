@@ -1,78 +1,133 @@
 <?php
-// Validate the orders
-	if (empty($orders)) { ?>
-		<div align="center">
-			<h3>
-				<span class="label label-default">
-					* Sin resultados *
-				</span>
-			</h3>
+	if (empty($local)) { ?>
+		<div class="row">
+			<div class="col-sm-12" align="center">
+				<label>* No hay locales disponibles *</label><br /><br />
+				<button 
+					onclick="$('#menu_new_rent').click()"
+					class="btn btn-info">
+					Intentar de nuevo
+				</button>
+			</div>
 		</div><?php
-
+		
 		return;
 	}
 	
-	session_start();
+	$date = substr($objet['end_date'], 0, 8).'01'
 ?>
-<div class="row"><?php  
-	foreach ($orders as $key => $value) {
-		switch ($value['status_renew']) {
-			case 1:
-				$class = 'bg-success text-white'; 
-				$hide = 'display: none';
-				break;
-			case 2:
-				$class = 'bg-warning text-white'; 
-				$hide = '';
-				break;
+<style>
+	.available:hover {
+	    background-color: #58BC80;
+	}
+</style>
+<div class="row">
+	<div class="col-sm-12 col-md-4">
+		<button class="btn btn-info">Disponible</button>
+		<button class="btn btn-secondary" disabled="disabled">Ocupado</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12" style="overflow-x: scroll; width: 100%; padding: 15px;">
+		<table><?php
+			$row = 0;
+			$init = 1;
 			
-			default:
-				$class = ''; 
-				$hide = '';
-				break;
+			foreach ($local as $key => $value) {
+				$disabled = '';
+				$class = '';
+				
+				if ($value['cat_id'] != $objet['cat']) {
+					$disabled = ' disabled';
+					$class = 'default';
+				} else {
+					if($value['status'] == 2){
+						$unblock = 0;
+						foreach ($local_selected as $k => $v) {
+							if ($v['id'] == $value['id']) {
+								$unblock = 1;
+							}
+						}
+						
+						if ($unblock == 1) {
+							$disabled = '';
+							$class = 'info available';
+						} else {
+							$disabled = ' disabled';
+							$class = 'secondary';
+						}
+					}else{
+						$disabled = '';
+						$class = 'info available';
+					}
+				}
+				
+				if ($init == 1) {
+					$init = 0; 
+					$row = $value['y']; ?>
+					
+					<tr><?php
+				} 
+				
+				if($row != $value['y']){ 
+					$row = $value['y']; ?>
+					</tr>
+					<tr><?php
+				} 
+				
+				if (!empty($value['col'])) {
+					if (!empty($value['show'])) {
+						$value['date'] = $date;
+						$local = json_encode($value);
+						$local = str_replace('"', "'", $local); ?>
+						
+						<td 
+							id="tr_<?php echo $value['id'] ?>"
+							class="<?php echo $class ?>"
+							style="border: 1px solid; border-color: white" 
+							align="center"
+							colspan="<?php echo $value['col'] ?>" 
+							x="<?php echo $value['x'] ?>"
+							y="<?php echo $value['y'] ?>">
+							<button 
+								id="btn_<?php echo $value['id'] ?>"
+								onclick="local.select_local(<?php echo $local ?>)"
+								<?php echo $disabled ?> 
+								class="btn btn-block btn-<?php echo $class ?> btn-sm">
+								<?php echo $value['description'] ?>
+							</button>
+						</td><?php
+					} else { ?>
+						<td 
+							style="min-width: 20px" 
+							colspan="<?php echo $value['col'] ?>"
+							x="<?php echo $value['x'] ?>"
+							y="<?php echo $value['y'] ?>"></td><?php
+					}
+				}
+			} ?>
+			</tr>
+		</table>	
+	</div>
+</div>
+<div class="row" style="padding-top: 20px">
+	<div class="col-sm-12 col-md-2"><?php
+		if (empty($_SESSION['user'])) { ?>
+			<button
+				onclick="window.location.replace('cliente/login/')"
+			 	class="btn btn-info btn-block">
+				Iniciar sesión
+			</button><?php
+		}else{ ?>
+			<button
+				onclick="local.rent_local()"
+				id="btn_pay"
+				data-loading-text="Cargando..."
+				class="btn btn-primary btn-block">
+				Finalizar
+			</button><?php
 		} ?>
-		
-		<div class="col-sm-12 col-md-4">
-			<div class="card text-center <?php echo $class ?>" style="margin-bottom: 15px;">
-				<div class="card-header">
-					Folio: <?php echo $value['id'] ?>
-				</div>
-				<div class="card-body <?php echo $class ?>" style="height: 190px; overflow-y: auto">
-					$<?php echo $value['cost'] ?><br />
-					<?php echo $value['creation_date'] ?><br />
-					<?php echo $value['end_date'] ?><br />
-					<?php echo $value['description'] ?><br />
-				</div>
-				<div class="card-footer text-muted" style="<?php echo $hide ?>">
-					<button
-						data-toggle="modal"
-						data-target="#modal_pay"
-						class="btn btn-success btn-block"
-						id="btn_pay_<?php echo $value['id'] ?>"
-						data-loading-text="Cargando..."
-						onclick="
-							$('#btn_pay_store').attr('order_id', <?php echo $value['id'] ?>);
-							$('#btn_pay_store').attr('end_date', '<?php echo $value['end_date'] ?>');
-							$('#btn_pay_store').attr('client_id', <?php echo $value['client_id'] ?>);
-							$('#btn_pay_store').attr('tianguis_id', <?php echo $value['tianguis_id'] ?>);
-						">
-						Renovar
-					</button>
-					<button 
-						onclick="markets.modify_order({
-							tianguis_id: <?php echo $value['tianguis_id'] ?>,
-							end_date: '<?php echo $value['end_date'] ?>',
-							order_id: <?php echo $value['id'] ?>,
-							cat: <?php echo $value['cat_id'] ?>,
-							div: 'contenedor'
-						})"
-						class="btn btn-primary btn-block">
-						Modificar
-					</button>
-				</div>
-			</div>
-		</div><?php
-	} ?>
+	</div>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_pay">
 	<div class="modal-dialog" role="document">
@@ -97,20 +152,7 @@
 						</button>
 					</div>
 					<div class="col-sm-12 col-md-6" align="center">
-						<button 
-							order_id=""
-							end_date=""
-							client_id=""
-							tianguis_id=""
-							id="btn_pay_store" 
-							onclick="local.renew_store({
-								order_id: $(this).attr('order_id'),
-								end_date: $(this).attr('end_date'),
-								client_id: $(this).attr('client_id'),
-								tianguis_id: $(this).attr('tianguis_id')
-							})" 
-							class="btn btn-info" 
-							style="font-size: 40px">
+						<button id="btn_pay_store" onclick="local.pay_store()" class="btn btn-info" style="font-size: 40px">
 							<i class="fa fa-barcode"></i> Tienda
 						</button>
 					</div>
@@ -165,7 +207,6 @@
 	</div>
 </div>
 <script>
-	
 	OpenPay.setId('mngsvcdrvfxhfkedj98m');
 	OpenPay.setApiKey('pk_778e93fd95eb4206a7db26db9389efbc');
 	OpenPay.setSandboxMode(true);
@@ -194,12 +235,8 @@
 		});
 		
 		data.token_id = token_id;
-		data.order_id = $("#btn_pay_store").attr('order_id');
-		data.end_date = $("#btn_pay_store").attr('end_date');
-		data.client_id = $("#btn_pay_store").attr('client_id');
-		data.tianguis_id = $("#btn_pay_store").attr('tianguis_id');
 		
-		local.renew_card(data);
+		local.new_card_pay(data);
 	};
 
 	var error_callbak = function(response) {

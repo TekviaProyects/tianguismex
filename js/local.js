@@ -326,6 +326,11 @@ var local = {
 					showConfirmButton : true,
 					type : 'success'
 				});
+				
+				local.list_orders({
+					client_id: resp.client_id,
+					div: 'contenedor'
+				});
 			}, 500);
 		}).fail(function(resp) {
 			console.log('==========> fail !!! new_card_pay', resp);
@@ -540,14 +545,10 @@ var local = {
 		data.deviceIdHiddenFieldName = $objet.deviceIdHiddenFieldName;
 		
 		$.each(local.selects, function(index, value) {
-			total += parseFloat(value.cost);
 			data.date = value.date;
 			data.tianguis_id = value.tianguis_id;
 			data.cat_id = value.cat_id;
 		});
-		
-		data.total = total;
-		data.local = local.selects;
 		
 		console.log('==========> data', data);
 		
@@ -576,13 +577,13 @@ var local = {
 				return;
 			}
 			
-				swal({
-					title : 'Locales rentados',
-					text : 'La renovación de tus locales ha sido exitosa',
-					timer : 7000,
-					showConfirmButton : true,
-					type : 'success'
-				});
+			swal({
+				title : 'Locales rentados',
+				text : 'La renovación de tus locales ha sido exitosa',
+				timer : 7000,
+				showConfirmButton : true,
+				type : 'success'
+			});
 			
 			setTimeout(function(){
 				local.list_orders({
@@ -592,7 +593,7 @@ var local = {
 					div: 'contenedor',
 					status: 1
 				});
-			}, 500);
+			}, 1000);
 		}).fail(function(resp) {
 			console.log('==========> fail !!! renew_card', resp);
 			

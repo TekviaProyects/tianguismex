@@ -269,6 +269,8 @@ class local extends Common {
 				$data_update['id'] = $value['id'];
 				$resp['result'][$value['id']]['update'] = $this -> localModel -> update($data_update);
 			}
+			
+			$resp['client_id'] = $_SESSION['user']['id'];
 		}else{
 			$resp['status'] = 2;
 			$resp['test'] = $cargo;
@@ -622,14 +624,25 @@ class local extends Common {
 				$resp['result'][$value['id']]['update'] = $this -> localModel -> update($data_update);
 			}
 			
-		// Save renew
-			$data_renew['creation_date'] = $data['creation_date'];
-			$data_renew['order_id'] = $objet['order_id'];
-			$data_renew['new_order_id'] = $data['order_id'];
-			$data_renew['openpay_id'] = $cargo['result'] -> id;
-			$data_renew['end_date'] = $end_date;
-			$data_renew['status'] = 1;
-			$resp['save_renew'] = $this -> localModel -> save_renew($data_renew);
+		// Validate if the renovation exists
+			$check['status'] = ' 0';
+			$check['end_date'] = $end_date;
+			$check['order_id'] = $objet['order_id'];
+			$exists = $this -> localModel -> list_renovations($check);
+			if ($exists['total'] > 0) {
+				$data_renew['columns'] = ' status = 1';
+				$data_renew['id'] = $exists['rows'][0]['id'];
+				$resp['save_renew'] = $this -> localModel -> update_renew($data_renew);	
+			}else{
+			// Save renew
+				$data_renew['creation_date'] = $data['creation_date'];
+				$data_renew['order_id'] = $objet['order_id'];
+				$data_renew['new_order_id'] = $data['order_id'];
+				$data_renew['openpay_id'] = $cargo['result'] -> id;
+				$data_renew['end_date'] = $end_date;
+				$data_renew['status'] = 1;
+				$resp['save_renew'] = $this -> localModel -> save_renew($data_renew);	
+			}			
 		}else{
 			$resp['status'] = 2;
 			$resp['test'] = $cargo;
