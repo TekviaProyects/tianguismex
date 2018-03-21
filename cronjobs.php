@@ -111,7 +111,7 @@
 		return;
 	}
 	
-	$entry = "Saved info $date.\n---------------";
+	$entry = "Saved info $date.\n------------------------------\n";
 	$file = "log.txt";
 	$open = fopen($file,"a");
 	 
