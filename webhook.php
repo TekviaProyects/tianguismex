@@ -18,37 +18,37 @@
 
 
 //Correo al que decia recibir el codigo de verificacion puede cambiar de ser necesario
-		// $correo = "fertekvia@gmail.com";
-		// $mail = new PHPMailer();
-		// $mail -> IsSMTP();
-		// $mail -> SMTPAuth = true;
-		// $mail -> SMTPSecure = "ssl";
-		// $mail -> Host = "smtp.gmail.com";
-		// $mail -> Port = 465;
-		// $mail -> Username = "tekviaprogramacion@gmail.com";
-		// $mail -> Password = "tekvia123";
-// 
-		// //Correo e informacion del remitente
-		// $mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
-		// //Datos y contenido del correo
-		// $mail -> Subject = "Prueba de webhook";
-		// $mail -> AltBody = "Esta es la fecha";
-		// $algo = file_get_contents('php://input');
-		// // $algo = json_decode($algo);
-		// // $algo = "<pre>". var_dump($algo)."</pre>";var_dump($algo)
-		// $mail -> MsgHTML($algo);
-		// $mail -> AddReplyTo("$correo");
-		// $mail -> AddAddress("$correo");
-		// $mail -> IsHTML(true);
-// 
-		// //Envio de correo
-		// if (!$mail -> send()) {
-			// echo 'Message could not be sent.';
-			// echo 'Mailer Error: ' . $mail -> ErrorInfo;
-		// } else {
-			// echo 'Message has been sent';
-		// }
-		// return;
+		$correo = "fertekvia@gmail.com";
+		$mail = new PHPMailer();
+		$mail -> IsSMTP();
+		$mail -> SMTPAuth = true;
+		$mail -> SMTPSecure = "ssl";
+		$mail -> Host = "smtp.gmail.com";
+		$mail -> Port = 465;
+		$mail -> Username = "tekviaprogramacion@gmail.com";
+		$mail -> Password = "tekvia123";
+
+		//Correo e informacion del remitente
+		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
+		//Datos y contenido del correo
+		$mail -> Subject = "Prueba de webhook";
+		$mail -> AltBody = "Esta es la fecha";
+		$algo = file_get_contents('php://input');
+		// $algo = json_decode($algo);
+		// $algo = "<pre>". var_dump($algo)."</pre>";var_dump($algo)
+		$mail -> MsgHTML($algo);
+		$mail -> AddReplyTo("$correo");
+		$mail -> AddAddress("$correo");
+		$mail -> IsHTML(true);
+
+		//Envio de correo
+		if (!$mail -> send()) {
+			echo 'Message could not be sent.';
+			echo 'Mailer Error: ' . $mail -> ErrorInfo;
+		} else {
+			echo 'Message has been sent';
+		}
+		return;
 
 
 

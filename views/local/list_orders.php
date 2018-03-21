@@ -1,4 +1,5 @@
 <?php
+	session_start();
 // Validate the orders
 	if (empty($orders)) {?>
 		<div align="center">
@@ -7,12 +8,18 @@
 					* Sin resultados *
 				</span>
 			</h3>
+			<button 
+				onclick="local.list_orders({
+					client_id: <?php echo $_SESSION['user']['id'] ?>,
+					div: 'contenedor'
+				})"
+				class="btn btn-info">
+				Regresar
+			</button>
 		</div><?php
-
+		
 		return;
 	}
-
-	session_start();
 ?>
 <div class="row">
 	<div class="col-sm-12">

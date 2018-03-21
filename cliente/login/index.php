@@ -21,6 +21,7 @@ if (!empty($_SESSION['ide'])) {
 		<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 		<!-- Loader -->
 		<link rel="stylesheet" href="../../plugins/css3-preloader-transition-start/css/main.css">
+
 	</head>
 	<body>
 		<div class="animacion show" id="animacionA">
@@ -39,12 +40,26 @@ if (!empty($_SESSION['ide'])) {
 				<div class="inputs">
 					<input type="email"git name="" value="" placeholder="Correo" id="correo">
 					<input type="password" name="" value="" placeholder="Telefono" id="telefono">
-					<button type="button" name="button" id="btnEntrar">
+					<button type="button" name="button" id="btnEntrar" disabled="1">
 						Entrar
 					</button>
 					<button type="button" name="button" id="btnVolver">
 						Volver a inicio
 					</button>
+				</div>
+				<div style="padding: 10px 35px 10px 35px; font-size: 13px; text-align: center">
+					<label>
+						<input type="checkbox" id="check_confirm"> He leído y aceptado los términos y 
+						condiciones de uso, así como el Aviso de privacidad
+					</label>
+				</div>
+				<div align="center">
+					<a href="../../terminos.html" style="font-size: 15px; color: #0288D1;  text-decoration: none">
+						Términos y condiciones
+					</a><br />
+					<a href="../../aviso.html" style="font-size: 15px; color: #0288D1;  text-decoration: none">
+						Aviso de privacidad
+					</a>
 				</div>
 				<div class="recuperacion">
 					<a href="#" id="recuperar">Olvide mi contraseña</a>
@@ -54,7 +69,12 @@ if (!empty($_SESSION['ide'])) {
 			<div class="pie">
 				<span>Copyright © Tekvia 2018 Todos los Derechos Reservados.
 					<br>
-					Para obtener más información, consulte nuestras <a href="../../terminosycondiciones.pdf" target="_blank">Condiciones de uso</a> y la <a href="../../avisodeprivacidad.pdf" target="_blank">Política de privacidad.</a></span>
+					Para obtener más información, consulte nuestras. 
+					<a href="../../terminosycondiciones.pdf" target="_blank">
+					Condiciones de uso</a> y la <a href="../../avisodeprivacidad.pdf" target="_blank">
+						Política de privacidad.
+					</a>
+				</span>
 			</div>
 		</main>
 		<script>
@@ -73,9 +93,18 @@ if (!empty($_SESSION['ide'])) {
 
 			ga('create', 'UA-102248014-1', 'auto');
 			ga('send', 'pageview');
-
+			
+			enable_cb();
+			$("#check_confirm").click(enable_cb);
+			
+			function enable_cb() {
+				if (this.checked) {
+					$("#btnEntrar").removeAttr("disabled");
+				} else {
+					$("#btnEntrar").attr("disabled", true);
+				}
+			}
 		</script>
-
 	</body>
 	<script src="../assets/sweetalert/dist/sweetalert2.min.js"></script>
 	<script src="../assets/semantic/semantic.min.js"></script>

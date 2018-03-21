@@ -515,6 +515,7 @@ class local extends Common {
 			$data_renew['end_date'] = $end_date;
 			$resp['save_renew'] = $this -> localModel -> save_renew($data_renew);
 			
+			$resp['check_date'] = date('Y-m-d H:i:s');
 			$resp['client_id'] = $objet['client_id'];
 			echo json_encode($resp);
 		} catch(Exception $e) {

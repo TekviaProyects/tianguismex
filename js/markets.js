@@ -326,7 +326,7 @@ var markets = {
 		"use strict";
 		console.log('==========> $objet modify_order', $objet);
 		
-	// Hide menu on mobile
+	// Hide menu on mobile and modal details
 		$("#wrapper").removeClass("toggled");
 		
 		$.ajax({

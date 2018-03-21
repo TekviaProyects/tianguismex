@@ -216,11 +216,6 @@ class markets extends Common {
 		$local_selected = $this -> marketsModel -> list_local($objet);
 		$local_selected = $local_selected['rows'];
 		
-		
-		echo "<pre>", print_r($local_selected), "</pre>";
-		
-		
-		
 	// List locals
 		$data['tianguis_id'] = $objet['tianguis_id'];
 		$local = $this -> marketsModel -> list_local($data);

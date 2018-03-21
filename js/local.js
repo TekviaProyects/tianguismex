@@ -503,6 +503,7 @@ var local = {
 			link.download = 'ficha.pdf';
 			link.dispatchEvent(new MouseEvent('click'));
 			
+			$("#modal_details").modal("hide");
 			$("#modal_pay").modal("hide");
 			
 			swal({
@@ -512,6 +513,16 @@ var local = {
 				showConfirmButton : true,
 				type : 'success'
 			});
+			
+			setTimeout(function(){
+				local.list_orders({
+					client_id: $objet.client_id,
+					check_date: resp.check_date,
+					view: 'list_renovations',
+					div: 'contenedor',
+					status: 1
+				});
+			}, 1000);
 		}).fail(function(resp) {
 			console.log('==========> fail !!! renew_store', resp);
 			
@@ -563,6 +574,7 @@ var local = {
 			$("#pay-button").prop("disabled", false);
 			$("#pay-button").html("Pagar");
 			
+			$("#modal_details").modal("hide");
 			$("#modal_pay").modal('hide');
 			
 			if(resp.status !== 1){

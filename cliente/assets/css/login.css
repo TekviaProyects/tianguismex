@@ -50,7 +50,7 @@ main{
 }
 .contenedorPrincipal{
   padding-top: 60px;
-  height: auto;
+  height: 600px !important;
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
