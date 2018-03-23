@@ -212,8 +212,9 @@ class markets extends Common {
 	// If not, take its normal value
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
 	
-	// List locals selected
+	// List locals selected and the total
 		$local_selected = $this -> marketsModel -> list_local($objet);
+		$total_selected = $local_selected['total'];
 		$local_selected = $local_selected['rows'];
 		
 	// List locals
@@ -221,7 +222,9 @@ class markets extends Common {
 		$local = $this -> marketsModel -> list_local($data);
 		$local = $local['rows'];
 		
-		require ('views/markets/modify_order.php');
+		$view = (!empty($objet['view'])) ? $objet['view'] : 'modify_order';
+		
+		require ('views/markets/'.$view.'.php');
 	}
 	
 ///////////////// ******** ----						END modify_order					------ ************ //////////////////

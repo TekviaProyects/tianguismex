@@ -337,6 +337,10 @@ var markets = {
 		}).done(function(resp) {
 			console.log('==========> done modify_order', resp);
 			
+			local.total_selected = 0;
+			local.selects = {};
+			local.total = 0;
+			
 			$("#"+$objet.div).html(resp);
 		}).fail(function(resp) {
 			console.log('==========> fail !!! modify_order', resp);

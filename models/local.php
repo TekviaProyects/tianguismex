@@ -160,7 +160,8 @@ class localModel extends Connection {
 		$condition .= (!empty($objet['order'])) ? ' ORDER BY \''.$objet['order'].'\'' : ' ORDER BY o.id DESC';
 		
 		$sql = "SELECT
-					o.*, r.status AS status_renew, l.cat_id 
+					o.*, r.status AS status_renew, l.cat_id, c.celular_cliente AS tel, c.nombre_cliente AS client_name,
+					c.correo_cliente AS client_mail
 				FROM
 					orders o
 				LEFT JOIN
@@ -175,6 +176,10 @@ class localModel extends Connection {
 						local l
 					ON
 						l.id = h.local_id
+				LEFT JOIN
+						clientes c
+					ON
+						c.id_cliente = o.client_id
 				WHERE
 					1 = 1".
 				$condition;
@@ -355,6 +360,84 @@ class localModel extends Connection {
 	}
 	
 ///////////////// ******** ----						END update_renew					------ ************ //////////////////
+	
+///////////////// ******** ----						free								------ ************ //////////////////
+//////// Free the local of the order
+	// The parameters that can receive are:
+		// order_id -> Order ID
+		// creation_date -> Order creation date
+	
+	function free($objet) {
+		date_default_timezone_set("America/Mexico_City");
+		$date = date('Y-m-d H:i:s');
+		
+		$sql = "UPDATE
+					local l
+				INNER JOIN
+						historical h
+					ON
+						h.local_id = l.id
+				SET
+					l.status = 1
+				WHERE
+					h.order_id = ".$objet['order_id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		$sql = "INSERT INTO 
+					free_local(order_id, date, order_creation_date) 
+				VALUES(".$objet['order_id'].", '$date', '".$objet['creation_date']."')";
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END free							------ ************ //////////////////
+	
+///////////////// ******** ----						update_historical					------ ************ //////////////////
+//////// Update the historical information on the DB
+	// The parameters that can receive are:
+		// columns -> String with the columns afected
+		// id -> Local ID
+	
+	function update_historical($objet) {
+		$sql = "UPDATE 
+					historical
+				SET ".
+					$objet['columns']." 
+				WHERE
+					id = ".$objet['id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END update_historical				------ ************ //////////////////
+	
+///////////////// ******** ----						save_change							------ ************ //////////////////
+//////// Save the change data on the DB
+	// The parameters that can receive are:
+		// order_id -> Order ID 
+		// description -> Change description
+		
+	function save_change($objet) {
+		$status = (!empty($objet['status'])) ? $objet['status'] : 0;
+		date_default_timezone_set("America/Mexico_City");
+		$date = date('Y-m-d H:i:s');
+		
+		$sql = "INSERT INTO
+					changes(order_id, date, description)
+				VALUES
+					('".$objet['order_id']."', '$date', '".$objet['description']."')";
+		// return $sql;
+		$result = $this -> insert_id($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END save_change						------ ************ //////////////////
 	
 }
 

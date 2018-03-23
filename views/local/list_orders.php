@@ -46,13 +46,18 @@
 					</div>
 				</div><br />
 				<div class="d-sm-none d-none d-md-block">
-					<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="orders_table">
+					<table 
+						style="font-size: 1rem" 
+						class="table table-striped table-bordered" 
+						cellspacing="0" 
+						width="100%" 
+						id="orders_table">
 						<thead>
 							<tr>
-								<th>Folio</th>
-								<th>Total</th>
-								<th>Fecha de ingreso</th>
-								<th>Fecha de caducidad</th>
+								<th>Creación</th>
+								<th>Descripción</th>
+								<th>Telefono</th>
+								<th>Monto</th>
 								<th>Detalles</th>
 								<th>Estado</th>
 							</tr>
@@ -60,10 +65,10 @@
 						<tbody><?php
 							foreach ($orders as $key => $value) { ?>
 								<tr class="">
-									<td><?php echo $value['id'] ?></td>
+									<td align="center"><?php echo $value['creation_date'] ?></td>
+									<td><?php echo $value['description'] ?></td>
+									<td><?php echo $value['tel'] ?></td>
 									<td>$<?php echo $value['cost'] ?></td>
-									<td><?php echo $value['creation_date'] ?></td>
-									<td><?php echo $value['end_date'] ?></td>
 									<td align="center">
 										<button
 											data-toggle="modal"
@@ -122,9 +127,10 @@
 								Folio: <?php echo $value['id'] ?>
 							</div>
 							<div class="card-body">
-								<p class="card-text"><?php echo $value['cost'] ?></p>
 								<p class="card-text"><?php echo $value['creation_date'] ?></p>
-								<p class="card-text"><?php echo $value['end_date'] ?></p>
+								<p class="card-text"><?php echo $value['description'] ?></p>
+								<p class="card-text"><?php echo $value['tel'] ?></p>
+								<p class="card-text">$<?php echo $value['cost'] ?></p>
 							</div>
 							<div class="card-footer text-muted">
 								<button
@@ -215,6 +221,36 @@
 	        header: true,
 	        footer: true
 	    },
+        dom: 'Bfrtip',
+	    buttons: [
+			{
+				title: 'Movimientos',
+				className: 'btn btn-secundary',
+				text: 'Imprimir',
+		        extend: 'print',
+		        exportOptions: {
+		            columns: '0, 1, 2, 3'
+		        }
+	       },
+	       {
+				title: 'Movimientos',
+				className: 'btn btn-success',
+				text: 'Excel',
+		        extend: 'excel',
+		        exportOptions: {
+		            columns: '0, 1, 2, 3'
+		        }
+	       },
+	       {
+				title: 'Movimientos',
+				className: 'btn btn-danger',
+				text: 'PDF',
+		        extend: 'pdf',
+		        exportOptions: {
+		            columns: '0, 1, 2, 3'
+		        }
+	       }
+	    ],
 	    order: [[ 0, "desc"]],
 	    scrollX: true,
 		language : {

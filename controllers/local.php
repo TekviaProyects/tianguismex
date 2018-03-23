@@ -657,6 +657,61 @@ class local extends Common {
 	
 ///////////////// ******** ----						END renew_card						------ ************ //////////////////
 
+///////////////// ******** ----							free							------ ************ //////////////////
+//////// Free the local of the order
+	// The parameters that can receive are:
+		// order_id -> Order ID
+		// creation_date -> Order creation date
+	
+	function free($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		$resp['result'] = $this -> localModel -> free($objet);
+		echo json_encode($resp);	
+	}
+	
+///////////////// ******** ----						END free							------ ************ //////////////////
+
+///////////////// ******** ----							change							------ ************ //////////////////
+//////// Free the local of the order
+	// The parameters that can receive are:
+		// order_id -> Order ID
+		// creation_date -> Order creation date
+	
+	function change($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$description = 'Actualizo los locales: ';
+		$resp['status'] = 1;
+		
+		$new_local = array_values($objet['local']);
+		
+		$old_local = $this -> localModel -> list_historical($objet);
+		$old_local = $old_local['rows'];
+		
+		foreach ($old_local as $key => $value) {
+			$data['id'] = $value['id'];
+			$data['columns'] = ' local_id = '.$new_local[$key]['id'];
+			$resp[$value['id']] = $this -> localModel -> update_historical($data);
+			
+			$description .= $value['text_local'].' a '.$new_local[$key]['description'].', ';
+		}
+		$description = substr($description, 0, -2);
+		
+		
+		$data_change['description'] = $description;
+		$data_change['order_id'] = $objet['order_id'];
+		$resp['change'] = $this -> localModel -> save_change($data_change);
+			
+		echo json_encode($resp);	
+	}
+	
+///////////////// ******** ----						END change							------ ************ //////////////////
+
 }
 
 ?>

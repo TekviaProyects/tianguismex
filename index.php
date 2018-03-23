@@ -210,8 +210,23 @@
 					</li>
 				</ul><br />
 				<div>
-					<a href="terminos.html" style="color: grey !important;">Términos y condiciones</a> <br />
-					<a href="aviso.html" style="color: grey !important;">Aviso de privacidad</a>
+					<a 	
+						onclick="main.load_terms({
+							div: 'contenedor'
+						})"
+						href="#contenedor" 
+						style="color: grey !important;">
+						Términos y condiciones
+					</a> <br />
+					<a 
+						
+						onclick="main.load_privacy({
+							div: 'contenedor'
+						})"
+						href="#contenedor" 
+						style="color: grey !important;">
+						Aviso de privacidad
+					</a>
 				</div>
 			</div>
 			<!-- /#sidebar-wrapper -->
@@ -292,7 +307,7 @@
 				<div id="div_search_results"></div>
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-12" id="contenedor">
+						<div class="col-sm-12" id="contenedor" style="height: 100vh">
 							<div class="row" style="display: none">
 								<div class="col-sm-6 col-md-3">
 									<div
@@ -368,7 +383,13 @@
 	<!-- bootstrap -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 	<!-- dataTables  -->
-		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/b-1.5.1/datatables.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/b-1.5.1/b-html5-1.5.1/b-print-1.5.1/sc-1.4.4/datatables.min.css"/>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/b-1.5.1/b-html5-1.5.1/b-print-1.5.1/sc-1.4.4/datatables.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 	<!-- sweetalert -->
 		<!-- <script type="text/javascript" src="plugins/sweetalert-master/dist/sweetalert.min.js"></script> -->
 		<script type="text/javascript" src="https://unpkg.com/sweetalert2@7.11.0/dist/sweetalert2.all.js"></script>
@@ -412,6 +433,7 @@
 		<script src="js/local.js"></script>
 		<script src="js/users.js"></script>
 		<script src="js/markets.js"></script>
+		<script src="js/main.js"></script>
 		
 <!-- /////////////////// ===================			END JS						=================== /////////////////// -->
 

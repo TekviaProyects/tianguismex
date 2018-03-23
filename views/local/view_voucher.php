@@ -14,8 +14,15 @@
 		<div class="col-sm-12 col-md-6">
 			<label><b>Monto</b>: $<?php echo $data['cost'] ?></label>
 		</div>
-	</div>
-	<div class="row">
+		<div class="col-sm-12 col-md-6">
+			<label><b>Folio</b>: <?php echo $data['id'] ?></label>
+		</div>
+		<div class="col-sm-12 col-md-6">
+			<label><b>Nombre</b>: <?php echo $data['client_name'] ?></label>
+		</div>
+		<div class="col-sm-12 col-md-6">
+			<label><b>Correo</b>: <?php echo $data['client_mail'] ?></label>
+		</div>
 		<div class="col-sm-12 col-md-6">
 			<label>
 				<b>Fecha de creacion</b>: <?php 

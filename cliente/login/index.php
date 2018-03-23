@@ -21,7 +21,6 @@ if (!empty($_SESSION['ide'])) {
 		<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 		<!-- Loader -->
 		<link rel="stylesheet" href="../../plugins/css3-preloader-transition-start/css/main.css">
-
 	</head>
 	<body>
 		<div class="animacion show" id="animacionA">
@@ -93,10 +92,10 @@ if (!empty($_SESSION['ide'])) {
 
 			ga('create', 'UA-102248014-1', 'auto');
 			ga('send', 'pageview');
-			
+		
+		// Validate check
 			enable_cb();
 			$("#check_confirm").click(enable_cb);
-			
 			function enable_cb() {
 				if (this.checked) {
 					$("#btnEntrar").removeAttr("disabled");

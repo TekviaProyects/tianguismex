@@ -50,7 +50,23 @@
 				</button><?php
 				
 				return;
-			} ?>
+			}
+			
+			if (!empty($_REQUEST['tianguis_id'])) { ?>
+				<button 
+					onclick="local.list_orders({
+						tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+						div: 'contenedor',
+						view: 'list_orders_admin'
+					})"
+					class="btn btn-info">
+					Regresar
+				</button><?php
+				
+				return;
+			}
+			
+			?>
 		</div><?php
 		
 		return;
@@ -82,6 +98,18 @@
 							<option value="1">Pagadas</option>
 							<option value="2">Canceladas</option>
 						</select>
+					</div>
+					<div class="col-sm-12 col-md-2"><?php
+						if (!empty($_REQUEST['client_id'])) { ?>
+							<button 
+								onclick="users.list_clients({
+									tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+									div: 'contenedor'
+								})"
+								class="btn btn-info">
+								Regresar
+							</button><?php
+						} ?>
 					</div>
 				</div><br />
 				<div class="d-sm-none d-none d-md-block">
@@ -185,6 +213,36 @@
 <script>
 	$('#orders_table').DataTable({
 	    order: [[ 0, "desc"]],
+        dom: 'Bfrtip',
+	    buttons: [
+			{
+				title: 'Movimientos',
+				className: 'btn btn-secundary',
+				text: 'Imprimir',
+		        extend: 'print',
+		        exportOptions: {
+		            columns: '0, 1, 2, 3'
+		        }
+	       },
+	       {
+				title: 'Movimientos',
+				className: 'btn btn-success',
+				text: 'Excel',
+		        extend: 'excel',
+		        exportOptions: {
+		            columns: '0, 1, 2, 3'
+		        }
+	       },
+	       {
+				title: 'Movimientos',
+				className: 'btn btn-danger',
+				text: 'PDF',
+		        extend: 'pdf',
+		        exportOptions: {
+		            columns: '0, 1, 2, 3'
+		        }
+	       }
+	    ],
 		language : {
 			destroy: true,
 			search : "<i class=\"fa fa-search\"></i>",

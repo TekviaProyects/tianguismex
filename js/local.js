@@ -3,7 +3,9 @@
 /*jslint browser: true*/
 var local = {
 // Initialize vars
+	total_selected: 0,
 	selects : {},
+	total: 0,
 
 ///////////////// ******** ----							 view_new							------ ************ //////////////////
 //////// Load the view to new local
@@ -24,6 +26,9 @@ var local = {
 			dataType : 'html'
 		}).done(function(resp) {
 			console.log('==========> done view_new', resp);
+			
+			local.total_selected = 0;
+			local.total = 0;
 			
 			$("#"+$objet.div).html(resp);
 		}).fail(function(resp) {
@@ -53,17 +58,32 @@ var local = {
 	// Hide menu on mobile
 		$("#wrapper").removeClass("toggled");
 		
+		
 		if(local.selects[$objet.id]){
 			delete local.selects[$objet.id];
+			local.total_selected --;
 			
 			$("#btn_"+$objet.id).removeClass("btn-success").addClass("btn-info");
 		}else{
-			local.selects[$objet.id] = $objet;
-			
-			$("#btn_"+$objet.id).removeClass("btn-info").addClass("btn-success");
+			if(local.total > 0 && local.total_selected >= local.total){
+				swal({
+					title : 'Cantidad no valida',
+					text : 'Debes seleccionar maximo '+local.total+' locales.',
+					timer : 5000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+			}else{
+				local.selects[$objet.id] = $objet;
+				local.total_selected ++;
+				
+				$("#btn_"+$objet.id).removeClass("btn-info").addClass("btn-success");
+			}
 		}
 		
+		console.log('==========> total_selected', local.total_selected);
 		console.log('==========> selects', local.selects);
+		console.log('==========> total', local.total);
 	},
 	
 ///////////////// ******** ----						END select_local						------ ************ //////////////////
@@ -233,6 +253,9 @@ var local = {
 				client_id: resp.client_id,
 				div: 'contenedor'
 			});
+			
+			local.total_selected = 0;
+			local.total = 0;
 		}).fail(function(resp) {
 			console.log('==========> fail !!! rent_local', resp);
 			
@@ -332,6 +355,9 @@ var local = {
 					div: 'contenedor'
 				});
 			}, 500);
+			
+			local.total_selected = 0;
+			local.total = 0;
 		}).fail(function(resp) {
 			console.log('==========> fail !!! new_card_pay', resp);
 			
@@ -620,8 +646,168 @@ var local = {
 				type : 'error'
 			});
 		});
-	}
+	},
 
 ///////////////// ******** ----						END renew_card						------ ************ //////////////////
+
+///////////////// ******** ----						free								------ ************ //////////////////
+//////// Free the local of the order
+	// The parameters that can receive are:
+		// order_id -> Order ID
+		// creation_date -> Order creation date
+		
+	free : function($objet){
+		"use strict";
+		console.log('==========> $objet free', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=free',
+			type : 'post',
+			dataType : 'json'
+		}).done(function(resp) {
+			console.log('==========> Done free', resp);
+			
+			$("#modal_free").modal('hide');
+			$("#modal_details").modal("hide");
+			
+			if(resp.status !== 1){
+				swal({
+					title : 'Error',
+					text : resp.message,
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				return;
+			}
+			
+			swal({
+				title : 'Locales liberados',
+				text : 'Los locales han sido  liberados exitosamente',
+				timer : 7000,
+				showConfirmButton : true,
+				type : 'success'
+			});
+		}).fail(function(resp) {
+			console.log('==========> fail !!! renew_card', resp);
+			
+			$("#pay-button").prop("disabled", false);
+			$("#pay-button").html("Pagar");
+		
+			swal({
+				title : 'Error',
+				text : 'Error al generar el pago',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+
+///////////////// ******** ----						END free							------ ************ //////////////////
+
+///////////////// ******** ----						change								------ ************ //////////////////
+//////// Rent a local
+	// The parameters that can receive are:
+		
+	change : function($objet){
+		"use strict";
+		console.log('==========> $objet change', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		if(jQuery.isEmptyObject(local.selects)){
+			swal({
+				title : 'Local no valido',
+				text : 'Debes seleccionar un local para continuar',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'warning'
+			});
+			
+			return;
+		}
+		
+		if(local.total > local.total_selected){
+			swal({
+				title : 'Local no valido',
+				text : 'Debes seleccionar el mismo numero de locales de la orden',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'warning'
+			});
+			
+			return;
+		}
+		
+		var text = 'Los locales se cambiaran por:';
+		
+		$.each(local.selects, function(index, value) {
+			text += '<br> Local '+value.description;
+		});
+		
+		$objet.local = local.selects;
+		console.log('==========> data', $objet);
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=local&f=change',
+			type : 'post',
+			dataType : 'json'
+		}).done(function(resp) {
+			console.log('==========> Done change', resp);
+			
+			if(resp.status !== 1){
+				swal({
+					title : 'Error',
+					text : resp.message,
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				return;
+			}
+		
+		// Clean vars
+			local.total_selected = 0;
+			local.selects = {};
+			local.total = 0;
+			
+			setTimeout(function(){
+				swal({
+					title : 'Locales cambiados',
+					text : 'Los locales han sido cambiados con exito',
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'success'
+				});
+				
+				local.list_orders({
+					tianguis_id: resp.tianguis_id,
+					div: 'contenedor',
+					view: 'list_orders_admin'
+				});
+			}, 500);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! renew_card', resp);
+		
+			swal({
+				title : 'Error',
+				text : 'Error al cambiar los locales',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END change							------ ************ //////////////////
 
 };
