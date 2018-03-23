@@ -31,7 +31,12 @@ class markets extends Common {
 	function list_markets($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
+		session_start();
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		if ($objet['send'] != 1) {
+			$_SESSION['current'] = $objet;
+		}
 		
 		$markets = $this -> marketsModel -> list_markets($objet);
 		$markets = $markets['rows'];
@@ -49,7 +54,12 @@ class markets extends Common {
 	function list_cats($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
+		session_start();
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		if ($objet['send'] != 1) {
+			$_SESSION['current'] = $objet;
+		}
 		
 		$cats = $this -> marketsModel -> list_cats($objet);
 		$cats = $cats['rows'];
@@ -70,6 +80,12 @@ class markets extends Common {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		if ($objet['send'] != 1) {
+			$_SESSION['current'] = $objet;
+		}
 		
 		$local = $this -> marketsModel -> list_local($objet);
 		$local = $local['rows'];

@@ -439,12 +439,23 @@
 
 	</body>
 </html>
-
-<script>
-	local.view_new({
-		div: 'contenedor'
-	});
-			
+<script><?php 
+	if (!empty($_SESSION['current']['f'])) {
+		$objet = $_SESSION['current'];
+		$_SESSION['current'] = '';
+		unset($_SESSION['current']);
+		
+		$objet['send'] = 1;
+		$data = json_encode($objet);
+		$data = str_replace('"', "'", $data);
+		
+		echo $objet['c'].".".$objet['f']."(".$data.")";
+	}else{ ?>
+		local.view_new({
+			div: 'contenedor'
+		});<?php
+	} ?>
+	
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
 		$("#wrapper").toggleClass("toggled");
