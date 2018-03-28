@@ -23,7 +23,7 @@
 	    background-color: #58BC80;
 	}
 </style>
-<h1 id="">hoalasdlja k ase</h1>
+<h1>Cambiar locales</h1>
 <div class="row">
 	<div class="col-sm-12 col-md-4">
 		<button class="btn btn-info">Disponible</button>
@@ -141,44 +141,5 @@
 	</div>
 </div>
 <script>
-	OpenPay.setId('mngsvcdrvfxhfkedj98m');
-	OpenPay.setApiKey('pk_778e93fd95eb4206a7db26db9389efbc');
-	OpenPay.setSandboxMode(true);
-//Se genera el id de dispositivo
-	var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
-
-	$('#pay-button').on('click', function(event) {
-		event.preventDefault();
-		$("#pay-button").prop("disabled", true);
-		$("#pay-button").html("Cargando...");
-		OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);
-	});
-	
-	var sucess_callbak = function(response) {
-		console.log("================> sucess_callbak", response);
-		
-		var token_id = response.data.id,
-			data = {};
-		
-		$("#payment-form").find(':input').each(function(key, value){
-			var id = this.id;
-			
-			if(id){
-				data[id] = $(this).val();
-			}
-		});
-		
-		data.token_id = token_id;
-		
-		local.new_card_pay(data);
-	};
-
-	var error_callbak = function(response) {
-		var desc = response.data.description != undefined ? response.data.description : response.message;
-		alert("Datos no validos");
-		$("#pay-button").prop("disabled", false);
-		$("#pay-button").html("Pagar");
-	};
-	
 	local.total = parseInt(<?php echo $total_selected ?>, 10);
 </script>

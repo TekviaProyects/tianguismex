@@ -245,6 +245,119 @@ class markets extends Common {
 	
 ///////////////// ******** ----						END modify_order					------ ************ //////////////////
 
+///////////////// ******** ----						view_login							------ ************ //////////////////
+//////// Load the login view.
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+	
+	function view_login($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		require ('views/markets/view_login.php');
+	}
+	
+///////////////// ******** ----						END view_login						------ ************ //////////////////
+
+///////////////// ******** ----						login								------ ************ //////////////////
+//////// Vliadate if the tianguis exists.
+	// The parameters that can receive are:
+		// mail -> Tianguis mail.
+		// tel -> Tianguis phone number.
+	
+	function login($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+	// Check market
+		$exists = $this -> marketsModel -> list_markets($objet);
+		
+		if($exists['total'] > 0){
+			$_SESSION['tianguis'] = $exists['rows'][0];
+			$_SESSION['tianguis']['id'] = $exists['rows'][0]['id_tianguis'];
+			$_SESSION['tianguis']['nombre'] = $exists['rows'][0]['nombre_tianguis'];
+		}else{
+			$resp['status'] = 2;
+		}
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END login							------ ************ //////////////////
+
+///////////////// ******** ----						logout								------ ************ //////////////////
+//////// Log out session
+	// The parameters that can receive are:
+	
+	function logout($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		$_SESSION['tianguis'] = '';
+		unset($_SESSION['tianguis']);
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END logout							------ ************ //////////////////
+
+///////////////// ******** ----						view_profile						------ ************ //////////////////
+//////// Load the profile view.
+	// The parameters that can receive are:
+	
+	function view_profile($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+		require ('views/markets/view_profile.php');
+	}
+	
+///////////////// ******** ----						END view_profile					------ ************ //////////////////
+
+///////////////// ******** ----						update								------ ************ //////////////////
+//////// Log out session
+	// The parameters that can receive are:
+	
+	function update($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		if($_FILES['logo']){
+			$estructura = 'data_tianguis/'.$_SESSION['tianguis']['id'];
+			mkdir($estructura, 0777, true);
+			
+			$image = 'data_tianguis/'.$_SESSION['tianguis']['id'].'/'.date('s').basename($_FILES['logo']['name']);
+			move_uploaded_file($_FILES['logo']['tmp_name'], $image);
+			
+			$objet['logo'] = $image;
+		}
+		
+		if (!empty($objet['pass'])) {
+			$objet['pass'] = md5($objet['pass']);
+		}
+		
+		$objet['id'] = $_SESSION['tianguis']['id'];
+		$resp['result'] = $this -> marketsModel -> update($objet);
+		
+		$_SESSION['tianguis'] = $objet;
+		$_SESSION['tianguis']['nombre'] = $objet['name'];
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END update							------ ************ //////////////////
+
 }
 
 ?>

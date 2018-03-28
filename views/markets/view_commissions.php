@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<h1>Test</h1>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="signup-form-container">

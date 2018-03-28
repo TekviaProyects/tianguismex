@@ -353,8 +353,117 @@ var markets = {
 				type : 'error'
 			});
 		});
-	}
+	},
 	
 ///////////////// ******** ----						END modify_order					------ ************ //////////////////
+
+///////////////// ******** ----							 view_login						------ ************ //////////////////
+//////// Load the login view.
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		
+	view_login : function($objet){
+		"use strict";
+		console.log('==========> $objet view_login', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=view_login',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_login', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_new', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+	
+///////////////// ******** ----						END view_login						------ ************ //////////////////
+
+///////////////// ******** ----						logout								------ ************ //////////////////
+//////// Log out session
+	// The parameters that can receive are:
+		
+	logout : function($objet){
+		"use strict";
+		console.log('==========> $objet logout', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=logout',
+			type : 'post',
+			dataType : 'json',
+			async : false
+		}).done(function(resp) {
+			console.log('==========> done logout', resp);
+			
+			location.reload();
+		}).fail(function(resp) {
+			console.log('==========> fail !!! logout', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cerrar la sesión',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+	
+///////////////// ******** ----						END logout							------ ************ //////////////////
+
+///////////////// ******** ----						view_profile						------ ************ //////////////////
+//////// Load the profile view.
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		
+	view_profile : function($objet){
+		"use strict";
+		console.log('==========> $objet view_profile', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		$("#collapseExample").removeClass("show");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=markets&f=view_profile',
+			type : 'post',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log('==========> done view_login', resp);
+			
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! view_new', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'A ocurrido un error al cargar los datos',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+	
+///////////////// ******** ----						END view_login						------ ************ //////////////////
 
 };

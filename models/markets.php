@@ -13,6 +13,10 @@ class marketsModel extends Connection {
 	function list_markets($objet) {
 	// Filter by the state
 		$condition .= (!empty($objet['state'])) ? ' AND t.estado_tianguis = '.$objet['state'] : '' ;
+	// Filter by the mail
+		$condition .= (!empty($objet['mail'])) ? ' AND t.mail_notification = \''.$objet['mail'].'\'' : '' ;
+	// Filter by the tel
+		$condition .= (!empty($objet['pass'])) ? ' AND t.pass = \''.md5($objet['pass']).'\'' : '' ;
 		
 	// Group
 		$condition .= (!empty($objet['group'])) ? ' GROUP BY = \''.$objet['group'].'\'' : ' GROUP BY t.id_tianguis';
@@ -181,7 +185,50 @@ class marketsModel extends Connection {
 	
 ///////////////// ******** ----						END data_market						------ ************ //////////////////
 	
-
+///////////////// ******** ----						update								------ ************ //////////////////
+//////// Check the data market in the DB and return into array
+	// The parameters that can receive are:
+	
+	function update($objet) {
+		$data = (!empty($objet['logo'])) ? " ,logo = '".$objet['logo']."'" : '';
+		$data .= (!empty($objet['pass'])) ? " ,pass = '".$objet['pass']."'" : '';
+		
+		$sql = "UPDATE
+					tianguis 
+				SET
+					mail_notification = '".$objet['mail_notifications']."', 
+					comercial_name = '".$objet['comercial_name']."', 
+					support_mail = '".$objet['support_mail']."', 
+					municipality = '".$objet['municipality']."', 
+					person_type = '".$objet['person_type']."', 
+					contact_tel = '".$objet['contact_tel']."', 
+					nombre_tianguis = '".$objet['name']."', 
+					bank_name = '".$objet['bank_name']."', 
+					reference = '".$objet['reference']."', 
+					country = '".$objet['country']."', 
+					num_ext = '".$objet['num_ext']."', 
+					num_int = '".$objet['num_int']."', 
+					colony = '".$objet['colony']."', 
+					street = '".$objet['street']."', 
+					state = '".$objet['state']."',
+					bank = '".$objet['bank']."', 
+					city = '".$objet['city']."', 
+					curp = '".$objet['curp']."', 
+					`key` = '".$objet['key']."', 
+					rfc = '".$objet['rfc']."', 
+					cp = '".$objet['cp']."'".
+					$data." 
+				WHERE
+					id_tianguis = ".$objet['id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END update							------ ************ //////////////////
+	
+	
 	function create_map($objet){
 		$x = 1;
 		$y = 1;

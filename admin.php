@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	$_SESSION['tianguis']['id'] = 1;
 ?>
 
 <!DOCTYPE HTML>
@@ -174,9 +173,7 @@
 					<li>
 						<a
 							id="menu_reports"
-							onclick="local.view_new({
-								div: 'contenedor'
-							});"
+							onclick=""
 							href="#">
 							<i class="fa fa-chart-bar" aria-hidden="true"></i> Reportes
 						</a>
@@ -300,10 +297,12 @@
 						</ul>
 						<ul class="navbar-nav">
 							<li class="nav-item"><?php
-								if (empty($_SESSION['user'])) { ?>
+								if (empty($_SESSION['tianguis']['id'])) { ?>
 									<button 
 										id="btn_iniciar_sesion"
-										onclick="window.location.replace('cliente/login/')"
+										onclick="markets.view_login({
+											div: 'contenedor'
+										});"
 										class="btn btn-info" style="margin-top: -20px">
 										Iniciar sesión
 									</button><?php
@@ -317,18 +316,16 @@
 										 aria-controls="collapseExample">
 										 <img
 										 	style="max-width: 30px"
-										 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png"
+										 	src="users_files/<?php echo $_SESSION['tianguis']['id'] ?>/perfil.png"
 											onerror="this.src='images/photos/loggeduser.png';"
 											class="profile-image img-circle">
-										 <?php echo $_SESSION['user']['nombre'] ?></h4>
+										 <?php echo $_SESSION['tianguis']['nombre'] ?></h4>
 									</button>
 									<div class="collapse" id="collapseExample">
 										<a
 											class="dropdown-item"
-											onclick="users.view_profile({
-												div: 'contenedor',
-												mail: '<?php echo $_SESSION['user']['mail'] ?>',
-												from_user: 1
+											onclick="markets.view_profile({
+												div: 'contenedor'
 											})"
 											href="#">
 											<i class="fa fa-user"></i> Editar Perfil
@@ -338,13 +335,15 @@
 											class="dropdown-item"
 											onclick="help_desk.view_user_main({
 												div: 'contenedor',
-												mail: '<?php echo $_SESSION['user']['mail'] ?>',
+												mail: '<?php echo $_SESSION['tianguis']['mail'] ?>',
 												from_user: 1
 											})"
 											href="#">
 											<i class="fa fa-info"></i> Ayuda
 										</a>
-										<a class="dropdown-item" href="cliente/login/"><i class="fa fa-sign-out"></i> Salir</a>
+										<a class="dropdown-item" href="" onclick="markets.logout()">
+											<i class="fa fa-sign-out"></i> Salir
+										</a>
 									</div><?php
 								} ?>
 							</li>
@@ -373,7 +372,7 @@
 										onclick="requests.list_requests({
 											div: 'contenedor',
 											status: 1,
-											mail: '<?php echo $_SESSION['user']['mail'] ?>',
+											mail: '<?php echo $_SESSION['tianguis']['mail'] ?>',
 											view: 'list_user_requests',
 											from_user: 1
 										})"
@@ -392,7 +391,7 @@
 										onclick="requests.list_requests({
 											div: 'contenedor',
 											status: 2,
-											mail: '<?php echo $_SESSION['user']['mail'] ?>',
+											mail: '<?php echo $_SESSION['tianguis']['mail'] ?>',
 											view: 'list_user_requests',
 											from_user: 1
 										})"
@@ -410,7 +409,7 @@
 										class="card text-white bg-primary mb-3"
 										onclick="requests.list_requests({
 											div: 'contenedor',
-											mail: '<?php echo $_SESSION['user']['mail'] ?>',
+											mail: '<?php echo $_SESSION['tianguis']['mail'] ?>',
 											view: 'list_user_requests',
 											from_user: 1
 										})"
@@ -497,12 +496,19 @@
 
 	</body>
 </html>
-
-<script>
-	local.view_new({
-		div: 'contenedor'
-	});
-			
+<script><?php
+	if(empty($_SESSION['tianguis']['id'])){ ?>
+		markets.view_login({
+			div: 'contenedor'
+		});<?php
+	}else{ ?>
+		local.list_orders({
+			tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+			div: 'contenedor',
+			view: 'list_orders_admin'
+		})<?php
+	} ?>
+	
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
 		$("#wrapper").toggleClass("toggled");

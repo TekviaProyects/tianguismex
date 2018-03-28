@@ -20,8 +20,9 @@
 	}
 </style>
 <div class="row">
-	<div class="col-sm-12 col-md-4">
-		<button class="btn btn-info">Disponible</button>
+	<div class="col-sm-12">
+		<button class="btn btn-info" disabled="disabled">Disponible</button>
+		<button class="btn btn-success" disabled="disabled">Seleccionado</button>
 		<button class="btn btn-secondary" disabled="disabled">Ocupado</button>
 	</div>
 </div>
