@@ -14,7 +14,9 @@
 		return;
 	}
 	
-	$date = substr($objet['end_date'], 0, 8).'01'
+	$date = substr($objet['end_date'], 0, 8).'01';
+	
+	echo "<pre>", print_r($local_selected), "</pre>";
 ?>
 <style>
 	.available:hover {
@@ -112,7 +114,7 @@
 </div>
 <div class="row" style="padding-top: 20px">
 	<div class="col-sm-12 col-md-2"><?php
-		if (empty($_SESSION['user'])) { ?>
+		if (empty($_SESSION['user']) && empty($_SESSION['tianguis'])) { ?>
 			<button
 				onclick="window.location.replace('cliente/login/')"
 			 	class="btn btn-info btn-block">

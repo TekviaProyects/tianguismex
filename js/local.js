@@ -524,6 +524,19 @@ var local = {
 		}).done(function(resp) {
 			console.log('==========> done renew_store', resp);
 			
+			
+			if(resp.status !== 1){
+				swal({
+					title : 'Error al renovar',
+					text : resp.message,
+					timer : 7000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+			
+				return;
+			}
+			
 			var link = document.createElement('a');
 			link.href = resp.url;
 			link.download = 'ficha.pdf';

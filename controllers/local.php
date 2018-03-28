@@ -358,7 +358,7 @@ class local extends Common {
 		session_start();
 		date_default_timezone_set('America/Mexico_City');
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
-		$objet['o_id'] = $_SESSION['user']['o_id'];
+		$objet['o_id'] = (!empty($objet['user_o_id'])) ? $objet['user_o_id'] : $_SESSION['user']['o_id'];
 		$fecha1 = date('Y-m-d');
 		$explote_date = explode(' ', $objet['end_date']);
 		$explote_date = $explote_date [0];
@@ -407,9 +407,9 @@ class local extends Common {
 			}
 			
 			if($customer['error_code'] === 0){
-				$objet['name'] = $_SESSION['user']['nombre'];
-				$objet['email'] = $_SESSION['user']['mail'];
-				$objet['external_id'] = $_SESSION['user']['id'];
+				$objet['name'] = (!empty($objet['user_name'])) ? $objet['user_name'] : $_SESSION['user']['nombre'];
+				$objet['email'] = (!empty($objet['user_mail'])) ? $objet['user_mail'] : $_SESSION['user']['mail'];
+				$objet['external_id'] = (!empty($objet['user_id'])) ? $objet['user_user_id'] : $_SESSION['user']['id'];
 				
 				$customer = $open_pay -> add_customer($objet);
 				
@@ -427,7 +427,7 @@ class local extends Common {
 				$o_id = $customer->id;
 				
 				if(!empty($o_id)){
-					$data['id'] = $_SESSION['user']['id'];
+					$data['id'] = (!empty($objet['user_id'])) ? $objet['user_user_id'] : $_SESSION['user']['id'];
 					$data['columns'] = " o_id = '".$o_id."'";
 					$resp['result'] = $this -> localModel -> update_client($data);
 					
@@ -473,7 +473,7 @@ class local extends Common {
 			unset($googl);
 			
 		// Save new order
-			$data['client_id'] = $_SESSION['user']['id'];
+			$data['client_id'] = (!empty($objet['user_id'])) ? $objet['user_user_id'] : $_SESSION['user']['id'];
 			$data['cost'] = $total_locals;
 			$data['tianguis_id'] = $objet['tianguis_id'];
 			$data['creation_date'] = date('Y-m-d H:i:s');

@@ -436,7 +436,7 @@ class markets extends Common {
 							<h3>Da click en el boton para recuperar tu cuenta</h3>
 							<a
 								style='text-decoration:none;'
-								href='".$url."ajax.php?c=markets&f=new_pass&id=".$objet['id']."&pass=".$objet['pass']."'
+								href='".$url."ajax.php?c=markets&f=new_pass&id=".$objet['id']."&pass=".$objet['pass_recovery']."'
 								target='_blank'>
 								<div
 									style='margin-bottom:0px; text-align:center;

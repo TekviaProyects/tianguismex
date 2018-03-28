@@ -330,7 +330,6 @@
 											href="#">
 											<i class="fa fa-user"></i> Editar Perfil
 										</a>
-										<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Configuración</a>
 										<a
 											class="dropdown-item"
 											onclick="help_desk.view_user_main({

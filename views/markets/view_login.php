@@ -189,7 +189,6 @@
 		}
 		
 		data.mail = data.mail_recovery;
-		data.pass = data.pass_recovery;
 		
 		console.log('==========> done DATA', data);
 
@@ -211,7 +210,7 @@
 					text : 'Te hemos enviado un correo con los pasos para recuperar tu cuenta',
 					timer : 5000,
 					showConfirmButton : true,
-					type : 'warning'
+					type : 'success'
 				});
 			}else{
 				swal({
