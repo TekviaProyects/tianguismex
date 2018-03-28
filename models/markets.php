@@ -196,7 +196,7 @@ class marketsModel extends Connection {
 		$sql = "UPDATE
 					tianguis 
 				SET
-					mail_notification = '".$objet['mail_notifications']."', 
+					mail_notification = '".$objet['mail_notification']."', 
 					comercial_name = '".$objet['comercial_name']."', 
 					support_mail = '".$objet['support_mail']."', 
 					municipality = '".$objet['municipality']."', 
@@ -210,6 +210,7 @@ class marketsModel extends Connection {
 					num_int = '".$objet['num_int']."', 
 					colony = '".$objet['colony']."', 
 					street = '".$objet['street']."', 
+					alias = '".$objet['alias']."', 
 					state = '".$objet['state']."',
 					bank = '".$objet['bank']."', 
 					city = '".$objet['city']."', 

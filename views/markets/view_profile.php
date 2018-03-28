@@ -237,7 +237,10 @@
 					</div>
 				</div>
 				<div class="col-sm-12 col-md-6">
-					<img class="img-thumbnail" src="" onError="this.onerror=null;this.src='images/logo.png';" />
+					<img 
+						class="img-thumbnail" 
+						src="<?php echo $_SESSION['tianguis']['logo'] ?>" 
+						onError="this.onerror=null;this.src='images/logo.png';" />
 				</div>
 			</div>
 		</div>
@@ -251,7 +254,7 @@
 							value="<?php echo $_SESSION['tianguis']['mail_notification'] ?>"  
 							class="form-control" 
 							type="email" 
-							id="mail_notifications" 
+							id="mail_notification" 
 							required="required"/>
 					</div>
 				</div>
@@ -398,7 +401,7 @@
 					type : 'success'
 				});
 				
-				// location.reload();
+				location.reload();
 			}else{
 				swal({
 					title : 'Datos no validos',
