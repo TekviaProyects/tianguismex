@@ -229,6 +229,27 @@ class marketsModel extends Connection {
 	
 ///////////////// ******** ----						END update							------ ************ //////////////////
 	
+///////////////// ******** ----						new_pass							------ ************ //////////////////
+//////// Change the user pass
+	// The parameters that can receive are:
+		// id -> User ID
+		// pass -> New password
+	
+	function new_pass($objet) {
+		$sql = "UPDATE 
+					tianguis
+				SET 
+					pass = '".md5($objet['pass'])."' 
+				WHERE
+					id_tianguis = ".$objet['id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END new_pass						------ ************ //////////////////
+	
 	
 	function create_map($objet){
 		$x = 1;
