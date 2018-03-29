@@ -15,8 +15,6 @@
 	}
 	
 	$date = substr($objet['end_date'], 0, 8).'01';
-	
-	echo "<pre>", print_r($local_selected), "</pre>";
 ?>
 <style>
 	.available:hover {

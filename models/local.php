@@ -161,7 +161,7 @@ class localModel extends Connection {
 		
 		$sql = "SELECT
 					o.*, r.status AS status_renew, l.cat_id, c.celular_cliente AS tel, c.nombre_cliente AS client_name,
-					c.correo_cliente AS client_mail
+					c.correo_cliente AS client_mail, c.o_id AS client_o_id
 				FROM
 					orders o
 				LEFT JOIN

@@ -524,7 +524,6 @@ var local = {
 		}).done(function(resp) {
 			console.log('==========> done renew_store', resp);
 			
-			
 			if(resp.status !== 1){
 				swal({
 					title : 'Error al renovar',
@@ -539,7 +538,7 @@ var local = {
 			
 			var link = document.createElement('a');
 			link.href = resp.url;
-			link.download = 'ficha.pdf';
+			link.download = 'ficha';
 			link.dispatchEvent(new MouseEvent('click'));
 			
 			$("#modal_details").modal("hide");

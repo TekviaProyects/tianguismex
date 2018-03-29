@@ -15,6 +15,12 @@
 			$status = 'Pendiente';
 			break;
 	}
+	
+	
+	
+	
+	// echo "<pre>", print_r($data), "</pre>";
+	
 ?>
 
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -93,6 +99,8 @@
 							$('#btn_pay_store').attr('order_id', <?php echo $data['id'] ?>);
 							$('#btn_pay_store').attr('end_date', '<?php echo $data['end_date'] ?>');
 							$('#btn_pay_store').attr('client_id', <?php echo $data['client_id'] ?>);
+							$('#btn_pay_store').attr('client_o_id', '<?php echo $data['client_o_id'] ?>');
+							$('#btn_pay_store').attr('client_mail', '<?php echo $data['client_mail'] ?>');
 							$('#btn_pay_store').attr('tianguis_id', <?php echo $data['tianguis_id'] ?>);
 						">
 						Renovar
@@ -174,7 +182,7 @@
 		} ?>
 	</div>
 </div>
-<div class="modal fade" tabindex="-1" role="dialog" id="modal_pay">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_pay" data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -202,12 +210,16 @@
 							end_date=""
 							client_id=""
 							tianguis_id=""
+							client_o_id=""
+							client_mail=""
 							id="btn_pay_store" 
 							onclick="local.renew_store({
 								order_id: $(this).attr('order_id'),
 								end_date: $(this).attr('end_date'),
 								client_id: $(this).attr('client_id'),
-								tianguis_id: $(this).attr('tianguis_id')
+								tianguis_id: $(this).attr('tianguis_id'),
+								client_o_id: $(this).attr('client_o_id'),
+								client_mail: $(this).attr('client_mail')
 							})" 
 							class="btn btn-info" 
 							style="font-size: 40px">
