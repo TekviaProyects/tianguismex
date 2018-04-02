@@ -1,6 +1,6 @@
 <?php
 	date_default_timezone_set('America/Mexico_City');
-	setlocale(LC_ALL, "es_MX.UTF-8", "Spanish");
+	// setlocale(LC_ALL, "es_MX.UTF-8", "Spanish");
 	
 	$date = date('Y-m-d H:i:s');
 	
@@ -16,10 +16,27 @@
 			break;
 	}
 	
+	$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+	$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 	
+	$creation_date = $dias[date('w',strtotime($data['creation_date']))]." ".
+					date('d', strtotime($data['creation_date']))." de ".
+					$meses[date('n', strtotime($data['creation_date']))-1]. " del ".
+					date('Y',strtotime($data['creation_date']));
+	$end_date = $dias[date('w',strtotime($data['end_date']))]." ".
+					date('d', strtotime($data['end_date']))." de ".
+					$meses[date('n', strtotime($data['end_date']))-1]. " del ".
+					date('Y',strtotime($data['end_date']));
+	$select_date = $dias[date('w',strtotime($data['select_date']))]." ".
+					date('d', strtotime($data['select_date']))." de ".
+					$meses[date('n', strtotime($data['select_date']))-1]. " del ".
+					date('Y',strtotime($data['select_date']));
+	$due_date = $dias[date('w',strtotime($data['due_date']))]." ".
+					date('d', strtotime($data['due_date']))." de ".
+					$meses[date('n', strtotime($data['due_date']))-1]. " del ".
+					date('Y',strtotime($data['due_date']));
 	
-	
-	// echo "<pre>", print_r($data), "</pre>";
+	echo "<pre>", print_r($date), "</pre>";
 	
 ?>
 
@@ -43,27 +60,29 @@
 	<div class="col-sm-12 col-md-6">
 		<label>
 			<b>Fecha de creacion</b>: <?php 
-			echo utf8_encode(ucfirst(strftime("%A, %B %d %Y",strtotime($data['creation_date'])).','.
-			date('H:i:s', strtotime($data['creation_date'])))) ?>
+			echo utf8_encode(ucfirst($creation_date).','.
+			date('H:i:s', strtotime($data['creation_date']))) ?>
 		</label>
 	</div>
 	<div class="col-sm-12 col-md-6">
 		<label>
 			<b>Fecha de inicio</b>: <?php 
-			echo utf8_decode(ucfirst(strftime("%A, %B %d %Y",strtotime($data['select_date'])).','.
-			date('H:i:s', strtotime($data['select_date'])))) ?>
+			echo utf8_encode(ucfirst($select_date).', '.
+			date('H:i:s', strtotime($data['select_date']))) ?>
 		</label>
 	</div>
 	<div class="col-sm-12 col-md-6">
 		<label>
-			<b>Fecha final</b>: 
-			<?php echo utf8_encode(ucfirst(strftime("%A, %B %d %Y",strtotime($data['end_date'])).', 23:59:59')) ?>
+			<b>Fecha final</b>: <?php 
+			echo utf8_encode(ucfirst($end_date).', '.
+			date('H:i:s', strtotime($data['end_date']))) ?>
 		</label>
 	</div>
 	<div class="col-sm-12 col-md-6">
 		<label>
-			<b>Fecha de caducidad</b>: 
-			<?php echo utf8_encode(ucfirst(strftime("%A, %B %d %Y",strtotime($data['due_date'])).', 23:59:59')) ?>
+			<b>Fecha de caducidad</b>:  <?php 
+			echo utf8_encode(ucfirst($due_date).', '.
+			date('H:i:s', strtotime($data['due_date']))) ?>
 		</label>
 	</div>
 	<div class="col-sm-12 col-md-6">
@@ -336,3 +355,49 @@
 		</div>
 	</div>
 </div>
+<script>
+	OpenPay.setId('mngsvcdrvfxhfkedj98m');
+	OpenPay.setApiKey('pk_778e93fd95eb4206a7db26db9389efbc');
+	OpenPay.setSandboxMode(true);
+//Se genera el id de dispositivo
+	var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
+
+	$('#pay-button').on('click', function(event) {
+		event.preventDefault();
+		$("#pay-button").prop("disabled", true);
+		$("#pay-button").html("Cargando...");
+		OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);
+	});
+	
+	var sucess_callbak = function(response) {
+		console.log("================> sucess_callbak", response);
+		
+		var token_id = response.data.id,
+			data = {};
+		
+		$("#payment-form").find(':input').each(function(key, value){
+			var id = this.id;
+			
+			if(id){
+				data[id] = $(this).val();
+			}
+		});
+		
+		data.token_id = token_id;
+		data.order_id = $("#btn_pay_store").attr('order_id');
+		data.end_date = $("#btn_pay_store").attr('end_date');
+		data.client_id = $("#btn_pay_store").attr('client_id');
+		data.client_o_id = $("#btn_pay_store").attr('client_o_id');
+		data.tianguis_id = $("#btn_pay_store").attr('tianguis_id');
+		data.client_mail = $("#btn_pay_store").attr('client_mail');
+		
+		local.renew_card(data);
+	};
+	
+	var error_callbak = function(response) {
+		var desc = response.data.description != undefined ? response.data.description : response.message;
+		alert("Datos no validos");
+		$("#pay-button").prop("disabled", false);
+		$("#pay-button").html("Pagar");
+	};
+</script>

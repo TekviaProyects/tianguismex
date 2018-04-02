@@ -62,11 +62,11 @@ class local extends Common {
 			
 			
 		
-		$delete['o_id'] = 'adpwbr91qukcqzwarbre';
-		$c = $open_pay -> get_customer($delete);
-		echo "<pre>", print_r($c), "</pre>";
-		$c['result'] -> delete();
-		return;
+		// $delete['o_id'] = 'adpwbr91qukcqzwarbre';
+		// $c = $open_pay -> get_customer($delete);
+		// echo "<pre>", print_r($c), "</pre>";
+		// $c['result'] -> delete();
+		// return;
 			
 			
 			

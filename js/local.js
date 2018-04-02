@@ -249,10 +249,10 @@ var local = {
 				});
 			}, 500);
 			
-			local.list_orders({
-				client_id: resp.client_id,
-				div: 'contenedor'
-			});
+			// local.list_orders({
+				// client_id: resp.client_id,
+				// div: 'contenedor'
+			// });
 			
 			local.total_selected = 0;
 			local.total = 0;
@@ -350,10 +350,10 @@ var local = {
 					type : 'success'
 				});
 				
-				local.list_orders({
-					client_id: resp.client_id,
-					div: 'contenedor'
-				});
+				// local.list_orders({
+					// client_id: resp.client_id,
+					// div: 'contenedor'
+				// });
 			}, 500);
 			
 			local.total_selected = 0;

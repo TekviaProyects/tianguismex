@@ -1,21 +1,20 @@
-<?php
-	if (empty($local)) { ?>
-		<div class="row">
-			<div class="col-sm-12" align="center">
-				<label>* No hay locales disponibles *</label><br /><br />
-				<button 
-					onclick="$('#menu_new_rent').click()"
-					class="btn btn-info">
-					Intentar de nuevo
-				</button>
-			</div>
-		</div><?php
-		
-		return;
-	}
-	
-	$date = substr($objet['end_date'], 0, 8).'01';
-?>
+<div class="row">
+	<div class="col-sm-12" align="center"><?php
+		if (empty($local)) { ?>
+					<label>* No hay locales disponibles *</label><br /><br />
+					<button 
+						onclick="$('#menu_new_rent').click()"
+						class="btn btn-info">
+						Intentar de nuevo
+					</button>
+				</div>
+			</div><?php
+			
+			return;
+		}
+		$date = substr($objet['end_date'], 0, 8).'01'; ?>
+	</div>
+</div>
 <style>
 	.available:hover {
 	    background-color: #58BC80;
@@ -127,7 +126,21 @@
 				Finalizar
 			</button><?php
 		} ?>
-	</div>
+	</div><?php
+	
+	if (!empty($_REQUEST['tianguis_id'])) { ?>
+		<div class="col-sm-12 col-md-2">
+			<button 
+				onclick="local.list_orders({
+					tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+					div: 'contenedor',
+					view: 'list_orders_admin'
+				})"
+				class="btn btn-info btn-block">
+				Regresar
+			</button>
+		</div><?php
+	} ?>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_pay">
 	<div class="modal-dialog" role="document">

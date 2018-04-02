@@ -138,7 +138,21 @@
 			class="btn btn-primary btn-block">
 			Finalizar
 		</button>
-	</div>
+	</div><?php
+	
+	if (!empty($_REQUEST['tianguis_id'])) { ?>
+		<div class="col-sm-12 col-md-2">
+			<button 
+				onclick="local.list_orders({
+					tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+					div: 'contenedor',
+					view: 'list_orders_admin'
+				})"
+				class="btn btn-info btn-block">
+				Regresar
+			</button>
+		</div><?php
+	} ?>
 </div>
 <script>
 	local.total = parseInt(<?php echo $total_selected ?>, 10);

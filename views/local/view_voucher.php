@@ -1,5 +1,17 @@
 <?php
-	setlocale(LC_ALL, "es_ES", 'Spanish_Spain', 'Spanish');
+	date_default_timezone_set('America/Mexico_City');
+	$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+	$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+	
+	
+	$creation_date = $dias[date('w',strtotime($data['creation_date']))]." ".
+					date('d', strtotime($data['creation_date']))." de ".
+					$meses[date('n', strtotime($data['creation_date']))-1]. " del ".
+					date('Y',strtotime($data['creation_date']));
+	$end_date = $dias[date('w',strtotime($data['end_date']))]." ".
+					date('d', strtotime($data['end_date']))." de ".
+					$meses[date('n', strtotime($data['end_date']))-1]. " del ".
+					date('Y',strtotime($data['end_date']));
 ?>
 
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -26,12 +38,16 @@
 		<div class="col-sm-12 col-md-6">
 			<label>
 				<b>Fecha de creacion</b>: <?php 
-				echo strftime("%A, %B %d %Y",strtotime($data['creation_date'])).','.
-				date('H:i:s', strtotime($data['creation_date'])) ?>
+				echo utf8_encode(ucfirst($creation_date).', '.
+				date('H:i:s', strtotime($data['creation_date']))) ?>
 			</label>
 		</div>
 		<div class="col-sm-12 col-md-6">
-			<label><b>Fecha final</b>: <?php echo strftime("%A, %B %d %Y",strtotime($data['end_date'])).', 23:59:59' ?></label>
+			<label>
+				<b>Fecha final</b>: <?php 
+				echo utf8_encode(ucfirst($end_date).', '.
+				date('H:i:s', strtotime($data['end_date']))) ?>
+			</label>
 		</div>
 	</div>
 	<div class="row">
