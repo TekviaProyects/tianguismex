@@ -5,119 +5,260 @@
 	$url = (file_exists($url)) ? $url : 'users_files/'.$_SESSION['user']['id'].'/perfil.jpg';
 	$url = (file_exists($url)) ? $url : 'images/photos/loggeduser.png';
 ?>
-<link rel="stylesheet" href="plugins/cropper-master/dist/cropper.min.css">
-<link rel="stylesheet" href="plugins/cropper-master/examples/crop-avatar/css/main.css">
+<label style="font-weight: bold">Completa todas las pestañas antes de guardar</label><br />
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<li class="nav-item">
+		<a class="nav-link active" id="home-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="home" aria-selected="true">Preferencias</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" id="profile-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="profile" aria-selected="false">Documentos</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" id="contact-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="contact" aria-selected="false">Datos fiscales</a>
+	</li>
+</ul>
 <div class="row">
 	<div class="col-sm-12">
-<!-- =====================________________				crop-logo					________________===================== -->
-
-		<div id="crop-perfil" align="center">
-			<!-- Current avatar -->
-			<div class="avatar-view" title="Cambiar imagen">
-				<img 
-					onerror="this.src='images/photos/loggeduser.png';"
-					src="<?php echo $url.'?lastmod='.date('YmdHis') ?>" 
-					alt="images/uploadfile.png">
-			</div>
-			<!-- Cropping modal -->
-			<div 
-				class="modal fade" 
-				id="avatar-modal" 
-				aria-hidden="true" 
-				aria-labelledby="avatar-modal-label" 
-				role="dialog" 
-				tabindex="-1">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<form class="avatar-form" action="crop_user.php" enctype="multipart/form-data" method="post">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">
-									&times;
-								</button>
-								<h4 class="modal-title" id="avatar-modal-label">Recortar imagen</h4>
-							</div>
-							<div class="modal-body">
-								<div class="avatar-body">
-	
-									<!-- Upload image and data -->
-									<div class="avatar-upload">
-										<input type="hidden" class="avatar-src" name="avatar_src">
-										<input type="hidden" class="avatar-data" name="avatar_data">
-										<label for="avatarInput">Imagen</label>
-										<input
-										accept="image/*"
-										capture="camera"
-										type="file"
-										class="avatar-input"
-										id="avatarInput"
-										name="avatar_file">
-									</div>
-	
-									<!-- Crop and preview -->
-									<div class="row">
-										<div class="col-md-9">
-											<div class="avatar-wrapper"></div>
-										</div>
-									</div>
-	
-									<div class="row avatar-btns">
-										<div class="col-md-3">
-											<button type="submit" class="btn btn-primary btn-block avatar-save">
-												Guardar
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div><!-- /.modal -->
-			<!-- Loading state -->
-			<div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
-		</div>
-	
-<!-- =====================________________				END crop-logo 				________________===================== -->
-		
 		<form 
 			method="post" 
 			id="formulario" 
 			onsubmit="event.preventDefault();  validate()"
 			enctype="multipart/form-data" >
-			<h3 class="nomargin">Datos de usuario</h3>
-			<div class="mb10">
-				<label class="control-label">Nombre</label>
-				<input 
-					value="<?php echo $user['nombre_cliente'] ?>" 
-					required="1" 
-					type="text" 
-					class="form-control" 
-					name="Nombre" 
-					id="nombre_cliente"/>
-				<label class="control-label">Telefono</label>
-				<input 
-					value="<?php echo $user['celular_cliente'] ?>" 
-					required="1" 
-					type="text" 
-					class="form-control" 
-					name="Telefono" 
-					id="celular_cliente"/>
-				<label class="control-label">Correo</label>
-				<input 
-					value="<?php echo $user['correo_cliente'] ?>" 
-					required="1" 
-					type="email" 
-					class="form-control" 
-					name="Correo" 
-					id="correo_cliente"/>
-				<label class="control-label">Domicilio</label>
-				<input 
-					value="<?php echo $user['domicilio_cliente'] ?>" 
-					required="1" 
-					type="text" 
-					class="form-control" 
-					name="Domicilio" 
-					id="domicilio_cliente"/>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab"><br />
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<label class="control-label">Nombre</label>
+							<input 
+								value="<?php echo $user['nombre_cliente'] ?>" 
+								required="1" 
+								type="text" 
+								class="form-control" 
+								name="Nombre" 
+								id="nombre_cliente"/>
+							<label class="control-label">Telefono</label>
+							<input 
+								value="<?php echo $user['celular_cliente'] ?>" 
+								required="1" 
+								type="text" 
+								class="form-control" 
+								name="Telefono" 
+								id="celular_cliente"/>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<label class="control-label">Correo</label>
+							<input 
+								value="<?php echo $user['correo_cliente'] ?>" 
+								required="1" 
+								type="email" 
+								class="form-control" 
+								name="Correo" 
+								id="correo_cliente"/>
+							<label class="control-label">Domicilio</label>
+							<input 
+								value="<?php echo $user['domicilio_cliente'] ?>" 
+								required="1" 
+								type="text" 
+								class="form-control" 
+								name="Domicilio" 
+								id="domicilio_cliente"/>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="profile-tab"><br />
+					<label style="font-weight: bold">Credencial:</label><br />
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="ine">Formatos recomendados: JPG, JPEG, GIF, PNG, BMP</label>
+								<input 
+									class="form-control" 
+									type="file" 
+									name="ine" 
+									id="ine"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<img 
+								class="img-thumbnail" 
+								src="<?php echo $user['ine'] ?>" 
+								onError="this.onerror=null;this.src='images/logo.png';" />
+						</div>
+					</div>
+					<label style="font-weight: bold">Licencia:</label><br />
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="licence">Formatos recomendados: JPG, JPEG, GIF, PNG, BMP</label>
+								<input 
+									class="form-control" 
+									type="file" 
+									name="licence" 
+									id="licence"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<img 
+								class="img-thumbnail" 
+								src="<?php echo $user['licence'] ?>" 
+								onError="this.onerror=null;this.src='images/logo.png';" />
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade show" id="tab3" role="tabpanel" aria-labelledby="contact-tab"><br />
+					<label style="font-weight: bold">Facturación:</label><br />
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="name">* Nombre o razon social</label>
+								<input 
+									value="<?php echo $user['name'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="name" 
+									required="required"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="rfc">* RFC</label>
+								<input 
+									value="<?php echo $user['rfc'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="rfc" 
+									required="required"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="comercial_name">Nombre comercial</label>
+								<input 
+									value="<?php echo $user['comercial_name'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="comercial_name" 
+									required="required"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="curp">CURP</label>
+								<input 
+									value="<?php echo $user['curp'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="curp" 
+									required="required"/>
+							</div>
+						</div>
+					</div><br />
+					<label style="font-weight: bold">Domicilio:</label><br />
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="street">Calle</label>
+								<input 
+									value="<?php echo $user['street'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="street"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="num_int">Num. Int.</label>
+								<input 
+									value="<?php echo $user['num_int'] ?>"  
+									class="form-control" 
+									type="number" 
+									id="num_int"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="num_ext">Num. Ext.</label>
+								<input 
+									value="<?php echo $user['num_ext'] ?>"  
+									class="form-control" 
+									type="number" 
+									id="num_ext"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="colony">Colonia</label>
+								<input 
+									value="<?php echo $user['colony'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="colony"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="municipality">Municipio</label>
+								<input 
+									value="<?php echo $user['municipality'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="municipality"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="city">Ciudad</label>
+								<input 
+									value="<?php echo $user['city'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="city"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="country">Pais</label>
+								<input 
+									value="<?php echo $user['country'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="country"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="state">Estado</label>
+								<input 
+									value="<?php echo $user['state'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="state"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="mail">* CP</label>
+								<input 
+									value="<?php echo $user['cp'] ?>"  
+									class="form-control" 
+									type="number" 
+									id="cp" 
+									required="required"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="reference">Referencia</label>
+								<input 
+									value="<?php echo $user['reference'] ?>"  
+									class="form-control" 
+									type="text" 
+									id="reference" 
+									required="required"/>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div><br /><br />
 			<button class="btn btn-success" type="submit" id="btnSubir">
 				Guardar
@@ -133,7 +274,9 @@
 			message = 'Debes llenar los siguientes campos: \n',
 			error = 0, 
 			count = 0,
-			$function  =  'edit';
+			$function  =  'update';
+			form = $('#formulario')[0];
+		var formData = new FormData(form);
 		
 		$("#formulario").find(':input').each(function(key, value){
 			var required = $(this).attr('required'),
@@ -149,6 +292,7 @@
 			
 			if(id){
 				data[id] = $(this).val();
+				formData.append(id, $(this).val());
 			}
 		});
 		
@@ -172,17 +316,22 @@
 			return;
 		}
 		
-		data.id = <?php echo $user['id_cliente'] ?>
+		data.id = <?php echo $user['id_cliente'] ?>;
+		formData.append("id", <?php echo $user['id_cliente'] ?>);
 		
 		console.log('==========> done DATA', data);
 		
 		$("#btnEdit").prop('disabled', true);
 		
-		
 		$.ajax({
-			data : data,
+			type : "POST",
+			enctype : 'multipart/form-data',
 			url : 'ajax.php?c=users&f='+$function,
-			type : 'post',
+			data : formData,
+			processData : false,
+			contentType : false,
+			cache : false,
+			timeout : 600000,
 			dataType : 'json'
 		}).done(function(resp) {
 			console.log('==========> done editar', resp);
@@ -195,7 +344,7 @@
 				type : 'success'
 			});
 			
-			location.reload()
+			location.reload();
 		}).fail(function(resp) {
 			console.log('==========> fail !!! editar', resp);
 			

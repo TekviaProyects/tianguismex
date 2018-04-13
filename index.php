@@ -1,5 +1,7 @@
 <?php
 	session_start();
+	
+	// echo "<pre>", print_r($_SESSION['user']), "</pre>";
 ?>
 
 <!DOCTYPE HTML>
@@ -259,7 +261,7 @@
 										 aria-controls="collapseExample">
 										 <img
 										 	style="max-width: 30px"
-										 	src="users_files/<?php echo $_SESSION['user']['id'] ?>/perfil.png?lastmod=<?php echo date('YmdHis') ?>"
+										 	src="<?php echo $_SESSION['user']['ine'] ?>"
 											onerror="this.src='images/photos/loggeduser.png';"
 											class="profile-image img-circle">
 										 <?php echo $_SESSION['user']['nombre'] ?></h4>
@@ -272,10 +274,7 @@
 												mail: '<?php echo $_SESSION['user']['mail'] ?>',
 												from_user: 1
 											})"
-											href="#contenedor">
-											<i class="fa fa-user"></i> Editar Perfil
-										</a>
-										<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Configuración</a>
+											href="#contenedor"><i class="fa fa-cog"></i> Configuración</a>
 										<a
 											class="dropdown-item"
 											onclick="help_desk.view_user_main({

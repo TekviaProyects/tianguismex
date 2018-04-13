@@ -111,20 +111,36 @@ class usersModel extends Connection {
 		// id -> Customer ID
 
 	function update($objet) {
-		$sql = "UPDATE 
-					clientes
-				SET " . $objet['customer_columns'] . " 
+		$data = (!empty($objet['ine'])) ? " ,ine = '".$objet['ine']."'" : '';
+		$data .= (!empty($objet['licence'])) ? " ,licence = '".$objet['licence']."'" : '';
+		
+		$sql = "UPDATE
+					clientes 
+				SET
+					celular_cliente = '".$objet['celular_cliente']."', 
+					comercial_name = '".$objet['comercial_name']."', 
+					correo_cliente = '".$objet['correo_cliente']."', 
+					nombre_cliente = '".$objet['nombre_cliente']."', 
+					support_mail = '".$objet['support_mail']."', 
+					municipality = '".$objet['municipality']."', 
+					person_type = '".$objet['person_type']."', 
+					bank_name = '".$objet['bank_name']."', 
+					reference = '".$objet['reference']."', 
+					country = '".$objet['country']."', 
+					num_ext = '".$objet['num_ext']."', 
+					num_int = '".$objet['num_int']."', 
+					colony = '".$objet['colony']."', 
+					street = '".$objet['street']."', 
+					state = '".$objet['state']."',
+					name = '".$objet['name']."', 
+					city = '".$objet['city']."', 
+					curp = '".$objet['curp']."', 
+					rfc = '".$objet['rfc']."', 
+					cp = '".$objet['cp']."'".
+					$data." 
 				WHERE
-					id = " . $objet['id'];
-	// return $sql;
-		$result = $this -> query($sql);
-
-		$sql = "UPDATE 
-					schedules
-				SET " . $objet['schedules_columns'] . " 
-				WHERE
-					customer_id = " . $objet['id'];
-	// return $sql;
+					id_cliente = ".$objet['id'];
+		// return $sql;
 		$result = $this -> query($sql);
 
 		return $result;

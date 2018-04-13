@@ -1,4 +1,5 @@
 <?php
+session_start();
 include ('conexion.php');
 $correo = $_POST['correo'];
 $telefono = $_POST['telefono'];
@@ -14,11 +15,11 @@ try {
 				$ide = $fila['id_cliente'];
 				$nombre = $fila['nombre_cliente'];
 				$o_id = $fila['o_id'];
+				$_SESSION['user'] = $fila;
 			}
 			if ($estado == 0) {
 				echo "estado";
 			} else {
-				session_start();
 				$_SESSION['ide'] = $ide;
 				
 				$_SESSION['user']['id'] = $ide;

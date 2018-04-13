@@ -35,9 +35,6 @@
 					date('d', strtotime($data['due_date']))." de ".
 					$meses[date('n', strtotime($data['due_date']))-1]. " del ".
 					date('Y',strtotime($data['due_date']));
-	
-	echo "<pre>", print_r($date), "</pre>";
-	
 ?>
 
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -213,6 +210,10 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12" id="div_resumen" align="center"> </div>
+				</div>
+				<div class="col-sm-12">
+					Esta a punto de renovar su local, en caso de que la ficha no sea pagada a tiempo se liberara 
+					este local para alguien más.
 				</div>
 				<div class="row" id="div_pays_methods">
 					<div class="col-sm-12 col-md-6" align="center" id="div_card">

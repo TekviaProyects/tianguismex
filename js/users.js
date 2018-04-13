@@ -14,6 +14,7 @@ var users = {
 		
 	// Hide menu on mobile
 		$("#wrapper").removeClass("toggled");
+		$("#collapseExample").removeClass("show");
 		
 		$.ajax({
 			data : $objet,

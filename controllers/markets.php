@@ -90,6 +90,12 @@ class markets extends Common {
 		$local = $this -> marketsModel -> list_local($objet);
 		$local = $local['rows'];
 		
+	// Vars
+		$last = end($local);
+		$x = $last['x'];
+		$y = $last['y'];
+		$column = 1;
+		
 		require ('views/markets/list_local.php');
 	}
 	
@@ -201,21 +207,6 @@ class markets extends Common {
 	}
 	
 ///////////////// ******** ----						END view_commissions				------ ************ //////////////////
-
-///////////////// ******** ----							 view_sketch					------ ************ //////////////////
-//////// Load the view to sketch
-	// The parameters that can receive are:
-		// tianguis_id -> Tianguis ID
-		
-	function view_sketch($objet) {
-	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
-	// If not, take its normal value
-		$objet = (empty($objet)) ? $_REQUEST : $objet;
-		
-		require ('views/markets/view_sketch.php');
-	}
-	
-///////////////// ******** ----						END view_sketch						------ ************ //////////////////
 
 ///////////////// ******** ----						modify_order						------ ************ //////////////////
 //////// Load the view to modify order
@@ -506,6 +497,139 @@ class markets extends Common {
 	}
 	
 ///////////////// ******** ----						END new_pass						------ ************ //////////////////
+
+///////////////// ******** ----						view_sketch							------ ************ //////////////////
+//////// Load the view to sketch
+	// The parameters that can receive are:
+		// tianguis_id -> Tianguis ID
+		
+	function view_sketch($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		
+	// List categories
+		$categories = $this -> marketsModel -> list_cats($objet);
+		$categories = $categories['rows'];
+		
+	// List locals
+		$local = $this -> marketsModel -> list_local($objet);
+		$local = $local['rows'];
+		
+		foreach ($local as $key => $value) {
+			if(!empty($value['join'])){
+				$value['local_id'] = $value['id'];
+				$local[$key]['joins'] = $this -> marketsModel -> list_joins($value);
+				$local[$key]['joins'] = $local[$key]['joins']['rows'];
+			}
+		}
+		
+	// Vars
+		$last = end($local);
+		$x = $last['x'];
+		$y = $last['y'];
+		$column = 1;
+		
+		require ('views/markets/view_sketch.php');
+	}
+	
+///////////////// ******** ----						END view_sketch						------ ************ //////////////////
+
+///////////////// ******** ----						save_sketch							------ ************ //////////////////
+//////// Save the locals on the DB
+	// The parameters that can receive are:
+	// The parameters that can receive are:
+		// x -> X local position
+		// y -> Y local position
+		// text -> Text to show
+		// show -> 1-> Show local, 0-> Hide local
+		// cat_id -> Category ID
+		// disabled -> 1-> Disabled, 0-> Enabled
+	
+	function save_sketch($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		$objet['tianguis_id'] = $_SESSION['tianguis']['id'];
+		$resp['save'] = $this -> marketsModel -> save_local($objet);
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END save_sketch						------ ************ //////////////////
+
+///////////////// ******** ----						update_local						------ ************ //////////////////
+//////// Update the local data on the DB
+	// The parameters that can receive are:
+		// status -> New local status
+	
+	function update_local($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		$objet['tianguis_id'] = $_SESSION['tianguis']['id'];
+		$objet['columns'] = (!empty($objet['status'])) ? ' status = '.$objet['status'] : '';
+		
+		$resp['delete'] = $this -> marketsModel -> update_local($objet);
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END update_local					------ ************ //////////////////
+
+///////////////// ******** ----						save_category						------ ************ //////////////////
+//////// Save a tianguis category
+	// The parameters that can receive are:
+		// name -> Name of the category
+		// cost -> Cost of the category
+		// description -> Description of the category
+	
+	function save_category($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		$objet['tianguis_id'] = $_SESSION['tianguis']['id'];
+		$resp['delete'] = $this -> marketsModel -> save_category($objet);
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END save_category					------ ************ //////////////////
+
+///////////////// ******** ----						update_sketch						------ ************ //////////////////
+//////// Update the locals on the DB
+	// The parameters that can receive are:
+		// x -> X local position
+		// y -> Y local position
+		// text -> Text to show
+		// show -> 1-> Show local, 0-> Hide local
+		// id -> Local ID
+		// cat_id -> Category ID
+		// disabled -> 1-> Disabled, 0-> Enabled
+	
+	function update_sketch($objet) {
+	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
+	// If not, take its normal value
+		session_start();
+		$objet = (empty($objet)) ? $_REQUEST : $objet;
+		$resp['status'] = 1;
+		
+		$objet['tianguis_id'] = $_SESSION['tianguis']['id'];
+		$resp['update'] = $this -> marketsModel -> update_sketch($objet);
+		
+		echo json_encode($resp);
+	}
+	
+///////////////// ******** ----						END update_sketch					------ ************ //////////////////
 
 }
 

@@ -60,16 +60,6 @@ class marketsModel extends Connection {
 		// return $sql;
 		$result = $this -> query_array($sql);
 		
-		// for ($i=1; $i < 13; $i++) {
-			// $sql = "INSERT INTO
-						// local(tianguis_id, cat_id, description, x, y)
-					// VALUES
-						// (1, 1, '-', 61, $i)";
-			// // return $sql;
-			// $res = $this -> query($sql);
-		// }
-		
-		
 		return $result;
 	}
 	
@@ -93,7 +83,7 @@ class marketsModel extends Connection {
 			' ORDER BY = '.$objet['order'] : ' ORDER BY l.tianguis_id ASC, l.y ASC, l.x ASC' ;
 		
 		$sql = "SELECT
-					l.*, cxt.cost, CONCAT(cxt.title, ' - ', cxt.description) AS des_cat 
+					l.*, cxt.cost, CONCAT(cxt.title, ' - ', cxt.description) AS des_cat, COUNT(l.id) AS total 
 				FROM
 					local l
 				LEFT JOIN
@@ -250,27 +240,156 @@ class marketsModel extends Connection {
 	
 ///////////////// ******** ----						END new_pass						------ ************ //////////////////
 	
+///////////////// ******** ----						save_local							------ ************ //////////////////
+//////// Save the local data
+	// The parameters that can receive are:
 	
-	function create_map($objet){
-		$x = 1;
-		$y = 1;
+	function save_local($objet) {
+		$join = (!empty($objet['joins'])) ? 1 : 0;
 		
-		for ($i=1; $i < 697; $i++) {
-			if($x > 58){
-				$x = 1;
-				$y ++;
-			} 
-			
-			$sql = "INSERT INTO
-						local(tianguis_id, cat_id, description, x, y)
-					VALUES
-						(1, 1, $i, $x, $y)";
-			// return $sql;
-			$res = $this -> query($sql);
-			
-			$x++;
+		$sql = "INSERT INTO
+					local(tianguis_id, `show`, cat_id, description, x, y, disabled, `join`)
+				VALUES
+					('".$objet['tianguis_id']."', '".$objet['show']."', '".$objet['cat_id']."', '".$objet['text']."', 
+					'".$objet['x']."', '".$objet['y']."', '".$objet['disabled']."', $join)";
+		// return $sql;
+		$result = $loca_id = $this -> insert_id($sql);
+		
+		if(!empty($objet['joins'])){
+			foreach ($objet['joins'] as $key => $value) {
+				$sql = "INSERT INTO
+							joins(tianguis_id, local_id, original_text, text, x, y)
+						VALUES
+							('".$objet['tianguis_id']."', '".$loca_id."', '".$value['original_text']."', '".$value['text']."', 
+							'".$value['x']."', '".$value['y']."')";
+				// return $sql;
+				$result = $this -> query($sql);
+			}
 		}
+		
+		return $result;
 	}
+	
+///////////////// ******** ----						END save_local						------ ************ //////////////////
+	
+///////////////// ******** ----						update_local						------ ************ //////////////////
+//////// Update the local data on the DB
+	// The parameters that can receive are:
+		// status -> New local status
+	
+	function update_local($objet) {
+		$sql = "UPDATE
+					local
+				SET
+					".$objet['columns']."
+				WHERE
+					tianguis_id = ".$objet['tianguis_id'];
+		// return $sql;
+		$result = $this -> query($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END update_local					------ ************ //////////////////
+	
+///////////////// ******** ----						save_category						------ ************ //////////////////
+//////// Save a tianguis category on the DB
+	// The parameters that can receive are:
+		// name -> Name of the category
+		// cost -> Cost of the category
+		// description -> Description of the category
+	
+	function save_category($objet) {
+		$sql = "INSERT INTO
+					cat_x_tianguis(tianguis_id, title, description, cost)
+				VALUES
+					('".$objet['tianguis_id']."', '".$objet['name']."', '".$objet['description']."', '".$objet['cost']."')";
+		// return $sql;
+		$result = $this -> insert_id($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END save_category					------ ************ //////////////////
+	
+///////////////// ******** ----						list_joins							------ ************ //////////////////
+//////// List the joins local ans return into array
+	// The parameters that can receive are:
+		// local_id -> Father local ID
+	
+	function list_joins($objet) {
+	 // Filter by local ID
+		$condition = (!empty($objet['local_id'])) ? ' AND local_id = '.$objet['local_id'] : '';
+		
+		$sql = "SELECT 
+					*
+				FROM
+					joins 
+				WHERE
+					1 = 1 ".
+				$condition;
+		// return $sql;
+		$result = $this -> query_array($sql);
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END list_joins						------ ************ //////////////////
+	
+///////////////// ******** ----						update_sketch						------ ************ //////////////////
+//////// Save the local data
+	// The parameters that can receive are:
+	
+	function update_sketch($objet) {
+		$join = (!empty($objet['joins'])) ? 1 : 0;
+		
+		$sql = "DELETE FROM
+					joins
+				WHERE
+					local_id = ".$objet['id'];
+		// return $sql;
+		$delete = $this -> query($sql);
+		
+		if ($objet['new'] == 1) {
+			$sql = "INSERT INTO
+						local(tianguis_id, `show`, cat_id, description, x, y, disabled, `join`)
+					VALUES
+						('".$objet['tianguis_id']."', '".$objet['show']."', '".$objet['cat_id']."', '".$objet['text']."', 
+						'".$objet['x']."', '".$objet['y']."', '".$objet['disabled']."', $join)";
+			// return $sql;
+			$result = $objet['id'] = $this -> insert_id($sql);
+		} else {
+			$sql = "UPDATE
+						local
+					SET
+						`show` = '".$objet['show']."',
+						disabled = '".$objet['disabled']."',
+						description = '".$objet['text']."',
+						cat_id = '".$objet['cat_id']."',
+						`join` = $join 
+					WHERE
+						id = ".$objet['id'];
+			// return $sql;
+			$result = $this -> query($sql);	
+		}
+		
+		if(!empty($objet['joins'])){
+			foreach ($objet['joins'] as $key => $value) {
+				$sql = "INSERT INTO
+							joins(tianguis_id, local_id, original_text, text, x, y)
+						VALUES
+							('".$objet['tianguis_id']."', '".$objet['id']."', '".$value['original_text']."', '".$value['text']."', 
+							'".$value['x']."', '".$value['y']."')";
+				// return $sql;
+				$result = $this -> query($sql);
+			}
+		}
+		
+		return $result;
+	}
+	
+///////////////// ******** ----						END update_sketch					------ ************ //////////////////
+	
 }
 
 ?>

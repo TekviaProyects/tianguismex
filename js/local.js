@@ -111,7 +111,7 @@ var local = {
 			return;
 		}
 		
-		var text = '',
+		var text = '¿Desea rentar el',
 			total = 0,
 			data = {};
 		
@@ -123,7 +123,8 @@ var local = {
 			data.cat_id = value.cat_id;
 		});
 		
-		text += '<br><br><b>Total $'+total+'</b><br><br><br>';
+		text += '? <br><br><b>Total $'+total+'</b><br><br>';
+		text += '<br> Usted acepta los <a target="_blank" href="terminos.html" style="color: grey !important;"> Términos y condiciones </a> de renta mensual, posteriormente lo podrá renovar en su perfil de usuario<br><br>';
 		
 		data.total = total;
 		data.local = local.selects;
@@ -207,7 +208,7 @@ var local = {
 			type : 'post',
 			dataType : 'json'
 		}).done(function(resp) {
-			console.log('==========> done rent_local', resp);
+			console.log('==========> done pay_store', resp);
 			
 			if(resp.status !== 1){
 				swal({
@@ -227,10 +228,7 @@ var local = {
 			
 			local.selects = {};
 			
-			var link = document.createElement('a');
-			link.href = resp.url;
-			link.download = 'ficha.pdf';
-			link.dispatchEvent(new MouseEvent('click'));
+			var win = window.open(resp.url, '_blank');
 			
 			$.each(data.local, function(index, value) {
 				$("#btn_"+value.id).removeClass("btn-success available").addClass("btn-secondary"); 
@@ -238,6 +236,27 @@ var local = {
 				
 				$("#tr_"+value.id).removeClass("info available").addClass("secondary"); 
 			});
+			
+			local.total_selected = 0;
+			local.total = 0;
+			
+		// Popup blocked
+			if(!win || win.closed || typeof win.closed === 'undefined'){ 
+				swal({
+					title : 'Ventanas emergentes desactivadas',
+					text : 'Para poder descargar la ficha es necesario activar las ventanas emergentes',
+					timer : 13000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				local.list_orders({
+					client_id: resp.client_id,
+					div: 'contenedor'
+				});
+				
+				return;
+			}
 			
 			setTimeout(function(){
 				swal({
@@ -248,14 +267,6 @@ var local = {
 					type : 'success'
 				});
 			}, 500);
-			
-			// local.list_orders({
-				// client_id: resp.client_id,
-				// div: 'contenedor'
-			// });
-			
-			local.total_selected = 0;
-			local.total = 0;
 		}).fail(function(resp) {
 			console.log('==========> fail !!! rent_local', resp);
 			
@@ -399,11 +410,21 @@ var local = {
 		}).done(function(resp) {
 			console.log('==========> done download_pay', resp);
 			
-			var link = document.createElement('a');
-			link.href = resp[0].url;
-			link.download = 'ficha.pdf';
-			link.dispatchEvent(new MouseEvent('click'));
-			
+			var win = window.open(resp[0].url, '_blank');
+  			
+		// Popup blocked
+			if(!win || win.closed || typeof win.closed === 'undefined'){ 
+				swal({
+					title : 'Ventanas emergentes desactivadas',
+					text : 'Para poder descargar la ficha es necesario activar las ventanas emergentes',
+					timer : 13000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				return;
+			}
+  			
 			swal({
 				title : 'Ficha de pago creada',
 				text : 'Tu ficha de pago ha sido creada con exito',
@@ -536,10 +557,20 @@ var local = {
 				return;
 			}
 			
-			var link = document.createElement('a');
-			link.href = resp.url;
-			link.download = 'ficha';
-			link.dispatchEvent(new MouseEvent('click'));
+			var win = window.open(resp.url, '_blank');
+			
+		// Popup blocked
+			if(!win || win.closed || typeof win.closed === 'undefined'){ 
+				swal({
+					title : 'Ventanas emergentes desactivadas',
+					text : 'Para poder descargar la ficha es necesario activar las ventanas emergentes',
+					timer : 13000,
+					showConfirmButton : true,
+					type : 'warning'
+				});
+				
+				return;
+			}
 			
 			$("#modal_details").modal("hide");
 			$("#modal_pay").modal("hide");

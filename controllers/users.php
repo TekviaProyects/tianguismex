@@ -82,11 +82,36 @@ class users extends Common {
 	function update($objet) {
 	// If the object is empty (called from the ajax) it assigns $ _POST that is sent from the index
 	// If not, take its normal value
+		session_start();
 		$objet = (empty($objet)) ? $_REQUEST : $objet;
 		$resp['status'] = 1;
 		
+		if($_FILES['ine']){
+			$estructura = 'users_files/'.$_SESSION['user']['id'];
+			mkdir($estructura, 0777, true);
+			
+			$image = 'users_files/'.$_SESSION['user']['id'].'/'.date('s').basename($_FILES['ine']['name']);
+			move_uploaded_file($_FILES['ine']['tmp_name'], $image);
+			
+			$objet['ine'] = $image;
+		}
+		
+		if($_FILES['licence']){
+			$estructura = 'users_files/'.$_SESSION['user']['id'];
+			mkdir($estructura, 0777, true);
+			
+			$licence = 'users_files/'.$_SESSION['user']['id'].'/'.date('s').basename($_FILES['licence']['name']);
+			move_uploaded_file($_FILES['licence']['tmp_name'], $licence);
+			
+			$objet['licence'] = $licence;
+		}
+		
 	// Save customer
 		$resp['result'] = $this -> usersModel -> update($objet);
+		
+		$_SESSION['user'] = $objet;
+		$_SESSION['user']['nombre'] = $_REQUEST['nombre_cliente'];
+		$_SESSION['user']['mail'] = $_REQUEST['correo_cliente'];
 		
 		echo json_encode($resp);
 	}

@@ -42,7 +42,7 @@
         	onclick="markets.list_markets({
         		div: 'contenedor',
         		state: $('#state').val(),
-        		client_id: <?php echo $_SESSION['user']['id'] ?>
+        		client_id: '<?php echo $_SESSION['user']['id'] ?>'
         	});"
         	class="btn btn-primary">
         	Siguiente
