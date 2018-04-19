@@ -18,46 +18,48 @@
 
 
 //Correo al que decia recibir el codigo de verificacion puede cambiar de ser necesario
-		$correo = "fertekvia@gmail.com";
-		$mail = new PHPMailer();
-		$mail -> IsSMTP();
-		$mail -> SMTPAuth = true;
-		$mail -> SMTPSecure = "ssl";
-		$mail -> Host = "smtp.gmail.com";
-		$mail -> Port = 465;
-		$mail -> Username = "tekviaprogramacion@gmail.com";
-		$mail -> Password = "tekvia123";
-
-		//Correo e informacion del remitente
-		$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
-		//Datos y contenido del correo
-		$mail -> Subject = "Prueba de webhook";
-		$mail -> AltBody = "Esta es la fecha";
-		$algo = file_get_contents('php://input');
-		// $algo = json_decode($algo);
-		// $algo = "<pre>". var_dump($algo)."</pre>";var_dump($algo)
-		$mail -> MsgHTML($algo);
-		$mail -> AddReplyTo("$correo");
-		$mail -> AddAddress("$correo");
-		$mail -> IsHTML(true);
-
-		//Envio de correo
-		if (!$mail -> send()) {
-			echo 'Message could not be sent.';
-			echo 'Mailer Error: ' . $mail -> ErrorInfo;
-		} else {
-			echo 'Message has been sent';
-		}
-		return;
+		// $correo = "fertekvia@gmail.com";
+		// $mail = new PHPMailer();
+		// $mail -> IsSMTP();
+		// $mail -> SMTPAuth = true;
+		// $mail -> SMTPSecure = "ssl";
+		// $mail -> Host = "smtp.gmail.com";
+		// $mail -> Port = 465;
+		// $mail -> Username = "tekviaprogramacion@gmail.com";
+		// $mail -> Password = "tekvia123";
+// 
+		// //Correo e informacion del remitente
+		// $mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
+		// //Datos y contenido del correo
+		// $mail -> Subject = "Prueba de webhook";
+		// $mail -> AltBody = "Esta es la fecha";
+		// $algo = file_get_contents('php://input');
+		// // $algo = json_decode($algo);
+		// // $algo = "<pre>". var_dump($algo)."</pre>";var_dump($algo)
+		// $mail -> MsgHTML($algo);
+		// $mail -> AddReplyTo("$correo");
+		// $mail -> AddAddress("$correo");
+		// $mail -> IsHTML(true);
+// 
+		// //Envio de correo
+		// if (!$mail -> send()) {
+			// echo 'Message could not be sent.';
+			// echo 'Mailer Error: ' . $mail -> ErrorInfo;
+		// } else {
+			// echo 'Message has been sent';
+		// }
+		// return;
 
 
 
 
 	$obj = file_get_contents('php://input');
-	var_dump($obj);
 	$json = json_decode($obj);
 	$tipo = $json->type;
 	$id = $json->transaction->id;
+	$resp = array();
+	$resp['json'] = $obj;
+	
 	
 //Selector que permite realizar una accion dependiendo el tipo de notificacion recibida
 	switch ($tipo) {
@@ -99,6 +101,7 @@
 												WHERE
 													openpay_id = '".$id_orden_open."')";
 					$res_his = mysqli_query($conexion, $update_his);
+					$resp['res_his'] = $res_his;
 				} catch (mysqli_sql_exception $e) {
 					$resultado = $e;
 					$correo = "fertekvia@gmail.com";
@@ -120,13 +123,13 @@
 					$mail -> IsHTML(true);
 					
 					if (!$mail -> send()) {
-						echo 'Message could not be sent.';
-						echo 'Mailer Error: ' . $mail -> ErrorInfo;
+						$resp['error_mail'] = json_encode('Mailer Error: ' . $mail -> ErrorInfo);
 					} else {
-						echo 'Message has been sent';
+						$resp['send_mail'] = json_encode('Message has been sent');
 					}
 					
-					return "Error en script".$e;
+					$resp['error_res_his'] = json_encode("Error en script".$e);
+					return $resp;
 				}
 				
 			  	try {
@@ -141,6 +144,7 @@
 					  				WHERE
 					  					o.openpay_id = '".$id_orden_open."'";
 					$user_mail = mysqli_query($conexion, $q_user_mail);
+					$resp['user_mail'] = json_encode($user_mail);
 					
 					while ($fila = mysqli_fetch_assoc($user_mail)) {
 						$correo = $fila['correo_cliente'];
@@ -172,11 +176,13 @@
 					$mail -> IsHTML(true);
 					
 					if (!$mail -> send()) {
-						echo 'Message could not be sent.';
-						echo 'Mailer Error: ' . $mail -> ErrorInfo;
+						$resp['error_mail'] = json_encode('Mailer Error: ' . $mail -> ErrorInfo);
 					} else {
-						echo 'Message has been sent';
+						$resp['send_mail'] = json_encode('Message has been sent');
 					}
+					
+					$resp['error_send_user_mail'] = json_encode("Error en script".$e);
+					return $resp;
 				}
 				
 				if (empty($html)) {
@@ -210,7 +216,8 @@
 				try {
 					$mail -> send();
 				} catch(phpmailerException $e) {
-					var_dump($e);
+					$resp['error_mail'] = json_encode("Error en script".$e);
+					return $resp;
 				}
 			} elseif ($json -> transaction -> status == 'failed') {
 				$correo = "fertekvia@gmail.com";
@@ -232,11 +239,40 @@
 				$mail -> IsHTML(true);
 				
 				if (!$mail -> send()) {
-					echo 'Message could not be sent.';
-					echo 'Mailer Error: ' . $mail -> ErrorInfo;
+					$resp['error_mail'] = json_encode('Mailer Error: ' . $mail -> ErrorInfo);
 				} else {
-					echo 'Message has been sent';
+					$resp['send_mail'] = json_encode('Message has been sent');
 				}
+				
+				$resp['error_send_user_mail'] = json_encode("Error en script".$e);
+				return $resp;
+			}else{
+				$correo = "fertekvia@gmail.com";
+				$mail = new PHPMailer();
+				$mail -> IsSMTP();
+				$mail -> SMTPAuth = true;
+				$mail -> SMTPSecure = "ssl";
+				$mail -> Host = "smtp.gmail.com";
+				$mail -> Port = 465;
+				$mail -> Username = "tekviaprogramacion@gmail.com";
+				$mail -> Password = "tekvia123";
+				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
+				$mail -> Subject = "Transaction incompleted";
+				$mail -> AltBody = "Esta es la fecha";
+				$algo = json_encode($json);
+				$mail -> MsgHTML($algo);
+				$mail -> AddReplyTo("$correo");
+				$mail -> AddAddress("$correo");
+				$mail -> IsHTML(true);
+				
+				if (!$mail -> send()) {
+					$resp['error_mail'] = json_encode('Mailer Error: ' . $mail -> ErrorInfo);
+				} else {
+					$resp['send_mail'] = json_encode('Message has been sent');
+				}
+				
+				$resp['error_transaction'] = json_encode("Error en script".$e);
+				return $resp;
 			}
 			break;
 	
@@ -454,13 +490,16 @@
 			$mail -> AddReplyTo("$correo");
 			$mail -> AddAddress("$correo");
 			$mail -> IsHTML(true);
+			
 		//Envio de correo
 			if (!$mail -> send()) {
-				echo 'Message could not be sent.';
-				echo 'Mailer Error: ' . $mail -> ErrorInfo;
+				$resp['error_mail'] = json_encode('Mailer Error: ' . $mail -> ErrorInfo);
 			} else {
-				echo 'Message has been sent';
+				$resp['send_mail'] = json_encode('Message has been sent');
 			}
+			
+			$resp['error_nothig'] = json_encode("Error en script".$e);
+			return $resp;
 			
 			break;
 	}

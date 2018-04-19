@@ -149,46 +149,69 @@ class markets extends Common {
 			if($current != $value['organize_date']){
 				$current = $value['organize_date'];
 				$k++;
-					
+				
 				$data['new_orders'][$k]['last_balance'] = $data['new_orders'][$k -1]['balance'];
 			}
 			
 		// New orders array
+			$data['new_orders'][$k]['iva'] += ($value['expenses'] * 0.16);
+			$data['new_orders'][$k]['porcent'] = ($value['expenses'] / $value['cost']) * 100;
 			$data['new_orders'][$k]['pay_date'] = $current;
 			$data['new_orders'][$k]['revenues'] += $value['cost'];
 			$data['new_orders'][$k]['expenses'] += $value['expenses'] + ($value['expenses'] * 0.16);
+			$data['new_orders'][$k]['expenses'] += 2.5; // Sum $2.5 from commission
+			$data['new_orders'][$k]['expenses_iva_off'] += $value['expenses'] + 2.5; // Sum $2.5 from commission
+			$data['new_orders'][$k]['commission'] = 2.5; // Sum $2.5 from commission
+			
+		// New fields
+			$orders[$key]['expenses_iva_off'] = $value['expenses'] + 2.5;
+			$orders[$key]['iva'] += ($value['expenses'] * 0.16);
 			
 		// Calculate balance
 			$balance = (empty($data['new_orders'][$k]['balance'])) ? $data['new_orders'][$k]['last_balance'] : 0;
 			$data['new_orders'][$k]['balance'] 
 				= $balance 
 				+ $value['cost']
-				- ($value['expenses'] + ($value['expenses'] * 0.16));
+				- ($value['expenses'] + ($value['expenses'] * 0.16) + 2.5);
 			
 		// Data info
 			$data['revenues'] += $value['cost'];
-			$data['expenses'] += $value['expenses'] + ($value['expenses'] * 0.16);
+			$data['expenses'] += 2.5; // Sum $2.5 from commission
+			$data['expenses_iva_off'] += $value['expenses'] + 2.5; // Sum $2.5 from commission
+			$data['expenses'] += $value['expenses'] + ($value['expenses'] * 0.16); // Sum IVA
+			$data['porcent'] = ($value['expenses'] / $value['cost']) * 100;
+			$data['commission'] = 2.5; // Sum $2.5 from commission
 			$data['iva'] += ($value['expenses'] * 0.16);
 			$data['total'] += $value['sub_total'];
 			$data['num'] ++;
 			
 		// Card pay
 			if (!empty($value['url'])) {
+				$data['card']['num'] ++;
 				$data['card']['revenues'] += $value['cost'];
 				$data['card']['expenses'] += $value['expenses'];
-				$data['card']['num'] ++;
+				$data['card']['expenses'] += 2.5;
+				$data['card']['iva'] += ($value['expenses'] * 0.16);
+				$data['card']['commission'] = 2.5; // Sum $2.5 from commission
+				$data['card']['porcent'] = ($value['expenses'] / $value['cost']) * 100;
 		// Store pay
 			} else { 
+				$data['store']['num'] ++;
 				$data['store']['revenues'] += $value['cost'];
 				$data['store']['expenses'] += $value['expenses'];
-				$data['store']['num'] ++;
+				$data['store']['expenses'] += 2.5;
+				$data['store']['iva'] += ($value['expenses'] * 0.16);
+				$data['store']['commission'] = 2.5; // Sum $2.5 from commission
+				$data['store']['porcent'] = ($value['expenses'] / $value['cost']) * 100;
 			}
 		}
 		
 	// Total - IVA
 		$data['total'] -= $data['iva'];
 		
-		require ('views/markets/account_status.php');
+		$view = (!empty($objet['view'])) ? $objet['view'] : 'account_status' ;
+		
+		require ('views/markets/'.$view.'.php');
 	}
 	
 ///////////////// ******** ----						END account_status					------ ************ //////////////////

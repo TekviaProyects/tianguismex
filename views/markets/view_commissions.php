@@ -1,10 +1,9 @@
 <?php session_start(); ?>
-<h1>Test</h1>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="signup-form-container">
 			<div class="form-header">
-				<h3 class="form-title"><i class="fa fa-file"></i> Estado de cuenta</h3>
+				<h3 class="form-title"><i class="fa fa-list-alt"></i> Comisiones</h3>
 			</div>
 			<div class="form-body" style="padding: 30px">
 				<div class="row">
@@ -16,7 +15,8 @@
 						<button
 							onclick="markets.account_status({
 								range: $('#range').val(),
-								div: 'div_info_account',
+								div: 'div_info_commissions',
+								view: 'list_commissions',
 								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>
 							})" 
 							class="btn btn-info btn-block">
@@ -25,7 +25,7 @@
 					</div>
 				</div><br />
 				<div class="row">
-					<div class="col-sm-12" id="div_info_account">
+					<div class="col-sm-12" id="div_info_commissions">
 						
 					</div>
 				</div>

@@ -5,7 +5,7 @@
 	<div class="col-sm-12">
 		<div class="card bg-light" style="width: 100%">
 			<div class="card-header">
-				<b>Comisiones del periodo</b>
+				<b>Comisiones del día <?php echo $date[0] ?></b>
 			</div>
 			<div class="card-body">
 				<table class="table">
@@ -60,43 +60,73 @@
 	<div class="col-sm-12">
 		<div class="card bg-light" style="width: 100%">
 			<div class="card-header">
-				<b>Comisiones por día</b>
+				<b>Movimientos del día <?php echo $date[0] ?></b>
 			</div>
 			<div class="card-body">
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>Fecha</th>
+							<th>Hora</th>
+							<th>Monto</th>
 							<th>Comisión</th>
 							<th>IVA</th>
-							<th>Total</th>
+							<th>Detalles</th>
 						</tr>
 					</thead>
 					<tbody><?php
-						foreach ($data['new_orders'] as $key => $value) { ?>
-							<tr 
-								onclick="markets.account_status({
-									range: '<?php echo $value['pay_date'].' - '.$value['pay_date'] ?>',
-									div: 'div_info_commissions',
-									view: 'list_commissions_day',
-									tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>
-								})">
-								<td><?php echo strftime("%d %b %y",strtotime($value['pay_date'])) ?></td>
-								<td>$<?php echo number_format($value['expenses_iva_off'], 2, '.', ',') ?></td>
-								<td>$<?php echo number_format($value['iva'], 2, '.', ',') ?></td>
-								<td>$<?php echo number_format($value['expenses'], 2, '.', ',') ?></td>
+						foreach ($orders as $key => $value) { ?>
+							<tr class="">
+								<td><?php echo date("H:i:s",strtotime($value['creation_date'])) ?></td>
+								<td>$<?php echo $value['cost'] ?></td>
+								<td>$<?php echo $value['expenses_iva_off'] ?></td>
+								<td>$<?php echo $value['iva'] ?></td>
+								<td align="center">
+									<button
+										data-toggle="modal"
+										data-target="#modal_details"
+										class="btn btn-primary btn-block"
+										onclick="local.view_details({
+											id: <?php echo $value['id'] ?>,
+											div: 'div_modal_details'
+										})">
+										<i class="fa fa-list fa-lg"></i>
+									</button>
+								</td>
 							</tr><?php
 						} ?>
 					</tbody>
-					<tfoot>
-						<tr style="font-weight: bold">
-							<td>Totales</td>
-							<td>$<?php echo number_format($data['expenses_iva_off'], 2, '.', ',') ?></td>
-							<td>$<?php echo number_format($data['iva'], 2, '.', ',') ?></td>
-							<td>$<?php echo number_format($data['expenses'], 2, '.', ',') ?></td>
-						</tr>
-					</tfoot>
 				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="modal_details" tabindex="-1" role="dialog" aria-labelledby="modal_detailsLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-body" id="div_modal_details">
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Cerrar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="modal_authorize" tabindex="-1" role="dialog" aria-labelledby="modal_authorizeLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-body" id="div_modal_authorize">
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" onclick="printDiv('div_print')">
+					Imprimir
+				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Cerrar
+				</button>
 			</div>
 		</div>
 	</div>
