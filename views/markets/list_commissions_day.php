@@ -70,28 +70,21 @@
 							<th>Monto</th>
 							<th>Comisión</th>
 							<th>IVA</th>
-							<th>Detalles</th>
 						</tr>
 					</thead>
 					<tbody><?php
 						foreach ($orders as $key => $value) { ?>
-							<tr class="">
+							<tr 
+								onclick="local.view_details({
+									id: <?php echo $value['id'] ?>,
+									div: 'div_modal_details'
+								})"
+								data-toggle="modal"
+								data-target="#modal_details">
 								<td><?php echo date("H:i:s",strtotime($value['creation_date'])) ?></td>
 								<td>$<?php echo $value['cost'] ?></td>
 								<td>$<?php echo $value['expenses_iva_off'] ?></td>
 								<td>$<?php echo $value['iva'] ?></td>
-								<td align="center">
-									<button
-										data-toggle="modal"
-										data-target="#modal_details"
-										class="btn btn-primary btn-block"
-										onclick="local.view_details({
-											id: <?php echo $value['id'] ?>,
-											div: 'div_modal_details'
-										})">
-										<i class="fa fa-list fa-lg"></i>
-									</button>
-								</td>
 							</tr><?php
 						} ?>
 					</tbody>
