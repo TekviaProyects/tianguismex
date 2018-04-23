@@ -85,7 +85,7 @@
 				position: absolute;
 				margin-right: -250px;
 			}
-			/* Sidebar Styles */
+		/* Sidebar Styles */
 			.sidebar-nav {
 				/*position: absolute;*/
 				top: 0;
@@ -124,9 +124,7 @@
 				color: #fff;
 				background: none;
 			}
-			
-			
-			/* Sub Styles */
+		/* Sub Styles */
 			.sub li {
 				text-indent: 5px;
 				line-height: 40px;

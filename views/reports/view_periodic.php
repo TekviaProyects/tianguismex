@@ -16,7 +16,8 @@
 							onclick="reports.list_periodic({
 								range: $('#range').val(),
 								div: 'div_info_periodic',
-								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>
+								tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+								client_id: <?php echo $_SESSION['user']['id'] ?>,
 							})" 
 							class="btn btn-info btn-block">
 							Buscar
@@ -68,4 +69,10 @@
 	        firstDay: 1
 	    }
 	});
+	
+	reports.list_periodic({
+		range: $('#range').val(),
+		div: 'div_info_periodic',
+		tianguis_id: '<?php echo $_SESSION['tianguis']['id'] ?>'
+	})
 </script>

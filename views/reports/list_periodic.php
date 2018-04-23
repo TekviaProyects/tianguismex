@@ -5,17 +5,9 @@
 		<div align="center">
 			<h3>
 				<span class="label label-default">
-					* Sin resultados *
+					* Intenta con otra fecha *
 				</span>
 			</h3>
-			<button 
-				onclick="reports.view_periodic({
-					tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
-					div: 'contenedor'
-				})"
-				class="btn btn-info">
-				Regresar
-			</button>
 		</div><?php
 		
 		return;

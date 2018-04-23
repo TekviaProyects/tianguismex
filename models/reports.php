@@ -15,6 +15,10 @@ class reportsModel extends Connection {
 	// Filter by delimitated dates
 		$condition .= (!empty($objet['f_ini']) && !empty($objet['f_end'])) ? 
 			' AND o.creation_date BETWEEN "'.$objet['f_ini'].'" AND "'.$objet['f_end'].'"' : '' ;
+	// Filter by tianguis ID
+		$condition .= (!empty($objet['tianguis_id'])) ? ' AND o.tianguis_id = '.$objet['tianguis_id'] : '';
+	// Filter by client ID
+		$condition .= (!empty($objet['client_id'])) ? ' AND o.client_id = '.$objet['client_id'] : '';
 		
 	// Group
 		$condition .= (!empty($objet['group'])) ? ' GROUP BY = '.$objet['group'] : ' GROUP BY o.client_id, o.status';
@@ -29,7 +33,7 @@ class reportsModel extends Connection {
 					ON
 						c.id_cliente = o.client_id
 				WHERE
-					o.tianguis_id = 1 ".
+					1 = 1 ".
 				$condition;
 	// return $sql;
 		$result = $this -> query_array($sql);
