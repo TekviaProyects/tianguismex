@@ -124,6 +124,28 @@
 				color: #fff;
 				background: none;
 			}
+			
+			
+			/* Sub Styles */
+			.sub li {
+				text-indent: 5px;
+				line-height: 40px;
+				cursor: pointer;
+			}
+			.sub li a {
+				line-height: 200%;
+				display: block;
+				text-decoration: none;
+				color: #999999;
+			}
+			.sub li a:hover {
+				text-decoration: none;
+				color: #fff;
+				background: rgba(255, 255, 255, 0.2);
+			}
+			.sub li a:active, .sub li a:focus {
+				text-decoration: none;
+			}
 			@media (min-width: 768px) {
 				#wrapper {
 					padding-left: 250px;
@@ -172,11 +194,23 @@
 				<ul class="sidebar-nav">
 					<li>
 						<a
-							id="menu_reports"
-							onclick=""
-							href="#">
-							<i class="fa fa-chart-bar" aria-hidden="true"></i> Reportes
+							data-toggle="collapse" 
+							data-target="#list_reports"
+							id="menu_new_rent"
+							href="#"> <i class="fa fa-list" aria-hidden="true"></i> Reportes
 						</a>
+						<ul id="list_reports" class="collapse sub" style="color: #80806C; margin-top: -5px">
+							<li>
+								<a 
+									href="#"
+									onclick="reports.view_periodic({
+										tianguis_id: <?php echo $_SESSION['tianguis']['id'] ?>,
+										div: 'contenedor'
+									})">
+									<i class="fa fa-list" aria-hidden="true"></i> Periodico
+								</a>
+							</li>
+						</ul>
 					</li>
 					<li>
 						<a
@@ -490,6 +524,7 @@
 		<script src="js/users.js"></script>
 		<script src="js/markets.js"></script>
 		<script src="js/main.js"></script>
+		<script src="js/reports.js"></script>
 		
 <!-- /////////////////// ===================			END JS						=================== /////////////////// -->
 
