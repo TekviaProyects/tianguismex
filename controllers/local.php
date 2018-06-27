@@ -7,10 +7,14 @@ require ("models/local.php");
 
 class local extends Common {
 	public $localModel;
-	private $production = 0;
+	private $production = 1;
 	
 	function __construct() {
 		$this -> localModel = new localModel();
+
+		if ($_SERVER['SERVER_NAME'] == 'localhost') {
+			$this->production = 0;
+		}
 	}
 
 ///////////////// ******** ----						view_new						------ ************ //////////////////
@@ -130,8 +134,8 @@ class local extends Common {
 			$cargo = $customer->charges->create($data);
 			
 		// Create a link to test or production
-			$link = ($this->production == 0) ? 'sandbox-dashboard.openpay.mx' : 'dashboard.openpay.mx';
-			$link = "https://".$link."/paynet-pdf/mngsvcdrvfxhfkedj98m/".$cargo->payment_method->reference;
+			$link = ($this->production == 0) ? 'sandbox-dashboard.openpay.mx/paynet-pdf/mngsvcdrvfxhfkedj98m/' : 'dashboard.openpay.mx/paynet-pdf/mxjw8mwssvb49ecuirzz/';
+			$link = "https://".$link."".$cargo->payment_method->reference;
 			
 		// Google short link
 			require_once('plugins/google-api-php-client-2.2.0/vendor/autoload.php');

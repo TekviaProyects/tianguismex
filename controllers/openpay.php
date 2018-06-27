@@ -2,15 +2,21 @@
 
 class openpayObject {
 // Initialize vars
-	private $id = "mngsvcdrvfxhfkedj98m";
-	private $token = "sk_e9c168c23f464f7eb5a1c1c591d8c21e";
-	private $production = 0;
+	private $id = "mxjw8mwssvb49ecuirzz";
+	private $token = "sk_f9ebc36de7544429a247cb9d2f481f04";
+	private $production = 1;
 	private $openpay;
 
 // Initialize la api with the keys
 	public function __construct() {
+		if ($_SERVER['SERVER_NAME'] == 'localhost') {
+			$this->production = 0;
+			$this->id = 0;
+			$this->token = 0;
+		}
+
 		$this -> openpay = Openpay::getInstance($this -> id, $this -> token);
-		
+
 	// false -> Test, true -> Production
 		$test = ($this->production == 0) ? false : true ;
 		

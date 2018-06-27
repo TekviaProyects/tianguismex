@@ -4,6 +4,9 @@ include ('conexion.php');
 $correo = $_POST['correo'];
 $telefono = $_POST['telefono'];
 
+// ini_set('display_errors', '1');
+// error_reporting(E_ALL);
+
 try {
 	$resultado = $conexionDb -> buscar('clientes', "WHERE celular_cliente = '$telefono' AND correo_cliente = '$correo'");
 	if (verificar($correo)) {

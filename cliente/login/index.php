@@ -103,6 +103,30 @@ if (!empty($_SESSION['ide'])) {
 					$("#btnEntrar").attr("disabled", true);
 				}
 			}
+			
+			$( document ).ready(function() {
+				swal({
+				  title: 'Nueva version',
+				  text: "Tenemos una nueva version la cual sera implimenta en maximo 2 meses te invitamos a provarla, "+
+				  			"el uso de esta version es solamente para que comprendas la funcionalidad de la misma, "+
+				  			"asi que ninguna renta tendra un valor verdadero",
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Probar nueva version',
+				  cancelButtonText: 'Cerrar'
+				}).then((result) => {
+					
+				  	console.log("============> resp", result);
+				  	
+				  if (result) {
+				  	console.log("============> esta baina si entra");
+				    location.href = "../../new"
+				  }
+				})
+			});
+			location.href = "../../";
 		</script>
 	</body>
 	<script src="../assets/sweetalert/dist/sweetalert2.min.js"></script>

@@ -24,20 +24,19 @@ class dbmysqli{
   private $host = "localhost";
   private $usuario = "c0630048";
   private $clave = "mi69nuFAnu";
-  private $db = "c0630048_mds";
+  private $db = "c0630048_new";
 
   public function __construct(){
   	if ($_SERVER['SERVER_NAME'] == 'localhost') {
-		$this->host = 'localhost';
-		$this->usuario = 'root';
-		$this->clave = '';
-		$this->db = 'c0630048_mds_p';
-	}else{
-		$this->host = 'localhost';
-		$this->usuario = 'c0630048';
-		$this->clave = 'mi69nuFAnu';
-		$this->db = 'c0630048_new';
-	}
+      $this->host = 'localhost';    
+      $this->clave = '';
+      $this->db = 'c0630048_mds_p';
+    }else{
+      $this->host = 'localhost';
+      $this->usuario = 'c0630048';
+      $this->clave = 'mi69nuFAnu';
+      $this->db = 'c0630048_new';
+    }
 	
     $this->conn = new mysqli($this->host,$this->usuario,$this->clave,$this->db) or die("MySQL Connection Error");
   }

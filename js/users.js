@@ -186,8 +186,207 @@ var users = {
 				type : 'error'
 			});
 		});
-	}
+	},
 
 ///////////////// ******** ----						END update_x_tianguis				------ ************ //////////////////
 
+///////////////// ******** ----							 add							------ ************ //////////////////
+//////// Loaded the view to sing up user	
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		
+	add : function($objet){
+		"use strict";
+		console.log('==========> $objet add', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		$("#collapseExample").removeClass("show");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=users&f=add',
+			type : 'get',
+			dataType : 'html'
+		}).done(function(resp) {
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! add', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'No se puede cargar la vista',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+
+///////////////// ******** ----						END add							------ ************ //////////////////
+
+///////////////// ******** ----							save							------ ************ //////////////////
+//////// Save the salon data
+	// The parameters that can receive are:
+		// form -> Form ID with the data
+
+	save : function($objet) {
+		"use strict";
+		console.log('==========> $objet add', $objet);
+	
+	// Data
+		var formData = new FormData(document.getElementById($objet.form));
+		
+		$("#"+$objet.form).find(':input').each(function(key, value){
+			var id = value.id;
+			if(id){
+				formData.append(id, $("#"+id).val());
+			}
+		});
+
+		console.log("===========> FormData", formData);
+		
+		$.ajax({
+			url: 'ajax.php?c=users&f=save',
+			type: "post",
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: formData,  
+			dataType: 'json'
+		}).done(function(resp) {
+			console.log('==========> done save', resp);
+			
+			switch(resp.status){
+				case 1:
+					swal({
+						title : 'Usuario creado',
+						text : 'Tu usuario ha sifo creado con exito',
+						timer : 5000,
+						showConfirmButton : true,
+						type : 'success'
+					});
+					
+					location.reload();
+					break;
+				case 2:
+					swal({
+						title : 'Correo no valido',
+						text : 'El correo que intentas registrar ya existe',
+						timer : 5000,
+						showConfirmButton : true,
+						type : 'warning'
+					});
+					break;
+				default:
+					swal({
+						title : 'Error',
+						text : 'Ocurrio un error interno que impide el registro de tu usuario',
+						timer : 5000,
+						showConfirmButton : true,
+						type : 'error'
+					});
+			}
+		}).fail(function(resp) {
+			console.log('==========> fail save');
+			console.log(resp);
+			alert("Error interno");
+		});
+	},
+	
+///////////////// ******** ----						END save							------ ************ //////////////////
+	
+///////////////// ******** ----							 login							------ ************ //////////////////
+//////// Loaded the view to sing up user	
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		
+	login : function($objet){
+		"use strict";
+		console.log('==========> $objet login', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		$("#collapseExample").removeClass("show");
+		
+		$.ajax({
+			data : $objet,
+			url : 'ajax.php?c=users&f=login',
+			type : 'get',
+			dataType : 'html'
+		}).done(function(resp) {
+			console.log("============> Resp HTML ", resp);
+
+			$("#"+$objet.div).html(resp);
+		}).fail(function(resp) {
+			console.log('==========> fail !!! add', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'No se puede cargar la vista',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	},
+
+///////////////// ******** ----						END login						------ ************ //////////////////
+	
+///////////////// ******** ----						signin							------ ************ //////////////////
+//////// Loaded the view to sing up user	
+	// The parameters that can receive are:
+		// div -> Div where the content is loaded
+		
+	signin : function($objet){
+		"use strict";
+		console.log('==========> $objet signin', $objet);
+		
+	// Hide menu on mobile
+		$("#wrapper").removeClass("toggled");
+		$("#collapseExample").removeClass("show");
+		
+		var data = {};
+
+		$("#"+$objet.form).find(':input').each(function(key, value){
+			var id = value.id;
+			if(id){
+				data[id] =  $("#"+id).val();
+			}
+		});
+
+		$.ajax({
+			data : data,
+			url : 'ajax.php?c=users&f=signin',
+			type : 'get',
+			dataType : 'json'
+		}).done(function(resp) {
+			console.log('==========> done signin', resp);
+
+			if (resp.status === 1) {
+				location.reload();
+			} else {
+				swal({
+					title : 'Error',
+					text : 'Datos incorrectos',
+					timer : 5000,
+					showConfirmButton : true,
+					type : 'error'
+				});
+			}
+		}).fail(function(resp) {
+			console.log('==========> fail !!! add', resp);
+			
+			swal({
+				title : 'Error',
+				text : 'No se puede cargar la vista',
+				timer : 5000,
+				showConfirmButton : true,
+				type : 'error'
+			});
+		});
+	}
+
+///////////////// ******** ----						END add							------ ************ //////////////////
+	
 };

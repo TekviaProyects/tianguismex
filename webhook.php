@@ -26,7 +26,7 @@
 		// $mail -> Host = "smtp.gmail.com";
 		// $mail -> Port = 465;
 		// $mail -> Username = "tekviaprogramacion@gmail.com";
-		// $mail -> Password = "tekvia123";
+		// $mail -> Password = "Biagsa321";
 // 
 		// //Correo e informacion del remitente
 		// $mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
@@ -112,7 +112,7 @@
 					$mail -> Host = "smtp.gmail.com";
 					$mail -> Port = 465;
 					$mail -> Username = "tekviaprogramacion@gmail.com";
-					$mail -> Password = "tekvia123";
+					$mail -> Password = "Biagsa321";
 					$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 					$mail -> Subject = "Error en script";
 					$mail -> AltBody = "Esta es la fecha";
@@ -165,7 +165,7 @@
 					$mail -> Host = "smtp.gmail.com";
 					$mail -> Port = 465;
 					$mail -> Username = "tekviaprogramacion@gmail.com";
-					$mail -> Password = "tekvia123";
+					$mail -> Password = "Biagsa321";
 					$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 					$mail -> Subject = "Error en correo";
 					$mail -> AltBody = "Esta es la fecha";
@@ -199,7 +199,7 @@
 				$mail -> Host = "smtp.gmail.com";
 				$mail -> Port = 465;
 				$mail -> Username = "tekviaprogramacion@gmail.com";
-				$mail -> Password = "tekvia123";
+				$mail -> Password = "Biagsa321";
 				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 				
 			// Mail message
@@ -228,7 +228,7 @@
 				$mail -> Host = "smtp.gmail.com";
 				$mail -> Port = 465;
 				$mail -> Username = "tekviaprogramacion@gmail.com";
-				$mail -> Password = "tekvia123";
+				$mail -> Password = "Biagsa321";
 				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 				$mail -> Subject = "Funcion de cronJob";
 				$mail -> AltBody = "Esta es la fecha";
@@ -255,7 +255,7 @@
 				$mail -> Host = "smtp.gmail.com";
 				$mail -> Port = 465;
 				$mail -> Username = "tekviaprogramacion@gmail.com";
-				$mail -> Password = "tekvia123";
+				$mail -> Password = "Biagsa321";
 				$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 				$mail -> Subject = "Transaction incompleted";
 				$mail -> AltBody = "Esta es la fecha";
@@ -377,7 +377,7 @@
 			$mail -> Host = "smtp.gmail.com";
 			$mail -> Port = 465;
 			$mail -> Username = "tekviaprogramacion@gmail.com";
-			$mail -> Password = "tekvia123";
+			$mail -> Password = "Biagsa321";
 			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 			
 		// Mail message
@@ -416,7 +416,7 @@
 	
 		//Datos de acceso al smtp
 			$mail -> Username = "tekviaprogramacion@gmail.com";
-			$mail -> Password = "tekvia123";
+			$mail -> Password = "Biagsa321";
 	
 		//Correo e informacion del remitente
 			$mail -> setFrom('tekviaprogramacion@gmail.com', 'TianguisMex');
@@ -448,7 +448,7 @@
 			$mail -> Port = 465;
 		//Datos de acceso al smtp
 			$mail -> Username = "tekviaprogramacion@gmail.com";
-			$mail -> Password = "tekvia123";
+			$mail -> Password = "Biagsa321";
 		//Correo e informacion del remitente
 			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
 		//Datos y contenido del correo
@@ -471,20 +471,19 @@
 		default :
 			$correo = "fertekvia@gmail.com";
 			$mail = new PHPMailer();
-		//modificar en caso de utilizar un correo distinto a gmail
+			
 			$mail -> IsSMTP();
 			$mail -> SMTPAuth = true;
 			$mail -> SMTPSecure = "ssl";
 			$mail -> Host = "smtp.gmail.com";
 			$mail -> Port = 465;
-		//Datos de acceso al smtp
 			$mail -> Username = "tekviaprogramacion@gmail.com";
-			$mail -> Password = "tekvia123";
-		//Correo e informacion del remitente
-			$mail -> setFrom('tekviaprogramacion@gmail.com', 'Tianguismex');
-		//Datos y contenido del correo
-			$mail -> Subject = "No se encontro";
-			$mail -> AltBody = "Esta es la fecha";
+			$mail -> Password = "Biagsa321";
+
+			$mail -> From = "Webhook Openpay";
+			$mail -> FromName = "Webhook Openpay";
+			$mail -> Subject = "Función no encontrada";
+			$mail -> AltBody = "";
 			$algo = json_encode($json);
 			$mail -> MsgHTML($algo.'------------'.$tipo);
 			$mail -> AddReplyTo("$correo");

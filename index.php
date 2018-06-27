@@ -287,8 +287,14 @@
 							<li class="nav-item"><?php
 								if (empty($_SESSION['user'])) { ?>
 									<button 
+										id="btn_sing_up"
+										onclick="users.add({div: 'contenedor'})"
+										class="btn btn-default" style="margin-top: -20px">
+										Registrarse
+									</button>
+									<button 
 										id="btn_iniciar_sesion"
-										onclick="window.location.replace('cliente/login/')"
+										onclick="users.login({div: 'contenedor'})"
 										class="btn btn-info" style="margin-top: -20px">
 										Iniciar sesión
 									</button><?php
@@ -347,65 +353,41 @@
 				<div id="div_search_results"></div>
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-12" id="contenedor" style="height: 100vh">
-							<div class="row" style="display: none">
-								<div class="col-sm-6 col-md-3">
-									<div
-										class="card text-white bg-success mb-3"
-										onclick="requests.list_requests({
-											div: 'contenedor',
-											status: 1,
-											mail: '<?php echo $_SESSION['user']['mail'] ?>',
-											view: 'list_user_requests',
-											from_user: 1
-										})"
-										style="cursor: pointer">
-										<div class="card-header">
-											Solicitudes Aceptadas
-										</div>
-										<div class="card-body">
-											<i class="fa fa-check fa-3x"></i> <h1 id="sum_aceppted">0</h1>
-										</div>
+						<div class="col-sm-12" id="contenedor" style="min-height: 100vh">
+							<div class="row">
+								<div class="col-sm-12 col-md-6">
+									<div class="embed-responsive embed-responsive-4by3">
+										<iframe width="560" height="315" src="https://www.youtube.com/embed/uwN7CkJhnLA?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 									</div>
-								</div><!-- col-sm-6 -->
-								<div class="col-sm-6 col-md-3">
-									<div
-										class="card text-white bg-danger mb-3"
-										onclick="requests.list_requests({
-											div: 'contenedor',
-											status: 2,
-											mail: '<?php echo $_SESSION['user']['mail'] ?>',
-											view: 'list_user_requests',
-											from_user: 1
-										})"
-										style="cursor: pointer">
-										<div class="card-header">
-											Solicitudes Rechazada
-										</div>
-										<div class="card-body">
-											<i class="fa fa-times fa-3x"></i> <h1 id="sum_aceppted">0</h1>
-										</div>
+								</div>
+								<div class="col-sm-12 col-md-6">
+									<div class="embed-responsive embed-responsive-4by3">
+										<iframe width="560" height="315" src="https://www.youtube.com/embed/PmrmgFYl_MI?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 									</div>
-								</div><!-- col-sm-6 -->
-								<div class="col-sm-6 col-md-3">
-									<div
-										class="card text-white bg-primary mb-3"
-										onclick="requests.list_requests({
-											div: 'contenedor',
-											mail: '<?php echo $_SESSION['user']['mail'] ?>',
-											view: 'list_user_requests',
-											from_user: 1
-										})"
-										style="cursor: pointer">
-										<div class="card-header">
-											Solicitudes Pendientes
-										</div>
-										<div class="card-body">
-											<i class="fa fa-user fa-3x"></i> <h1 id="sum_aceppted">0</h1>
-										</div>
-									</div>
-								</div><!-- col-sm-6 -->
-							</div><!-- row <--></-->
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-6" align="center" style="padding-top: 50px"><?php
+									if (empty($_SESSION['user'])) { ?>
+										<button 
+											id="btn_iniciar_sesion"
+											onclick="users.login({div: 'contenedor'})"
+											class="btn btn-info btn-lg" style="margin-top: -20px">
+											Iniciar sesión
+										</button><?php
+									} ?>
+								</div>
+								<div class="col-sm-12 col-md-6" align="center" style="padding-top: 50px"><?php
+									if (empty($_SESSION['user'])) { ?>
+										<button 
+											id="btn_sing_up"
+											onclick="users.add({div: 'contenedor'})"
+											class="btn btn-default btn-lg" style="margin-top: -20px">
+											Registrarse
+										</button><?php
+									} ?>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -491,10 +473,6 @@
 		$data = str_replace('"', "'", $data);
 		
 		echo $objet['c'].".".$objet['f']."(".$data.")";
-	}else{ ?>
-		local.view_new({
-			div: 'contenedor'
-		});<?php
 	} ?>
 	
 	$("#menu-toggle").click(function(e) {

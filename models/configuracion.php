@@ -4,7 +4,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 	$servidor = 'localhost';
 	$usuariobd = 'root';
 	$clavebd = '';
-	$bd = 'c0630048_mds_p';
+	$bd = 'tianguismex';
 } else {
 	$servidor = 'localhost';
 	$usuariobd = 'c0630048_new';

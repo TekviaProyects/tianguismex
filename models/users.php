@@ -22,11 +22,11 @@ class usersModel extends Connection {
 	function save($objet) {
 	// Validate if the user exists
 		$sql = "SELECT
-					id
+					id_cliente
 				FROM
 					clientes
 				WHERE
-					mail = '" . $objet['mail'] . "'";
+					correo_cliente = '" . $objet['mail'] . "'";
 	// return $sql;
 		$clientes = $this -> query_array($sql);
 
@@ -38,13 +38,10 @@ class usersModel extends Connection {
 		$date = date('Y-m-d H:i:s');
 
 		$sql = "INSERT INTO 
-						clientes(name, last_name, last_name2, mail, pass, date, curp, state, municipality, 
-								colony, addres, num, num_int)
+						clientes(nombre_cliente, celular_cliente, correo_cliente, domicilio_cliente, ine, ine_back, uid_cliente, c_address)
 				VALUES	
-					('" . $objet['name'] . "', '" . $objet['last_name'] . "', '" . $objet['last_name2'] . "', '" . $objet['mail'] . "', 
-					'" . $objet['pass'] . "', '" . $date . "', '" . $objet['curp'] . "', '" . $objet['estadodep'] . "', 
-					'" . $objet['municipiodep'] . "', '" . $objet['colony'] . "', '" . $objet['addres'] . "', 
-					'" . $objet['num'] . "', '" . $objet['num_int'] . "')";
+					('" . $objet['name'] . "', '" . $objet['tel'] . "', '" . $objet['mail'] . "', '" . $objet['address'] . "', 
+					'" . $objet['ine'] . "', '" . $objet['ine_back'] . "', '" . $objet['uid_cliente'] . "', '" . $objet['c_address'] . "')";
 		$result = $this -> insert_id($sql);
 
 		return $result;
@@ -63,6 +60,7 @@ class usersModel extends Connection {
 		$condition .= (!empty($objet['id'])) ? ' AND id_cliente = ' . $objet['id'] : '';
 	// Filter by mail if exists
 		$condition .= (!empty($objet['mail'])) ? ' AND correo_cliente = \'' . $objet['mail'] . '\'' : '';
+		$condition .= (!empty($objet['tel'])) ? ' AND celular_cliente = \'' . $objet['tel'] . '\'' : '';
 	// Filter by pass if exists
 	// $condition .= (!empty($objet['pass'])) ? ' AND pass = \''.$objet['pass'].'\'' : '' ;
 
